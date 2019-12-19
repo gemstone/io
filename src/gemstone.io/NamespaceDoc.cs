@@ -23,11 +23,11 @@
 
 using System.Runtime.CompilerServices;
 
-namespace gemstone.gemtem
+namespace gemstone.io
 {
     /// <summary>
-    /// The <see cref="gemstone.gemtem"/> namespace organizes all Gemstone library functionality
-    /// related to gemtem. The root gemtem namespace also includes common gemtem classes,
+    /// The <see cref="gemstone.io"/> namespace organizes all Gemstone library functionality
+    /// related to io. The root io namespace also includes common io classes,
     /// e.g., <see cref="Class"/>.
     /// </summary>
     [CompilerGenerated]

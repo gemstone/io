@@ -21,10 +21,10 @@
 //
 //******************************************************************************************************
 
-namespace gemstone.gemtem
+namespace gemstone.io
 {
     /// <summary>
-    /// Sample class for new GemTem library.
+    /// Sample class for new IO library.
     /// </summary>
     public class Class
     {
