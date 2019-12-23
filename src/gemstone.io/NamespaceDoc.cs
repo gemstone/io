@@ -23,10 +23,10 @@
 
 using System.Runtime.CompilerServices;
 
-namespace gemstone.io
+namespace Gemstone.IO
 {
     /// <summary>
-    /// The <see cref="gemstone.io"/> namespace organizes all Gemstone library functionality
+    /// The <see cref="Gemstone.IO"/> namespace organizes all Gemstone library functionality
     /// related to io. The root io namespace also includes common io classes,
     /// e.g., <see cref="Class"/>.
     /// </summary>

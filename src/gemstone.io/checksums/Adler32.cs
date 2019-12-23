@@ -25,7 +25,7 @@
 
 using System;
 
-namespace gemstone.io.checksums
+namespace Gemstone.IO.Checksums
 {
     /// <summary>
     /// Generates an Adler-32 checksum calculation.

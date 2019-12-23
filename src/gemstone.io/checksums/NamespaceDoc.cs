@@ -25,7 +25,7 @@
 
 using System.Runtime.CompilerServices;
 
-namespace gemstone.io.checksums
+namespace Gemstone.IO.Checksums
 {
     /// <summary>
     /// Contains classes and extension functions used to calculate standard checksums and CRC’s.

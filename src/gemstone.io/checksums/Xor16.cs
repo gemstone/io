@@ -29,7 +29,7 @@
 
 using System;
 
-namespace gemstone.io.checksums
+namespace Gemstone.IO.Checksums
 {
     /// <summary>Calculates word length (16-bit) XOR-based check-sum on specified portion of a buffer.</summary>
     public sealed class Xor16

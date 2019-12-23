@@ -28,7 +28,7 @@
 //******************************************************************************************************
 
 
-namespace gemstone.io.checksums
+namespace Gemstone.IO.Checksums.ChecksumExtensions
 {
     /// <summary>Defines extension functions related to computing checksums.</summary>
     public static class ChecksumExtensions

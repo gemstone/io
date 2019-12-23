@@ -31,7 +31,7 @@
 
 using System;
 
-namespace gemstone.io.checksums
+namespace Gemstone.IO.Checksums
 {
     /// <summary>Generates a 16-bit CRC-CCITT checksum.</summary>
     /// <remarks>

@@ -27,7 +27,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Security;
 
-namespace gemstone.io
+namespace Gemstone.IO
 {
     /// <summary>
     /// Represents a wrapper around the native .NET <see cref="FileSystemWatcher"/> that avoids problems with

@@ -26,8 +26,9 @@
 //******************************************************************************************************
 
 using System;
+using Gemstone.ArrayExtensions;
 
-namespace gemstone.io.checksums
+namespace Gemstone.IO.Checksums
 {
     /// <summary>
     /// Generates a byte-wise 32-bit CRC calculation.
