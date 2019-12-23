@@ -36,6 +36,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
+using gemstone.numeric;
 
 namespace gemstone.io
 {
@@ -621,7 +622,7 @@ namespace gemstone.io
         /// <param name="value"></param>
         public static void Write(this Stream stream, Guid value)
         {
-            Write(stream, GuidExtensions.ToLittleEndianBytes(value));
+            Write(stream, value.ToLittleEndianBytes());
         }
 
         /// <summary>
@@ -641,7 +642,7 @@ namespace gemstone.io
         /// <returns>the guid value</returns>
         public static Guid ReadGuid(this Stream stream)
         {
-            return GuidExtensions.ToLittleEndianGuid(stream.ReadBytes(16));
+            return stream.ReadBytes(16).ToLittleEndianGuid();
         }
 
         #endregion

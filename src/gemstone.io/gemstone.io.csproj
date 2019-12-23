@@ -45,6 +45,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\common\src\gemstone\gemstone.common.csproj" Condition="'$(Configuration)'=='Development'" />
     <PackageReference Include="gemstone.common" Version="1.0.0" Condition="'$(Configuration)'!='Development'" />
+
+    <ProjectReference Include="..\..\..\numeric\src\gemstone.numeric\gemstone.numeric.csproj" Condition="'$(Configuration)'=='Development'" />
+    <PackageReference Include="gemstone.numeric" Version="1.0.0" Condition="'$(Configuration)'!='Development'" />
   </ItemGroup>
 
 </Project>
