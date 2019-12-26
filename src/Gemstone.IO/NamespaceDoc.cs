@@ -27,8 +27,8 @@ namespace Gemstone.IO
 {
     /// <summary>
     /// The <see cref="Gemstone.IO"/> namespace organizes all Gemstone library functionality
-    /// related to io. The root io namespace also includes common io classes,
-    /// e.g., <see cref="Class"/>.
+    /// related to Input and Output (IO). The root namespace also includes common IO related classes,
+    /// e.g., <see cref="SafeFileWatcher"/>.
     /// </summary>
     [CompilerGenerated]
     class NamespaceDoc

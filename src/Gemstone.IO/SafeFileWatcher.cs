@@ -63,27 +63,27 @@ namespace Gemstone.IO
         /// <summary>
         /// Occurs when a file or directory in the specified <see cref="SafeFileWatcher.Path"/> is changed.
         /// </summary>
-        public event FileSystemEventHandler Changed;
+        public event FileSystemEventHandler? Changed;
 
         /// <summary>
         /// Occurs when a file or directory in the specified <see cref="SafeFileWatcher.Path"/> is created.
         /// </summary>
-        public event FileSystemEventHandler Created;
+        public event FileSystemEventHandler? Created;
 
         /// <summary>
         /// Occurs when a file or directory in the specified <see cref="SafeFileWatcher.Path"/> is deleted.
         /// </summary>
-        public event FileSystemEventHandler Deleted;
+        public event FileSystemEventHandler? Deleted;
 
         /// <summary>
         /// Occurs when a file or directory in the specified <see cref="SafeFileWatcher.Path"/> is renamed.
         /// </summary>
-        public event RenamedEventHandler Renamed;
+        public event RenamedEventHandler? Renamed;
 
         /// <summary>
         /// Occurs when the internal buffer overflows.
         /// </summary>
-        public event ErrorEventHandler Error;
+        public event ErrorEventHandler? Error;
 
         // Fields
         private readonly FileSystemWatcher m_fileSystemWatcher;
