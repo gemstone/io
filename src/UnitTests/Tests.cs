@@ -24,7 +24,7 @@
 using System;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using gemstone.io;
+using Gemstone.IO;
 
 namespace UnitTests
 {
