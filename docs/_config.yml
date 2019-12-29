@@ -1,8 +1,8 @@
 theme: jekyll-theme-cayman
-title: gemstone.io
+title: Gemstone.IO
 description: GPA Gemstone IO Library
 github:
-  repository_name: gemstone.io
+  repository_name: Gemstone.IO
   owner_url: https://www.gridprotectionalliance.org
   owner_name: Grid Protection Alliance
 plugins:
