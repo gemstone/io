@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\gemstone.io\gemstone.io.csproj" />
+    <ProjectReference Include="..\Gemstone.IO\Gemstone.IO.csproj" />
   </ItemGroup>
 
 </Project>
