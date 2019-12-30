@@ -262,7 +262,7 @@ namespace Gemstone.IO
             m_length = m_fileStream.Length;
         }
 
-        #if WINDOWSONLY
+        #if WINDOWSONLY // FileSystemRights is not cross-platform
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.IO.FileStream"/> class with the specified path, creation mode, access rights and sharing permission, the buffer size, and additional file options.
@@ -709,7 +709,6 @@ namespace Gemstone.IO
 
         private void PurgeCache(long cacheSize)
         {
-            Block block;
             int i = 0;
 
             // If the cache is full, remove the least recently used block
@@ -720,7 +719,7 @@ namespace Gemstone.IO
                     // Go through the queue of referenced blocks
                     // and remove references until one of the
                     // blocks has reached zero references
-                    block = m_queue[i];
+                    Block block = m_queue[i];
                     RemoveRef(block);
                     i++;
 
@@ -751,21 +750,16 @@ namespace Gemstone.IO
 
         private void CleanQueue()
         {
-            int count;
-
-            Block block;
-            long bytesToEOF;
-
             // Get the size of the
             // queue before cleaning
-            count = m_queue.Count;
+            int count = m_queue.Count;
 
             // Go through all existing blocks in the queue
             for (int i = 0; i < count; i++)
             {
                 // Remove a reference from
                 // the current block
-                block = m_queue[i];
+                Block block = m_queue[i];
                 RemoveRef(block);
 
                 // If the reference count is zero take some
@@ -773,7 +767,7 @@ namespace Gemstone.IO
                 if (block.RefCount == 0)
                 {
                     // Get the number of bytes from the start of the block to the end of the file
-                    bytesToEOF = m_length - block.BlockIndex * BlockSize;
+                    long bytesToEOF = m_length - block.BlockIndex * BlockSize;
 
                     if (bytesToEOF > 0)
                     {

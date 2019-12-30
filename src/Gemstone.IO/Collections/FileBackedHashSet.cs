@@ -582,6 +582,7 @@ namespace Gemstone.IO.Collections
         /// </summary>
         /// <param name="item">The object to add to the <see cref="FileBackedHashSet{T}"/>.</param>
         /// <exception cref="NotSupportedException">The <see cref="FileBackedHashSet{T}"/> is read-only.</exception>
+        // ReSharper disable once AssignNullToNotNullAttribute
         void ICollection<T>.Add(T item) => Add(item);
 
         /// <summary>
