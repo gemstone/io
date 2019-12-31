@@ -35,10 +35,6 @@ using Gemstone.IO.Checksums;
 // ReSharper disable StaticFieldInGenericType
 // ReSharper disable UnusedMember.Local
 
-#pragma warning disable CS8618 // Use cases validated - if changes are made, temporaily remove.
-#pragma warning disable CS8602 // Use cases validated - if changes are made, temporaily remove.
-#pragma warning disable CS8604 // Use cases validated - if changes are made, temporaily remove.
-
 namespace Gemstone.IO.Collections
 {
     internal enum LookupTableType
@@ -113,8 +109,8 @@ namespace Gemstone.IO.Collections
             public long LookupPointer;
             public long NextItemPointer;
             public int HashCode;
-            public TKey Key;
-            public TValue Value;
+            public TKey Key = default!;
+            public TValue Value = default!;
         }
 
         private class CRCStream : Stream
@@ -204,7 +200,7 @@ namespace Gemstone.IO.Collections
                 return unchecked((int)crcStream.Value);
             }
 
-            public static readonly DefaultKeyComparer Default = new DefaultKeyComparer();
+            public static DefaultKeyComparer Default { get; } = new DefaultKeyComparer();
         }
 
         private class KeysEnumerable : IEnumerable<TKey>
@@ -234,8 +230,8 @@ namespace Gemstone.IO.Collections
         private const int MaximumChainedEmptyNodes = 3;
 
         // Fields
-        private HeaderNode? m_headerNode;
-        private JournalNode? m_journalNode;
+        private HeaderNode m_headerNode;
+        private JournalNode m_journalNode;
 
         private CachedFileStream? m_fileStream;
         private BinaryWriter? m_fileWriter;
@@ -307,10 +303,13 @@ namespace Gemstone.IO.Collections
                 throw new ArgumentException("Path is zero-length or contains only whitespace", nameof(filePath));
 
             m_lookupTableType = lookupTableType;
+            m_filePath = string.Empty;
+            m_keyComparer = keyComparer ?? DefaultKeyComparer.Default;
+
+            m_headerNode = new HeaderNode(lookupTableType);
+            m_journalNode = new JournalNode();
 
             FilePath = filePath;
-
-            m_keyComparer = keyComparer ?? DefaultKeyComparer.Default;
         }
 
         #endregion
@@ -461,7 +460,7 @@ namespace Gemstone.IO.Collections
                 itemNode.Key = key;
                 itemNode.Value = value;
 
-                m_fileStream.Seek(m_headerNode.EndOfFilePointer, SeekOrigin.Begin);
+                FileStream.Seek(m_headerNode.EndOfFilePointer, SeekOrigin.Begin);
                 Write(itemNode);
                 Set(lookupPointer, m_headerNode.EndOfFilePointer, count);
 
@@ -481,16 +480,14 @@ namespace Gemstone.IO.Collections
                 if (m_fileStream == null)
                     OpenImplicit();
 
-                // ReSharper disable once PossibleNullReferenceException
-                return m_fileStream.CacheSize;
+                return FileStream.CacheSize;
             }
             set
             {
                 if (m_fileStream == null)
                     OpenImplicit();
 
-                // ReSharper disable once PossibleNullReferenceException
-                m_fileStream.CacheSize = value;
+                FileStream.CacheSize = value;
             }
         }
 
@@ -505,6 +502,15 @@ namespace Gemstone.IO.Collections
         /// since the last time it was opened.
         /// </remarks>
         public int FragmentationCount { get; private set; }
+
+        private CachedFileStream FileStream => m_fileStream
+            ?? throw new InvalidOperationException("Attempt was made to dereference null file stream.");
+
+        private BinaryWriter FileWriter => m_fileWriter
+            ?? throw new InvalidOperationException("Attempt was made to dereference null file writer.");
+
+        private BinaryReader FileReader => m_fileReader
+            ?? throw new InvalidOperationException("Attempt was made to dereference null file reader.");
 
         private int LookupNodeSize
         {
@@ -561,37 +567,30 @@ namespace Gemstone.IO.Collections
                 {
                     case JournalNode.Set:
                         Set(m_journalNode.LookupPointer, m_journalNode.ItemPointer, m_journalNode.Sync);
-
                         break;
 
                     case JournalNode.Delete:
                         Delete(m_journalNode.LookupPointer, m_journalNode.Sync);
-
                         break;
 
                     case JournalNode.GrowLookupSection:
                         GrowLookupSection(m_journalNode.LookupPointer, m_journalNode.ItemPointer, m_journalNode.Sync);
-
                         break;
 
                     case JournalNode.RebuildLookupTable:
                         RebuildLookupTable(m_journalNode.LookupPointer);
-
                         break;
 
                     case JournalNode.WriteItemNodePointers:
                         WriteItemNodePointers(m_journalNode.LookupPointer, m_journalNode.ItemPointer, m_journalNode.Sync);
-
                         break;
 
                     case JournalNode.Truncate:
                         Truncate(m_journalNode.ItemPointer);
-
                         break;
 
                     case JournalNode.Clear:
                         Clear();
-
                         break;
                 }
             }
@@ -684,7 +683,7 @@ namespace Gemstone.IO.Collections
                 Value = value
             };
 
-            m_fileStream.Seek(m_headerNode.EndOfFilePointer, SeekOrigin.Begin);
+            FileStream.Seek(m_headerNode.EndOfFilePointer, SeekOrigin.Begin);
 
             Write(itemNode);
             Set(lookupPointer, m_headerNode.EndOfFilePointer, m_headerNode.Count + 1);
@@ -712,7 +711,7 @@ namespace Gemstone.IO.Collections
             if (m_headerNode.Count + 1 > m_headerNode.Capacity * MaximumLoadFactor)
             {
                 Grow();
-                Find(key, out lookupPointer, out itemPointer);
+                Find(key, out lookupPointer, out _);
             }
 
             ItemNode itemNode = new ItemNode
@@ -723,7 +722,7 @@ namespace Gemstone.IO.Collections
                 Value = value
             };
 
-            m_fileStream.Seek(m_headerNode.EndOfFilePointer, SeekOrigin.Begin);
+            FileStream.Seek(m_headerNode.EndOfFilePointer, SeekOrigin.Begin);
             Write(itemNode);
             Set(lookupPointer, m_headerNode.EndOfFilePointer, m_headerNode.Count + 1);
 
@@ -777,8 +776,8 @@ namespace Gemstone.IO.Collections
             if (itemPointer < m_headerNode.ItemSectionPointer)
                 return false;
 
-            m_fileStream.Seek(lookupPointer + sizeof(long), SeekOrigin.Begin);
-            m_fileWriter.Write(1);
+            FileStream.Seek(lookupPointer + sizeof(long), SeekOrigin.Begin);
+            FileWriter.Write(1);
 
             return true;
         }
@@ -800,7 +799,7 @@ namespace Gemstone.IO.Collections
 
             for (int i = 0; i < m_headerNode.Capacity; i++)
             {
-                m_fileStream.Seek(lookupPointer, SeekOrigin.Begin);
+                FileStream.Seek(lookupPointer, SeekOrigin.Begin);
                 Read(lookupNode);
 
                 if (lookupNode.ItemPointer >= m_headerNode.ItemSectionPointer && lookupNode.Marker == 0)
@@ -827,8 +826,8 @@ namespace Gemstone.IO.Collections
 
             for (int i = 0; i < m_headerNode.Capacity; i++)
             {
-                m_fileStream.Seek(lookupPointer + sizeof(long), SeekOrigin.Begin);
-                int mark = m_fileReader.ReadInt32();
+                FileStream.Seek(lookupPointer + sizeof(long), SeekOrigin.Begin);
+                int mark = FileReader.ReadInt32();
 
                 if (mark != 0)
                 {
@@ -856,7 +855,7 @@ namespace Gemstone.IO.Collections
 
             for (int i = 0; i < m_headerNode.Capacity; i++)
             {
-                m_fileStream.Seek(lookupPointer, SeekOrigin.Begin);
+                FileStream.Seek(lookupPointer, SeekOrigin.Begin);
                 Read(lookupNode);
 
                 if (lookupNode.ItemPointer >= m_headerNode.ItemSectionPointer && lookupNode.Marker == 0)
@@ -884,8 +883,8 @@ namespace Gemstone.IO.Collections
 
             for (int i = 0; i < m_headerNode.Capacity; i++)
             {
-                m_fileStream.Seek(lookupPointer + sizeof(long), SeekOrigin.Begin);
-                m_fileWriter.Write(0);
+                FileStream.Seek(lookupPointer + sizeof(long), SeekOrigin.Begin);
+                FileWriter.Write(0);
                 lookupPointer += LookupNodeSize;
             }
         }
@@ -957,7 +956,7 @@ namespace Gemstone.IO.Collections
             }
 
             // Truncate the file to eliminate the lookup table and item section
-            m_fileStream.SetLength(HeaderNode.FixedSize + JournalNode.FixedSize);
+            FileStream.SetLength(HeaderNode.FixedSize + JournalNode.FixedSize);
 
             // Create a new header node and write it to the start of the file
             m_headerNode.Count = 0L;
@@ -967,7 +966,7 @@ namespace Gemstone.IO.Collections
             Write(m_headerNode);
 
             // Create the new lookup table section
-            m_fileStream.SetLength(m_headerNode.ItemSectionPointer);
+            FileStream.SetLength(m_headerNode.ItemSectionPointer);
 
             // Clearing the lookup table defragments the file
             FragmentationCount = 0;
@@ -997,8 +996,7 @@ namespace Gemstone.IO.Collections
 
                 if (itemPointer >= m_headerNode.ItemSectionPointer)
                 {
-                    // ReSharper disable once PossibleNullReferenceException
-                    m_fileStream.Seek(itemPointer, SeekOrigin.Begin);
+                    FileStream.Seek(itemPointer, SeekOrigin.Begin);
                     Read(itemNode);
 
                     yield return new KeyValuePair<TKey, TValue>(itemNode.Key, itemNode.Value);
@@ -1030,7 +1028,7 @@ namespace Gemstone.IO.Collections
             // Initialize item1, lookup1, and item2 pointers
             long item1 = m_headerNode.ItemSectionPointer;
             long lookup1 = ReadLookupPointer(item1);
-            long item2 = m_fileReader.ReadInt64();
+            long item2 = FileReader.ReadInt64();
 
             // Determine whether item1 is an orphaned node
             bool orphan1 = ReadItemPointer(lookup1) != item1;
@@ -1043,7 +1041,7 @@ namespace Gemstone.IO.Collections
             {
                 // Update lookup2 and item3 pointers
                 long lookup2 = ReadLookupPointer(item2);
-                long item3 = m_fileReader.ReadInt64();
+                long item3 = FileReader.ReadInt64();
 
                 // Determine whether item2 is an orphaned node
                 bool orphan2 = ReadItemPointer(lookup2) != item2;
@@ -1074,21 +1072,21 @@ namespace Gemstone.IO.Collections
                             bytes = new byte[length2];
 
                         // Read item2 into memory
-                        m_fileStream.Seek(item2, SeekOrigin.Begin);
-                        m_fileStream.Read(bytes, 0, length2);
+                        FileStream.Seek(item2, SeekOrigin.Begin);
+                        FileStream.Read(bytes, 0, length2);
 
                         // Check to see if item1 is at least large enough
                         // to fully contain item2 plus an orphaned node
                         if (length2 + 2 * sizeof(long) < length1)
                         {
                             // Write data to the body of the orphaned node
-                            m_fileStream.Seek(item1 + 2 * sizeof(long), SeekOrigin.Begin);
-                            m_fileStream.Write(bytes, 2 * sizeof(long), length2 - 2 * sizeof(long));
+                            FileStream.Seek(item1 + 2 * sizeof(long), SeekOrigin.Begin);
+                            FileStream.Write(bytes, 2 * sizeof(long), length2 - 2 * sizeof(long));
 
                             // Position nextItemPointer of the soon
                             // to be orphaned node, pointing at item2
-                            m_fileWriter.Write(lookup1);
-                            m_fileWriter.Write(item2);
+                            FileWriter.Write(lookup1);
+                            FileWriter.Write(item2);
 
                             // Update the pointers in the orphaned item node,
                             // then point the lookup node to the orphaned node
@@ -1105,12 +1103,12 @@ namespace Gemstone.IO.Collections
                         else
                         {
                             // Write item2 beyond the end of the item section
-                            m_fileStream.Seek(m_headerNode.EndOfFilePointer, SeekOrigin.Begin);
-                            m_fileStream.Write(bytes, 0, length2);
+                            FileStream.Seek(m_headerNode.EndOfFilePointer, SeekOrigin.Begin);
+                            FileStream.Write(bytes, 0, length2);
 
                             // Fix the nextItemPointer
-                            m_fileStream.Seek(m_headerNode.EndOfFilePointer + sizeof(long), SeekOrigin.Begin);
-                            m_fileWriter.Write(m_headerNode.EndOfFilePointer + length2);
+                            FileStream.Seek(m_headerNode.EndOfFilePointer + sizeof(long), SeekOrigin.Begin);
+                            FileWriter.Write(m_headerNode.EndOfFilePointer + length2);
 
                             // Update the lookup node to point to the new location for item2
                             Set(lookup2, m_headerNode.EndOfFilePointer, m_headerNode.Count);
@@ -1190,9 +1188,9 @@ namespace Gemstone.IO.Collections
             // item section so that we don't have to move item nodes multiple times
             if (minimumItemSectionPointer > m_headerNode.EndOfFilePointer + sizeof(long) * 2)
             {
-                m_fileStream.Seek(m_headerNode.EndOfFilePointer, SeekOrigin.Begin);
-                m_fileWriter.Write(0L);
-                m_fileWriter.Write(minimumItemSectionPointer);
+                FileStream.Seek(m_headerNode.EndOfFilePointer, SeekOrigin.Begin);
+                FileWriter.Write(0L);
+                FileWriter.Write(minimumItemSectionPointer);
                 copyPointer = minimumItemSectionPointer;
             }
 
@@ -1201,10 +1199,10 @@ namespace Gemstone.IO.Collections
             while (itemPointer < minimumItemSectionPointer)
             {
                 // Read the two pointers at the start of the item node
-                m_fileStream.Seek(itemPointer, SeekOrigin.Begin);
-                itemNode.LookupPointer = m_fileReader.ReadInt64();
-                itemNode.NextItemPointer = m_fileReader.ReadInt64();
-                itemNode.HashCode = m_fileReader.ReadInt32();
+                FileStream.Seek(itemPointer, SeekOrigin.Begin);
+                itemNode.LookupPointer = FileReader.ReadInt64();
+                itemNode.NextItemPointer = FileReader.ReadInt64();
+                itemNode.HashCode = FileReader.ReadInt32();
 
                 // If the lookup node referenced by this item node does not point back
                 // to the item node, then this is an orphaned node and may be skipped
@@ -1217,7 +1215,7 @@ namespace Gemstone.IO.Collections
 
                 // Jump back to the item node and read the key and value,
                 // then update the item pointer to point to the next item after this one
-                m_fileStream.Seek(itemPointer + ItemNode.FixedSize, SeekOrigin.Begin);
+                FileStream.Seek(itemPointer + ItemNode.FixedSize, SeekOrigin.Begin);
                 itemNode.Key = ReadKey();
                 itemNode.Value = ReadValue();
                 itemPointer = itemNode.NextItemPointer;
@@ -1225,9 +1223,9 @@ namespace Gemstone.IO.Collections
                 // Write the item node to the end of the file,
                 // then update the copy pointer to point to the
                 // next available location at the end of the file
-                m_fileStream.Seek(copyPointer, SeekOrigin.Begin);
+                FileStream.Seek(copyPointer, SeekOrigin.Begin);
                 Write(itemNode);
-                copyPointer = m_fileStream.Position;
+                copyPointer = FileStream.Position;
             }
 
             // Use the GrowLookupSection operation to point lookup nodes
@@ -1276,7 +1274,7 @@ namespace Gemstone.IO.Collections
                 {
                     // Determine if the item pointed to by
                     // lookupPointer is the one we are trying to find
-                    m_fileStream.Seek(itemPointer + ItemNode.FixedSize, SeekOrigin.Begin);
+                    FileStream.Seek(itemPointer + ItemNode.FixedSize, SeekOrigin.Begin);
 
                     if (m_keyComparer.Equals(key, ReadKey()))
                         return;
@@ -1386,8 +1384,8 @@ namespace Gemstone.IO.Collections
             {
                 long lookupPointer = ReadLookupPointer(itemPointer);
                 WriteItemPointer(lookupPointer, itemPointer);
-                m_fileStream.Seek(itemPointer + sizeof(long), SeekOrigin.Begin);
-                itemPointer = m_fileReader.ReadInt64();
+                FileStream.Seek(itemPointer + sizeof(long), SeekOrigin.Begin);
+                itemPointer = FileReader.ReadInt64();
             }
 
             m_headerNode.ItemSectionPointer = itemSectionPointer;
@@ -1412,7 +1410,7 @@ namespace Gemstone.IO.Collections
 
             // Perform the grow operation
             LookupNode emptyNode = new LookupNode();
-            m_fileStream.Seek(HeaderNode.FixedSize + JournalNode.FixedSize, SeekOrigin.Begin);
+            FileStream.Seek(HeaderNode.FixedSize + JournalNode.FixedSize, SeekOrigin.Begin);
 
             for (int i = 0; i < capacity; i++)
                 Write(emptyNode);
@@ -1421,9 +1419,9 @@ namespace Gemstone.IO.Collections
 
             while (itemPointer < m_headerNode.EndOfFilePointer)
             {
-                m_fileStream.Seek(itemPointer + sizeof(long), SeekOrigin.Begin);
-                long nextItemPointer = m_fileReader.ReadInt64();
-                int hashCode = m_fileReader.ReadInt32();
+                FileStream.Seek(itemPointer + sizeof(long), SeekOrigin.Begin);
+                long nextItemPointer = FileReader.ReadInt64();
+                int hashCode = FileReader.ReadInt32();
 
                 long lookupPointer = FindEndOfChain(hashCode, capacity);
                 WriteLookupPointer(lookupPointer, itemPointer);
@@ -1447,9 +1445,9 @@ namespace Gemstone.IO.Collections
             Write(m_journalNode);
 
             // Perform the write operation
-            m_fileStream.Seek(itemPointer, SeekOrigin.Begin);
-            m_fileWriter.Write(lookupPointer);
-            m_fileWriter.Write(nextItemPointer);
+            FileStream.Seek(itemPointer, SeekOrigin.Begin);
+            FileWriter.Write(lookupPointer);
+            FileWriter.Write(nextItemPointer);
 
             ClearJournalNode();
         }
@@ -1464,7 +1462,7 @@ namespace Gemstone.IO.Collections
             // Perform the truncate operation
             m_headerNode.EndOfFilePointer = itemPointer;
             Write(m_headerNode);
-            m_fileStream.SetLength(itemPointer);
+            FileStream.SetLength(itemPointer);
 
             ClearJournalNode();
         }
@@ -1486,12 +1484,12 @@ namespace Gemstone.IO.Collections
 
         private void Write(HeaderNode node)
         {
-            m_fileStream.Seek(0, SeekOrigin.Begin);
-            m_fileStream.Write(m_headerNode.Signature, 0, HeaderNode.SignatureSize);
-            m_fileWriter.Write(node.Count);
-            m_fileWriter.Write(node.Capacity);
-            m_fileWriter.Write(node.ItemSectionPointer);
-            m_fileWriter.Write(node.EndOfFilePointer);
+            FileStream.Seek(0, SeekOrigin.Begin);
+            FileStream.Write(m_headerNode.Signature, 0, HeaderNode.SignatureSize);
+            FileWriter.Write(node.Count);
+            FileWriter.Write(node.Capacity);
+            FileWriter.Write(node.ItemSectionPointer);
+            FileWriter.Write(node.EndOfFilePointer);
         }
 
         private void Write(JournalNode node)
@@ -1508,73 +1506,73 @@ namespace Gemstone.IO.Collections
 
             node.Checksum = (int)checksum.Value;
 
-            m_fileStream.Flush();
+            FileStream.Flush();
 
-            m_fileStream.Seek(HeaderNode.FixedSize, SeekOrigin.Begin);
-            m_fileWriter.Write(node.Operation);
-            m_fileWriter.Write(node.LookupPointer);
-            m_fileWriter.Write(node.ItemPointer);
-            m_fileWriter.Write(node.Sync);
-            m_fileWriter.Write(node.Checksum);
+            FileStream.Seek(HeaderNode.FixedSize, SeekOrigin.Begin);
+            FileWriter.Write(node.Operation);
+            FileWriter.Write(node.LookupPointer);
+            FileWriter.Write(node.ItemPointer);
+            FileWriter.Write(node.Sync);
+            FileWriter.Write(node.Checksum);
 
-            m_fileStream.Flush();
+            FileStream.Flush();
         }
 
         private void Write(LookupNode node)
         {
-            m_fileWriter.Write(node.ItemPointer);
+            FileWriter.Write(node.ItemPointer);
 
             if (m_lookupTableType == LookupTableType.HashSet)
-                m_fileWriter.Write(node.Marker);
+                FileWriter.Write(node.Marker);
         }
 
         private void Write(ItemNode node)
         {
-            long start = m_fileStream.Position;
-            m_fileWriter.Write(node.LookupPointer);
-            m_fileStream.Seek(sizeof(long), SeekOrigin.Current);
-            m_fileWriter.Write(node.HashCode);
-            s_writeKeyAction(m_fileStream, node.Key);
+            long start = FileStream.Position;
+            FileWriter.Write(node.LookupPointer);
+            FileStream.Seek(sizeof(long), SeekOrigin.Current);
+            FileWriter.Write(node.HashCode);
+            s_writeKeyAction(FileStream, node.Key);
 
             if (m_lookupTableType == LookupTableType.Dictionary)
-                s_writeValueAction(m_fileStream, node.Value);
+                s_writeValueAction(FileStream, node.Value);
 
-            long end = m_fileStream.Position;
-            m_fileStream.Seek(start + sizeof(long), SeekOrigin.Begin);
-            m_fileWriter.Write(end);
-            m_fileStream.Seek(end, SeekOrigin.Begin);
+            long end = FileStream.Position;
+            FileStream.Seek(start + sizeof(long), SeekOrigin.Begin);
+            FileWriter.Write(end);
+            FileStream.Seek(end, SeekOrigin.Begin);
         }
 
         private void WriteItemPointer(long lookupPointer, long itemPointer)
         {
-            m_fileStream.Seek(lookupPointer, SeekOrigin.Begin);
-            m_fileWriter.Write(itemPointer);
+            FileStream.Seek(lookupPointer, SeekOrigin.Begin);
+            FileWriter.Write(itemPointer);
         }
 
         private void WriteLookupPointer(long lookupPointer, long itemPointer)
         {
-            m_fileStream.Seek(itemPointer, SeekOrigin.Begin);
-            m_fileWriter.Write(lookupPointer);
+            FileStream.Seek(itemPointer, SeekOrigin.Begin);
+            FileWriter.Write(lookupPointer);
         }
 
         private void Read(HeaderNode node)
         {
-            m_fileStream.Read(node.Signature, 0, HeaderNode.SignatureSize);
-            node.Count = m_fileReader.ReadInt64();
-            node.Capacity = m_fileReader.ReadInt64();
-            node.ItemSectionPointer = m_fileReader.ReadInt64();
-            node.EndOfFilePointer = m_fileReader.ReadInt64();
+            FileStream.Read(node.Signature, 0, HeaderNode.SignatureSize);
+            node.Count = FileReader.ReadInt64();
+            node.Capacity = FileReader.ReadInt64();
+            node.ItemSectionPointer = FileReader.ReadInt64();
+            node.EndOfFilePointer = FileReader.ReadInt64();
         }
 
         private void Read(JournalNode node)
         {
             Crc32 checksum = new Crc32();
 
-            node.Operation = m_fileReader.ReadInt32();
-            node.LookupPointer = m_fileReader.ReadInt64();
-            node.ItemPointer = m_fileReader.ReadInt64();
-            node.Sync = m_fileReader.ReadInt64();
-            node.Checksum = m_fileReader.ReadInt32();
+            node.Operation = FileReader.ReadInt32();
+            node.LookupPointer = FileReader.ReadInt64();
+            node.ItemPointer = FileReader.ReadInt64();
+            node.Sync = FileReader.ReadInt64();
+            node.Checksum = FileReader.ReadInt32();
 
             checksum.Update(node.Operation);
             checksum.Update((int)(node.LookupPointer >> sizeof(int)));
@@ -1598,17 +1596,17 @@ namespace Gemstone.IO.Collections
 
         private void Read(LookupNode node)
         {
-            node.ItemPointer = m_fileReader.ReadInt64();
+            node.ItemPointer = FileReader.ReadInt64();
 
             if (m_lookupTableType == LookupTableType.HashSet)
-                node.Marker = m_fileReader.ReadInt32();
+                node.Marker = FileReader.ReadInt32();
         }
 
         private void Read(ItemNode node)
         {
-            node.LookupPointer = m_fileReader.ReadInt64();
-            node.NextItemPointer = m_fileReader.ReadInt64();
-            node.HashCode = m_fileReader.ReadInt32();
+            node.LookupPointer = FileReader.ReadInt64();
+            node.NextItemPointer = FileReader.ReadInt64();
+            node.HashCode = FileReader.ReadInt32();
             node.Key = ReadKey();
             node.Value = ReadValue();
         }
@@ -1618,28 +1616,26 @@ namespace Gemstone.IO.Collections
             if (lookupPointer >= m_headerNode.ItemSectionPointer)
                 return 0L;
 
-            m_fileStream.Seek(lookupPointer, SeekOrigin.Begin);
+            FileStream.Seek(lookupPointer, SeekOrigin.Begin);
 
-            return m_fileReader.ReadInt64();
+            return FileReader.ReadInt64();
         }
 
         private long ReadLookupPointer(long itemPointer)
         {
-            m_fileStream.Seek(itemPointer, SeekOrigin.Begin);
-
-            return m_fileReader.ReadInt64();
+            FileStream.Seek(itemPointer, SeekOrigin.Begin);
+            return FileReader.ReadInt64();
         }
 
         private long ReadNextItemPointer(long itemPointer)
         {
-            m_fileStream.Seek(itemPointer + sizeof(long), SeekOrigin.Begin);
-
-            return m_fileReader.ReadInt64();
+            FileStream.Seek(itemPointer + sizeof(long), SeekOrigin.Begin);
+            return FileReader.ReadInt64();
         }
 
-        private TKey ReadKey() => s_readKeyFunc(m_fileStream);
+        private TKey ReadKey() => s_readKeyFunc(FileStream);
 
-        private TValue ReadValue() => m_lookupTableType == LookupTableType.Dictionary ? s_readValueFunc(m_fileStream) : default!;
+        private TValue ReadValue() => m_lookupTableType == LookupTableType.Dictionary ? s_readValueFunc(FileStream) : default!;
 
         private IEnumerator<TKey> GetKeysEnumerator()
         {
@@ -1655,11 +1651,8 @@ namespace Gemstone.IO.Collections
 
                 if (itemPointer >= m_headerNode.ItemSectionPointer)
                 {
-                    // ReSharper disable once PossibleNullReferenceException
-                    m_fileStream.Seek(itemPointer + ItemNode.FixedSize, SeekOrigin.Begin);
-
+                    FileStream.Seek(itemPointer + ItemNode.FixedSize, SeekOrigin.Begin);
                     yield return ReadKey();
-
                     count++;
                 }
 
@@ -1689,33 +1682,50 @@ namespace Gemstone.IO.Collections
         // Static Fields
         private const BindingFlags Flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
         private static readonly Type[] s_types = { typeof(Stream) };
-        private static readonly Action<Stream, TKey>? s_writeKeyAction;
-        private static readonly Action<Stream, TValue>? s_writeValueAction;
-        private static readonly Func<Stream, TKey>? s_readKeyFunc;
-        private static readonly Func<Stream, TValue>? s_readValueFunc;
+        private static readonly Action<Stream, TKey> s_writeKeyAction;
+        private static readonly Action<Stream, TValue> s_writeValueAction;
+        private static readonly Func<Stream, TKey> s_readKeyFunc;
+        private static readonly Func<Stream, TValue> s_readValueFunc;
 
         // Static Constructor
 
         static FileBackedLookupTable()
         {
-            s_writeKeyAction = GetWriteMethod<TKey>();
-            s_writeValueAction = GetWriteMethod<TValue>();
-            s_readKeyFunc = GetReadMethod<TKey>();
-            s_readValueFunc = GetReadMethod<TValue>();
+            Action<Stream, TKey>? writeKeyAction = GetWriteMethod<TKey>();
+            Action<Stream, TValue>? writeValueAction = GetWriteMethod<TValue>();
+            Func<Stream, TKey>? readKeyFunc = GetReadMethod<TKey>();
+            Func<Stream, TValue>? readValueFunc = GetReadMethod<TValue>();
 
-            if ((s_writeKeyAction == null || s_readKeyFunc == null) && typeof(TKey).IsSerializable)
+            if ((writeKeyAction == null || readKeyFunc == null) && typeof(TKey).IsSerializable)
             {
                 BinaryFormatter formatter = new BinaryFormatter();
-                s_writeKeyAction = (stream, key) => formatter.Serialize(stream, key);
-                s_readKeyFunc = stream => (TKey)formatter.Deserialize(stream);
+                writeKeyAction = (stream, key) => formatter.Serialize(stream, key);
+                readKeyFunc = stream => (TKey)formatter.Deserialize(stream);
             }
 
-            if ((s_writeValueAction == null || s_readValueFunc == null) && typeof(TValue).IsSerializable)
+            if ((writeValueAction == null || readValueFunc == null) && typeof(TValue).IsSerializable)
             {
                 BinaryFormatter formatter = new BinaryFormatter();
-                s_writeValueAction = (stream, value) => formatter.Serialize(stream, value);
-                s_readValueFunc = stream => (TValue)formatter.Deserialize(stream);
+                writeValueAction = (stream, value) => formatter.Serialize(stream, value);
+                readValueFunc = stream => (TValue)formatter.Deserialize(stream);
             }
+
+            if (writeKeyAction == null || readKeyFunc == null)
+            {
+                writeKeyAction = (_, __) => throw new InvalidOperationException($"Type of TKey ({typeof(TKey).FullName}) is not serializable.");
+                readKeyFunc = _ => throw new InvalidOperationException($"Type of TKey ({typeof(TKey).FullName}) is not serializable.");
+            }
+
+            if (writeValueAction == null || readValueFunc == null)
+            {
+                writeValueAction = (_, __) => throw new InvalidOperationException($"Type of TValue ({typeof(TKey).FullName}) is not serializable.");
+                readValueFunc = _ => throw new InvalidOperationException($"Type of TValue ({typeof(TKey).FullName}) is not serializable.");
+            }
+
+            s_writeKeyAction = writeKeyAction;
+            s_writeValueAction = writeValueAction;
+            s_readKeyFunc = readKeyFunc;
+            s_readValueFunc = readValueFunc;
         }
 
         // Static Methods
