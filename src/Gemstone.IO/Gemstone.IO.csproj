@@ -51,4 +51,12 @@
     <PackageReference Include="Gemstone.Numeric" Version="1.0.0" Condition="'$(Configuration)'!='Development'" />
   </ItemGroup>
 
+  <Target Name="AfterBuild">
+    <CallTarget Targets="SignBuild" />
+  </Target>
+
+  <Target Name="SignBuild" Condition="'$(SIGNTOOL)' != ''">
+    <Exec Command="$(SIGNTOOL) $(TargetPath)" />
+  </Target>
+
 </Project>
