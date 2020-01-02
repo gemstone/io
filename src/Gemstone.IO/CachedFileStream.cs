@@ -23,10 +23,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
-
-#pragma warning disable CS8618 // m_fileStream is always initialized
 
 namespace Gemstone.IO
 {
@@ -317,6 +316,10 @@ namespace Gemstone.IO
 
         #endif
 
+        // TODO: This is a temporary workaround as suppress message attribute should be enough, see: https://github.com/dotnet/roslyn/issues/39094
+        #pragma warning disable CS8618
+
+        [SuppressMessage("Code Quality", "CS8618:Non-nullable field is uninitialized. Consider declaring as nullable.", Justification = "m_fileStream is properly initialized")]
         private CachedFileStream(int blockSize)
         {
             if (blockSize <= 0)
