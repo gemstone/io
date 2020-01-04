@@ -406,7 +406,7 @@ namespace Gemstone.IO.Collections
                     throw new ArgumentNullException(nameof(value));
 
                 if (value.Length > HeaderNode.SignatureSize)
-                    throw new ArgumentException("Attempt was made to set signature to a value larger than the maximum signature size of " + HeaderNode.SignatureSize);
+                    throw new ArgumentException($"Attempt was made to set signature to a value larger than the maximum signature size of {HeaderNode.SignatureSize}");
 
                 FailIfReadOnly();
 
