@@ -33,6 +33,8 @@ using Gemstone.Threading;
 using Gemstone.Threading.SynchronizedOperations;
 using Timer = System.Timers.Timer;
 
+#pragma warning disable CA1031 // Do not catch general exception types
+
 namespace Gemstone.IO
 {
     /// <summary>
@@ -472,7 +474,7 @@ namespace Gemstone.IO
                 // Other exceptions can happen, e.g., NullReferenceException if thread resumes and the class is disposed middle way through this method
                 // or other serialization issues in call to SaveFileData, in these cases, release any threads waiting for file save
                 m_saveIsReady?.Set();
-                LibraryEvents.OnSuppressedException(this, ex);
+                LibraryEvents.OnSuppressedException(this, new Exception($"Synchronized write exception: {ex.Message}", ex));
             }
         }
 
@@ -542,7 +544,7 @@ namespace Gemstone.IO
                 // Other exceptions can happen, e.g., NullReferenceException if thread resumes and the class is disposed middle way through this method
                 // or other deserialization issues in call to LoadFileData, in these cases, release any threads waiting for file load
                 m_loadIsReady?.Set();
-                LibraryEvents.OnSuppressedException(this, ex);
+                LibraryEvents.OnSuppressedException(this, new Exception($"Synchronized read exception: {ex.Message}", ex));
             }
         }
 
