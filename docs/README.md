@@ -10,8 +10,6 @@ The Gemstone IO Library organizes all Gemstone functionality related to input an
 
 This library includes helpful io classes like the following:
 
-* [Class](https://gemstone.github.io/io/help/html/T_gemstone_io_Class.htm):
-  * Represents a io class for handling io operations.
 
 Among others.
 
