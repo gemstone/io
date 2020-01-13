@@ -1,0 +1,573 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<HelpKI>
+  <HelpKINode Title="Add method">
+    <HelpKINode Title="FileBackedDictionary(TKey, TValue).Add Method " Url="html/Overload_Gemstone_IO_Collections_FileBackedDictionary_2_Add.htm" />
+    <HelpKINode Title="FileBackedHashSet(T).Add Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Add.htm" />
+    <HelpKINode Title="RollingWindow(T).Add Method " Url="html/M_Gemstone_IO_Collections_RollingWindow_1_Add.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Adler32 class">
+    <HelpKINode Title="Adler32 Class" Url="html/T_Gemstone_IO_Checksums_Adler32.htm" />
+    <HelpKINode Title="constructor" Url="html/M_Gemstone_IO_Checksums_Adler32__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Gemstone_IO_Checksums_Adler32.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_Checksums_Adler32.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Adler32.Adler32 constructor" Url="html/M_Gemstone_IO_Checksums_Adler32__ctor.htm" />
+  <HelpKINode Title="Adler32.Reset method" Url="html/M_Gemstone_IO_Checksums_Adler32_Reset.htm" />
+  <HelpKINode Title="Adler32.Update method" Url="html/Overload_Gemstone_IO_Checksums_Adler32_Update.htm" />
+  <HelpKINode Title="Adler32.Value property" Url="html/P_Gemstone_IO_Checksums_Adler32_Value.htm" />
+  <HelpKINode Title="Adler32Checksum method" Url="html/M_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions_Adler32Checksum.htm" />
+  <HelpKINode Title="AutoSave property" Url="html/P_Gemstone_IO_InterprocessCache_AutoSave.htm" />
+  <HelpKINode Title="BeginInit method" Url="html/M_Gemstone_IO_SafeFileWatcher_BeginInit.htm" />
+  <HelpKINode Title="BlockSize property" Url="html/P_Gemstone_IO_CachedFileStream_BlockSize.htm" />
+  <HelpKINode Title="CachedFileStream class">
+    <HelpKINode Title="CachedFileStream Class" Url="html/T_Gemstone_IO_CachedFileStream.htm" />
+    <HelpKINode Title="constructor" Url="html/Overload_Gemstone_IO_CachedFileStream__ctor.htm" />
+    <HelpKINode Title="fields" Url="html/Fields_T_Gemstone_IO_CachedFileStream.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Gemstone_IO_CachedFileStream.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_CachedFileStream.htm" />
+  </HelpKINode>
+  <HelpKINode Title="CachedFileStream.BlockSize property" Url="html/P_Gemstone_IO_CachedFileStream_BlockSize.htm" />
+  <HelpKINode Title="CachedFileStream.CachedFileStream constructor" Url="html/Overload_Gemstone_IO_CachedFileStream__ctor.htm" />
+  <HelpKINode Title="CachedFileStream.CacheSize property" Url="html/P_Gemstone_IO_CachedFileStream_CacheSize.htm" />
+  <HelpKINode Title="CachedFileStream.CanRead property" Url="html/P_Gemstone_IO_CachedFileStream_CanRead.htm" />
+  <HelpKINode Title="CachedFileStream.CanSeek property" Url="html/P_Gemstone_IO_CachedFileStream_CanSeek.htm" />
+  <HelpKINode Title="CachedFileStream.CanWrite property" Url="html/P_Gemstone_IO_CachedFileStream_CanWrite.htm" />
+  <HelpKINode Title="CachedFileStream.DefaultBlockSize field" Url="html/F_Gemstone_IO_CachedFileStream_DefaultBlockSize.htm" />
+  <HelpKINode Title="CachedFileStream.DefaultCacheSize field" Url="html/F_Gemstone_IO_CachedFileStream_DefaultCacheSize.htm" />
+  <HelpKINode Title="CachedFileStream.Dispose method" Url="html/Overload_Gemstone_IO_CachedFileStream_Dispose.htm" />
+  <HelpKINode Title="CachedFileStream.Flush method" Url="html/Overload_Gemstone_IO_CachedFileStream_Flush.htm" />
+  <HelpKINode Title="CachedFileStream.Length property" Url="html/P_Gemstone_IO_CachedFileStream_Length.htm" />
+  <HelpKINode Title="CachedFileStream.Position property" Url="html/P_Gemstone_IO_CachedFileStream_Position.htm" />
+  <HelpKINode Title="CachedFileStream.Read method" Url="html/M_Gemstone_IO_CachedFileStream_Read.htm" />
+  <HelpKINode Title="CachedFileStream.Seek method" Url="html/M_Gemstone_IO_CachedFileStream_Seek.htm" />
+  <HelpKINode Title="CachedFileStream.SetLength method" Url="html/M_Gemstone_IO_CachedFileStream_SetLength.htm" />
+  <HelpKINode Title="CachedFileStream.Write method" Url="html/M_Gemstone_IO_CachedFileStream_Write.htm" />
+  <HelpKINode Title="CacheSize property">
+    <HelpKINode Title="CachedFileStream.CacheSize Property " Url="html/P_Gemstone_IO_CachedFileStream_CacheSize.htm" />
+    <HelpKINode Title="FileBackedDictionary(TKey, TValue).CacheSize Property " Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_CacheSize.htm" />
+    <HelpKINode Title="FileBackedHashSet(T).CacheSize Property " Url="html/P_Gemstone_IO_Collections_FileBackedHashSet_1_CacheSize.htm" />
+  </HelpKINode>
+  <HelpKINode Title="CanRead property" Url="html/P_Gemstone_IO_CachedFileStream_CanRead.htm" />
+  <HelpKINode Title="CanSeek property" Url="html/P_Gemstone_IO_CachedFileStream_CanSeek.htm" />
+  <HelpKINode Title="CanWrite property" Url="html/P_Gemstone_IO_CachedFileStream_CanWrite.htm" />
+  <HelpKINode Title="Changed event" Url="html/E_Gemstone_IO_SafeFileWatcher_Changed.htm" />
+  <HelpKINode Title="ChecksumExtensions class">
+    <HelpKINode Title="ChecksumExtensions Class" Url="html/T_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ChecksumExtensions.Adler32Checksum method" Url="html/M_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions_Adler32Checksum.htm" />
+  <HelpKINode Title="ChecksumExtensions.Crc16Checksum method" Url="html/M_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions_Crc16Checksum.htm" />
+  <HelpKINode Title="ChecksumExtensions.Crc32Checksum method" Url="html/M_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions_Crc32Checksum.htm" />
+  <HelpKINode Title="ChecksumExtensions.CrcCCITTChecksum method" Url="html/M_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions_CrcCCITTChecksum.htm" />
+  <HelpKINode Title="ChecksumExtensions.ModBusCrcChecksum method" Url="html/M_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions_ModBusCrcChecksum.htm" />
+  <HelpKINode Title="ChecksumExtensions.Xor16Checksum method" Url="html/M_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions_Xor16Checksum.htm" />
+  <HelpKINode Title="ChecksumExtensions.Xor32Checksum method" Url="html/M_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions_Xor32Checksum.htm" />
+  <HelpKINode Title="ChecksumExtensions.Xor64Checksum method" Url="html/M_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions_Xor64Checksum.htm" />
+  <HelpKINode Title="ChecksumExtensions.Xor8Checksum method" Url="html/M_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions_Xor8Checksum.htm" />
+  <HelpKINode Title="ChecksumType enumeration" Url="html/T_Gemstone_IO_Checksums_ChecksumType.htm" />
+  <HelpKINode Title="Clear method">
+    <HelpKINode Title="FileBackedDictionary(TKey, TValue).Clear Method " Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_Clear.htm" />
+    <HelpKINode Title="FileBackedHashSet(T).Clear Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Clear.htm" />
+    <HelpKINode Title="RollingWindow(T).Clear Method " Url="html/M_Gemstone_IO_Collections_RollingWindow_1_Clear.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Close method">
+    <HelpKINode Title="FileBackedDictionary(TKey, TValue).Close Method " Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_Close.htm" />
+    <HelpKINode Title="FileBackedHashSet(T).Close Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Close.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Compact method">
+    <HelpKINode Title="FileBackedDictionary(TKey, TValue).Compact Method " Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_Compact.htm" />
+    <HelpKINode Title="FileBackedHashSet(T).Compact Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Compact.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Compute method" Url="html/M_Gemstone_IO_Checksums_Crc32_Compute.htm" />
+  <HelpKINode Title="Contains method">
+    <HelpKINode Title="FileBackedDictionary(TKey, TValue).Contains Method " Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_Contains.htm" />
+    <HelpKINode Title="FileBackedHashSet(T).Contains Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Contains.htm" />
+    <HelpKINode Title="RollingWindow(T).Contains Method " Url="html/M_Gemstone_IO_Collections_RollingWindow_1_Contains.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ContainsKey method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_ContainsKey.htm" />
+  <HelpKINode Title="CopyTo method">
+    <HelpKINode Title="FileBackedDictionary(TKey, TValue).CopyTo Method " Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_CopyTo.htm" />
+    <HelpKINode Title="FileBackedHashSet(T).CopyTo Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_CopyTo.htm" />
+    <HelpKINode Title="RollingWindow(T).CopyTo Method " Url="html/M_Gemstone_IO_Collections_RollingWindow_1_CopyTo.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Count property">
+    <HelpKINode Title="FileBackedDictionary(TKey, TValue).Count Property " Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_Count.htm" />
+    <HelpKINode Title="FileBackedHashSet(T).Count Property " Url="html/P_Gemstone_IO_Collections_FileBackedHashSet_1_Count.htm" />
+    <HelpKINode Title="RollingWindow(T).Count Property " Url="html/P_Gemstone_IO_Collections_RollingWindow_1_Count.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Crc16 class">
+    <HelpKINode Title="Crc16 Class" Url="html/T_Gemstone_IO_Checksums_Crc16.htm" />
+    <HelpKINode Title="constructor" Url="html/Overload_Gemstone_IO_Checksums_Crc16__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Gemstone_IO_Checksums_Crc16.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_Checksums_Crc16.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Crc16 enumeration member" Url="html/T_Gemstone_IO_Checksums_ChecksumType.htm" />
+  <HelpKINode Title="Crc16.Crc16 constructor" Url="html/Overload_Gemstone_IO_Checksums_Crc16__ctor.htm" />
+  <HelpKINode Title="Crc16.Reset method" Url="html/Overload_Gemstone_IO_Checksums_Crc16_Reset.htm" />
+  <HelpKINode Title="Crc16.Update method" Url="html/Overload_Gemstone_IO_Checksums_Crc16_Update.htm" />
+  <HelpKINode Title="Crc16.Value property" Url="html/P_Gemstone_IO_Checksums_Crc16_Value.htm" />
+  <HelpKINode Title="Crc16Checksum method" Url="html/M_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions_Crc16Checksum.htm" />
+  <HelpKINode Title="Crc32 class">
+    <HelpKINode Title="Crc32 Class" Url="html/T_Gemstone_IO_Checksums_Crc32.htm" />
+    <HelpKINode Title="constructor" Url="html/M_Gemstone_IO_Checksums_Crc32__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Gemstone_IO_Checksums_Crc32.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_Checksums_Crc32.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Crc32.Compute method" Url="html/M_Gemstone_IO_Checksums_Crc32_Compute.htm" />
+  <HelpKINode Title="Crc32.Crc32 constructor" Url="html/M_Gemstone_IO_Checksums_Crc32__ctor.htm" />
+  <HelpKINode Title="Crc32.Reset method" Url="html/M_Gemstone_IO_Checksums_Crc32_Reset.htm" />
+  <HelpKINode Title="Crc32.Update method" Url="html/Overload_Gemstone_IO_Checksums_Crc32_Update.htm" />
+  <HelpKINode Title="Crc32.Value property" Url="html/P_Gemstone_IO_Checksums_Crc32_Value.htm" />
+  <HelpKINode Title="Crc32Checksum method" Url="html/M_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions_Crc32Checksum.htm" />
+  <HelpKINode Title="CrcCCITT class">
+    <HelpKINode Title="CrcCCITT Class" Url="html/T_Gemstone_IO_Checksums_CrcCCITT.htm" />
+    <HelpKINode Title="constructor" Url="html/M_Gemstone_IO_Checksums_CrcCCITT__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Gemstone_IO_Checksums_CrcCCITT.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_Checksums_CrcCCITT.htm" />
+  </HelpKINode>
+  <HelpKINode Title="CrcCCITT.CrcCCITT constructor" Url="html/M_Gemstone_IO_Checksums_CrcCCITT__ctor.htm" />
+  <HelpKINode Title="CrcCCITT.Reset method" Url="html/M_Gemstone_IO_Checksums_CrcCCITT_Reset.htm" />
+  <HelpKINode Title="CrcCCITT.Update method" Url="html/Overload_Gemstone_IO_Checksums_CrcCCITT_Update.htm" />
+  <HelpKINode Title="CrcCCITT.Value property" Url="html/P_Gemstone_IO_Checksums_CrcCCITT_Value.htm" />
+  <HelpKINode Title="CrcCCITTChecksum method" Url="html/M_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions_CrcCCITTChecksum.htm" />
+  <HelpKINode Title="Created event" Url="html/E_Gemstone_IO_SafeFileWatcher_Created.htm" />
+  <HelpKINode Title="DefaultBlockSize field" Url="html/F_Gemstone_IO_CachedFileStream_DefaultBlockSize.htm" />
+  <HelpKINode Title="DefaultCacheSize field" Url="html/F_Gemstone_IO_CachedFileStream_DefaultCacheSize.htm" />
+  <HelpKINode Title="DefaultMaximumRetryAttempts field" Url="html/F_Gemstone_IO_InterprocessCache_DefaultMaximumRetryAttempts.htm" />
+  <HelpKINode Title="DefaultRetryDelayInterval field" Url="html/F_Gemstone_IO_InterprocessCache_DefaultRetryDelayInterval.htm" />
+  <HelpKINode Title="DefaultSignature property">
+    <HelpKINode Title="FileBackedDictionary(TKey, TValue).DefaultSignature Property " Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_DefaultSignature.htm" />
+    <HelpKINode Title="FileBackedHashSet(T).DefaultSignature Property " Url="html/P_Gemstone_IO_Collections_FileBackedHashSet_1_DefaultSignature.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Deleted event" Url="html/E_Gemstone_IO_SafeFileWatcher_Deleted.htm" />
+  <HelpKINode Title="Dispose method">
+    <HelpKINode Title="CachedFileStream.Dispose Method " Url="html/Overload_Gemstone_IO_CachedFileStream_Dispose.htm" />
+    <HelpKINode Title="FileBackedDictionary(TKey, TValue).Dispose Method " Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_Dispose.htm" />
+    <HelpKINode Title="FileBackedHashSet(T).Dispose Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Dispose.htm" />
+    <HelpKINode Title="InterprocessCache.Dispose Method " Url="html/Overload_Gemstone_IO_InterprocessCache_Dispose.htm" />
+    <HelpKINode Title="SafeFileWatcher.Dispose Method " Url="html/Overload_Gemstone_IO_SafeFileWatcher_Dispose.htm" />
+  </HelpKINode>
+  <HelpKINode Title="EnableRaisingEvents property" Url="html/P_Gemstone_IO_SafeFileWatcher_EnableRaisingEvents.htm" />
+  <HelpKINode Title="EndInit method" Url="html/M_Gemstone_IO_SafeFileWatcher_EndInit.htm" />
+  <HelpKINode Title="Error event" Url="html/E_Gemstone_IO_SafeFileWatcher_Error.htm" />
+  <HelpKINode Title="ExceptWith method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_ExceptWith.htm" />
+  <HelpKINode Title="FileBackedDictionary(Of TKey, TValue) class">
+    <HelpKINode Title="FileBackedDictionary(TKey, TValue) Class" Url="html/T_Gemstone_IO_Collections_FileBackedDictionary_2.htm" />
+    <HelpKINode Title="constructor" Url="html/Overload_Gemstone_IO_Collections_FileBackedDictionary_2__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Gemstone_IO_Collections_FileBackedDictionary_2.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_Collections_FileBackedDictionary_2.htm" />
+  </HelpKINode>
+  <HelpKINode Title="FileBackedDictionary(Of TKey, TValue).Add method" Url="html/Overload_Gemstone_IO_Collections_FileBackedDictionary_2_Add.htm" />
+  <HelpKINode Title="FileBackedDictionary(Of TKey, TValue).CacheSize property" Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_CacheSize.htm" />
+  <HelpKINode Title="FileBackedDictionary(Of TKey, TValue).Clear method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_Clear.htm" />
+  <HelpKINode Title="FileBackedDictionary(Of TKey, TValue).Close method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_Close.htm" />
+  <HelpKINode Title="FileBackedDictionary(Of TKey, TValue).Compact method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_Compact.htm" />
+  <HelpKINode Title="FileBackedDictionary(Of TKey, TValue).Contains method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_Contains.htm" />
+  <HelpKINode Title="FileBackedDictionary(Of TKey, TValue).ContainsKey method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_ContainsKey.htm" />
+  <HelpKINode Title="FileBackedDictionary(Of TKey, TValue).CopyTo method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_CopyTo.htm" />
+  <HelpKINode Title="FileBackedDictionary(Of TKey, TValue).Count property" Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_Count.htm" />
+  <HelpKINode Title="FileBackedDictionary(Of TKey, TValue).DefaultSignature property" Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_DefaultSignature.htm" />
+  <HelpKINode Title="FileBackedDictionary(Of TKey, TValue).Dispose method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_Dispose.htm" />
+  <HelpKINode Title="FileBackedDictionary(Of TKey, TValue).FileBackedDictionary constructor" Url="html/Overload_Gemstone_IO_Collections_FileBackedDictionary_2__ctor.htm" />
+  <HelpKINode Title="FileBackedDictionary(Of TKey, TValue).FilePath property" Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_FilePath.htm" />
+  <HelpKINode Title="FileBackedDictionary(Of TKey, TValue).FragmentationCount property" Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_FragmentationCount.htm" />
+  <HelpKINode Title="FileBackedDictionary(Of TKey, TValue).GetEnumerator method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_GetEnumerator.htm" />
+  <HelpKINode Title="FileBackedDictionary(Of TKey, TValue).GetKeys method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_GetKeys.htm" />
+  <HelpKINode Title="FileBackedDictionary(Of TKey, TValue).GetValues method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_GetValues.htm" />
+  <HelpKINode Title="FileBackedDictionary(Of TKey, TValue).IsReadOnly property" Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_IsReadOnly.htm" />
+  <HelpKINode Title="FileBackedDictionary(Of TKey, TValue).Item property" Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_Item.htm" />
+  <HelpKINode Title="FileBackedDictionary(Of TKey, TValue).Keys property" Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_Keys.htm" />
+  <HelpKINode Title="FileBackedDictionary(Of TKey, TValue).Open method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_Open.htm" />
+  <HelpKINode Title="FileBackedDictionary(Of TKey, TValue).OpenRead method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_OpenRead.htm" />
+  <HelpKINode Title="FileBackedDictionary(Of TKey, TValue).Remove method" Url="html/Overload_Gemstone_IO_Collections_FileBackedDictionary_2_Remove.htm" />
+  <HelpKINode Title="FileBackedDictionary(Of TKey, TValue).Signature property" Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_Signature.htm" />
+  <HelpKINode Title="FileBackedDictionary(Of TKey, TValue).TryGetValue method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_TryGetValue.htm" />
+  <HelpKINode Title="FileBackedDictionary(Of TKey, TValue).Values property" Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_Values.htm" />
+  <HelpKINode Title="FileBackedDictionary&lt;TKey, TValue&gt; class">
+    <HelpKINode Title="FileBackedDictionary(TKey, TValue) Class" Url="html/T_Gemstone_IO_Collections_FileBackedDictionary_2.htm" />
+    <HelpKINode Title="constructor" Url="html/Overload_Gemstone_IO_Collections_FileBackedDictionary_2__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Gemstone_IO_Collections_FileBackedDictionary_2.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_Collections_FileBackedDictionary_2.htm" />
+  </HelpKINode>
+  <HelpKINode Title="FileBackedDictionary&lt;TKey, TValue&gt;.Add method" Url="html/Overload_Gemstone_IO_Collections_FileBackedDictionary_2_Add.htm" />
+  <HelpKINode Title="FileBackedDictionary&lt;TKey, TValue&gt;.CacheSize property" Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_CacheSize.htm" />
+  <HelpKINode Title="FileBackedDictionary&lt;TKey, TValue&gt;.Clear method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_Clear.htm" />
+  <HelpKINode Title="FileBackedDictionary&lt;TKey, TValue&gt;.Close method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_Close.htm" />
+  <HelpKINode Title="FileBackedDictionary&lt;TKey, TValue&gt;.Compact method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_Compact.htm" />
+  <HelpKINode Title="FileBackedDictionary&lt;TKey, TValue&gt;.Contains method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_Contains.htm" />
+  <HelpKINode Title="FileBackedDictionary&lt;TKey, TValue&gt;.ContainsKey method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_ContainsKey.htm" />
+  <HelpKINode Title="FileBackedDictionary&lt;TKey, TValue&gt;.CopyTo method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_CopyTo.htm" />
+  <HelpKINode Title="FileBackedDictionary&lt;TKey, TValue&gt;.Count property" Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_Count.htm" />
+  <HelpKINode Title="FileBackedDictionary&lt;TKey, TValue&gt;.DefaultSignature property" Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_DefaultSignature.htm" />
+  <HelpKINode Title="FileBackedDictionary&lt;TKey, TValue&gt;.Dispose method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_Dispose.htm" />
+  <HelpKINode Title="FileBackedDictionary&lt;TKey, TValue&gt;.FileBackedDictionary constructor" Url="html/Overload_Gemstone_IO_Collections_FileBackedDictionary_2__ctor.htm" />
+  <HelpKINode Title="FileBackedDictionary&lt;TKey, TValue&gt;.FilePath property" Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_FilePath.htm" />
+  <HelpKINode Title="FileBackedDictionary&lt;TKey, TValue&gt;.FragmentationCount property" Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_FragmentationCount.htm" />
+  <HelpKINode Title="FileBackedDictionary&lt;TKey, TValue&gt;.GetEnumerator method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_GetEnumerator.htm" />
+  <HelpKINode Title="FileBackedDictionary&lt;TKey, TValue&gt;.GetKeys method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_GetKeys.htm" />
+  <HelpKINode Title="FileBackedDictionary&lt;TKey, TValue&gt;.GetValues method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_GetValues.htm" />
+  <HelpKINode Title="FileBackedDictionary&lt;TKey, TValue&gt;.IsReadOnly property" Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_IsReadOnly.htm" />
+  <HelpKINode Title="FileBackedDictionary&lt;TKey, TValue&gt;.Item property" Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_Item.htm" />
+  <HelpKINode Title="FileBackedDictionary&lt;TKey, TValue&gt;.Keys property" Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_Keys.htm" />
+  <HelpKINode Title="FileBackedDictionary&lt;TKey, TValue&gt;.Open method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_Open.htm" />
+  <HelpKINode Title="FileBackedDictionary&lt;TKey, TValue&gt;.OpenRead method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_OpenRead.htm" />
+  <HelpKINode Title="FileBackedDictionary&lt;TKey, TValue&gt;.Remove method" Url="html/Overload_Gemstone_IO_Collections_FileBackedDictionary_2_Remove.htm" />
+  <HelpKINode Title="FileBackedDictionary&lt;TKey, TValue&gt;.Signature property" Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_Signature.htm" />
+  <HelpKINode Title="FileBackedDictionary&lt;TKey, TValue&gt;.TryGetValue method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_TryGetValue.htm" />
+  <HelpKINode Title="FileBackedDictionary&lt;TKey, TValue&gt;.Values property" Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_Values.htm" />
+  <HelpKINode Title="FileBackedHashSet(Of T) class">
+    <HelpKINode Title="FileBackedHashSet(T) Class" Url="html/T_Gemstone_IO_Collections_FileBackedHashSet_1.htm" />
+    <HelpKINode Title="constructor" Url="html/Overload_Gemstone_IO_Collections_FileBackedHashSet_1__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Gemstone_IO_Collections_FileBackedHashSet_1.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_Collections_FileBackedHashSet_1.htm" />
+  </HelpKINode>
+  <HelpKINode Title="FileBackedHashSet(Of T).Add method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Add.htm" />
+  <HelpKINode Title="FileBackedHashSet(Of T).CacheSize property" Url="html/P_Gemstone_IO_Collections_FileBackedHashSet_1_CacheSize.htm" />
+  <HelpKINode Title="FileBackedHashSet(Of T).Clear method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Clear.htm" />
+  <HelpKINode Title="FileBackedHashSet(Of T).Close method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Close.htm" />
+  <HelpKINode Title="FileBackedHashSet(Of T).Compact method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Compact.htm" />
+  <HelpKINode Title="FileBackedHashSet(Of T).Contains method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Contains.htm" />
+  <HelpKINode Title="FileBackedHashSet(Of T).CopyTo method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_CopyTo.htm" />
+  <HelpKINode Title="FileBackedHashSet(Of T).Count property" Url="html/P_Gemstone_IO_Collections_FileBackedHashSet_1_Count.htm" />
+  <HelpKINode Title="FileBackedHashSet(Of T).DefaultSignature property" Url="html/P_Gemstone_IO_Collections_FileBackedHashSet_1_DefaultSignature.htm" />
+  <HelpKINode Title="FileBackedHashSet(Of T).Dispose method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Dispose.htm" />
+  <HelpKINode Title="FileBackedHashSet(Of T).ExceptWith method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_ExceptWith.htm" />
+  <HelpKINode Title="FileBackedHashSet(Of T).FileBackedHashSet constructor" Url="html/Overload_Gemstone_IO_Collections_FileBackedHashSet_1__ctor.htm" />
+  <HelpKINode Title="FileBackedHashSet(Of T).FilePath property" Url="html/P_Gemstone_IO_Collections_FileBackedHashSet_1_FilePath.htm" />
+  <HelpKINode Title="FileBackedHashSet(Of T).FragmentationCount property" Url="html/P_Gemstone_IO_Collections_FileBackedHashSet_1_FragmentationCount.htm" />
+  <HelpKINode Title="FileBackedHashSet(Of T).GetEnumerator method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_GetEnumerator.htm" />
+  <HelpKINode Title="FileBackedHashSet(Of T).IntersectWith method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_IntersectWith.htm" />
+  <HelpKINode Title="FileBackedHashSet(Of T).IsProperSubsetOf method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_IsProperSubsetOf.htm" />
+  <HelpKINode Title="FileBackedHashSet(Of T).IsProperSupersetOf method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_IsProperSupersetOf.htm" />
+  <HelpKINode Title="FileBackedHashSet(Of T).IsReadOnly property" Url="html/P_Gemstone_IO_Collections_FileBackedHashSet_1_IsReadOnly.htm" />
+  <HelpKINode Title="FileBackedHashSet(Of T).IsSubsetOf method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_IsSubsetOf.htm" />
+  <HelpKINode Title="FileBackedHashSet(Of T).IsSupersetOf method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_IsSupersetOf.htm" />
+  <HelpKINode Title="FileBackedHashSet(Of T).Open method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Open.htm" />
+  <HelpKINode Title="FileBackedHashSet(Of T).OpenRead method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_OpenRead.htm" />
+  <HelpKINode Title="FileBackedHashSet(Of T).Overlaps method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Overlaps.htm" />
+  <HelpKINode Title="FileBackedHashSet(Of T).Remove method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Remove.htm" />
+  <HelpKINode Title="FileBackedHashSet(Of T).RemoveWhere method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_RemoveWhere.htm" />
+  <HelpKINode Title="FileBackedHashSet(Of T).SetEquals method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_SetEquals.htm" />
+  <HelpKINode Title="FileBackedHashSet(Of T).Signature property" Url="html/P_Gemstone_IO_Collections_FileBackedHashSet_1_Signature.htm" />
+  <HelpKINode Title="FileBackedHashSet(Of T).SymmetricExceptWith method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_SymmetricExceptWith.htm" />
+  <HelpKINode Title="FileBackedHashSet(Of T).UnionWith method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_UnionWith.htm" />
+  <HelpKINode Title="FileBackedHashSet&lt;T&gt; class">
+    <HelpKINode Title="FileBackedHashSet(T) Class" Url="html/T_Gemstone_IO_Collections_FileBackedHashSet_1.htm" />
+    <HelpKINode Title="constructor" Url="html/Overload_Gemstone_IO_Collections_FileBackedHashSet_1__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Gemstone_IO_Collections_FileBackedHashSet_1.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_Collections_FileBackedHashSet_1.htm" />
+  </HelpKINode>
+  <HelpKINode Title="FileBackedHashSet&lt;T&gt;.Add method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Add.htm" />
+  <HelpKINode Title="FileBackedHashSet&lt;T&gt;.CacheSize property" Url="html/P_Gemstone_IO_Collections_FileBackedHashSet_1_CacheSize.htm" />
+  <HelpKINode Title="FileBackedHashSet&lt;T&gt;.Clear method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Clear.htm" />
+  <HelpKINode Title="FileBackedHashSet&lt;T&gt;.Close method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Close.htm" />
+  <HelpKINode Title="FileBackedHashSet&lt;T&gt;.Compact method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Compact.htm" />
+  <HelpKINode Title="FileBackedHashSet&lt;T&gt;.Contains method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Contains.htm" />
+  <HelpKINode Title="FileBackedHashSet&lt;T&gt;.CopyTo method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_CopyTo.htm" />
+  <HelpKINode Title="FileBackedHashSet&lt;T&gt;.Count property" Url="html/P_Gemstone_IO_Collections_FileBackedHashSet_1_Count.htm" />
+  <HelpKINode Title="FileBackedHashSet&lt;T&gt;.DefaultSignature property" Url="html/P_Gemstone_IO_Collections_FileBackedHashSet_1_DefaultSignature.htm" />
+  <HelpKINode Title="FileBackedHashSet&lt;T&gt;.Dispose method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Dispose.htm" />
+  <HelpKINode Title="FileBackedHashSet&lt;T&gt;.ExceptWith method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_ExceptWith.htm" />
+  <HelpKINode Title="FileBackedHashSet&lt;T&gt;.FileBackedHashSet constructor" Url="html/Overload_Gemstone_IO_Collections_FileBackedHashSet_1__ctor.htm" />
+  <HelpKINode Title="FileBackedHashSet&lt;T&gt;.FilePath property" Url="html/P_Gemstone_IO_Collections_FileBackedHashSet_1_FilePath.htm" />
+  <HelpKINode Title="FileBackedHashSet&lt;T&gt;.FragmentationCount property" Url="html/P_Gemstone_IO_Collections_FileBackedHashSet_1_FragmentationCount.htm" />
+  <HelpKINode Title="FileBackedHashSet&lt;T&gt;.GetEnumerator method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_GetEnumerator.htm" />
+  <HelpKINode Title="FileBackedHashSet&lt;T&gt;.IntersectWith method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_IntersectWith.htm" />
+  <HelpKINode Title="FileBackedHashSet&lt;T&gt;.IsProperSubsetOf method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_IsProperSubsetOf.htm" />
+  <HelpKINode Title="FileBackedHashSet&lt;T&gt;.IsProperSupersetOf method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_IsProperSupersetOf.htm" />
+  <HelpKINode Title="FileBackedHashSet&lt;T&gt;.IsReadOnly property" Url="html/P_Gemstone_IO_Collections_FileBackedHashSet_1_IsReadOnly.htm" />
+  <HelpKINode Title="FileBackedHashSet&lt;T&gt;.IsSubsetOf method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_IsSubsetOf.htm" />
+  <HelpKINode Title="FileBackedHashSet&lt;T&gt;.IsSupersetOf method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_IsSupersetOf.htm" />
+  <HelpKINode Title="FileBackedHashSet&lt;T&gt;.Open method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Open.htm" />
+  <HelpKINode Title="FileBackedHashSet&lt;T&gt;.OpenRead method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_OpenRead.htm" />
+  <HelpKINode Title="FileBackedHashSet&lt;T&gt;.Overlaps method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Overlaps.htm" />
+  <HelpKINode Title="FileBackedHashSet&lt;T&gt;.Remove method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Remove.htm" />
+  <HelpKINode Title="FileBackedHashSet&lt;T&gt;.RemoveWhere method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_RemoveWhere.htm" />
+  <HelpKINode Title="FileBackedHashSet&lt;T&gt;.SetEquals method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_SetEquals.htm" />
+  <HelpKINode Title="FileBackedHashSet&lt;T&gt;.Signature property" Url="html/P_Gemstone_IO_Collections_FileBackedHashSet_1_Signature.htm" />
+  <HelpKINode Title="FileBackedHashSet&lt;T&gt;.SymmetricExceptWith method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_SymmetricExceptWith.htm" />
+  <HelpKINode Title="FileBackedHashSet&lt;T&gt;.UnionWith method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_UnionWith.htm" />
+  <HelpKINode Title="FileData property" Url="html/P_Gemstone_IO_InterprocessCache_FileData.htm" />
+  <HelpKINode Title="FileName property" Url="html/P_Gemstone_IO_InterprocessCache_FileName.htm" />
+  <HelpKINode Title="FilePath property">
+    <HelpKINode Title="FileBackedDictionary(TKey, TValue).FilePath Property " Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_FilePath.htm" />
+    <HelpKINode Title="FileBackedHashSet(T).FilePath Property " Url="html/P_Gemstone_IO_Collections_FileBackedHashSet_1_FilePath.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Filter property" Url="html/P_Gemstone_IO_SafeFileWatcher_Filter.htm" />
+  <HelpKINode Title="Finalize method">
+    <HelpKINode Title="InterprocessCache.Finalize Method " Url="html/M_Gemstone_IO_InterprocessCache_Finalize.htm" />
+    <HelpKINode Title="SafeFileWatcher.Finalize Method " Url="html/M_Gemstone_IO_SafeFileWatcher_Finalize.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Flush method" Url="html/Overload_Gemstone_IO_CachedFileStream_Flush.htm" />
+  <HelpKINode Title="FragmentationCount property">
+    <HelpKINode Title="FileBackedDictionary(TKey, TValue).FragmentationCount Property " Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_FragmentationCount.htm" />
+    <HelpKINode Title="FileBackedHashSet(T).FragmentationCount Property " Url="html/P_Gemstone_IO_Collections_FileBackedHashSet_1_FragmentationCount.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Gemstone.IO namespace" Url="html/N_Gemstone_IO.htm" />
+  <HelpKINode Title="Gemstone.IO.CachedFileStream class" Url="html/T_Gemstone_IO_CachedFileStream.htm" />
+  <HelpKINode Title="Gemstone.IO.Checksums namespace" Url="html/N_Gemstone_IO_Checksums.htm" />
+  <HelpKINode Title="Gemstone.IO.Checksums.Adler32 class" Url="html/T_Gemstone_IO_Checksums_Adler32.htm" />
+  <HelpKINode Title="Gemstone.IO.Checksums.ChecksumExtensions namespace" Url="html/N_Gemstone_IO_Checksums_ChecksumExtensions.htm" />
+  <HelpKINode Title="Gemstone.IO.Checksums.ChecksumExtensions.ChecksumExtensions class" Url="html/T_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions.htm" />
+  <HelpKINode Title="Gemstone.IO.Checksums.ChecksumType enumeration" Url="html/T_Gemstone_IO_Checksums_ChecksumType.htm" />
+  <HelpKINode Title="Gemstone.IO.Checksums.Crc16 class" Url="html/T_Gemstone_IO_Checksums_Crc16.htm" />
+  <HelpKINode Title="Gemstone.IO.Checksums.Crc32 class" Url="html/T_Gemstone_IO_Checksums_Crc32.htm" />
+  <HelpKINode Title="Gemstone.IO.Checksums.CrcCCITT class" Url="html/T_Gemstone_IO_Checksums_CrcCCITT.htm" />
+  <HelpKINode Title="Gemstone.IO.Checksums.Xor16 class" Url="html/T_Gemstone_IO_Checksums_Xor16.htm" />
+  <HelpKINode Title="Gemstone.IO.Checksums.Xor32 class" Url="html/T_Gemstone_IO_Checksums_Xor32.htm" />
+  <HelpKINode Title="Gemstone.IO.Checksums.Xor64 class" Url="html/T_Gemstone_IO_Checksums_Xor64.htm" />
+  <HelpKINode Title="Gemstone.IO.Checksums.Xor8 class" Url="html/T_Gemstone_IO_Checksums_Xor8.htm" />
+  <HelpKINode Title="Gemstone.IO.Collections namespace" Url="html/N_Gemstone_IO_Collections.htm" />
+  <HelpKINode Title="Gemstone.IO.Collections.FileBackedDictionary(Of TKey, TValue) class" Url="html/T_Gemstone_IO_Collections_FileBackedDictionary_2.htm" />
+  <HelpKINode Title="Gemstone.IO.Collections.FileBackedDictionary&lt;TKey, TValue&gt; class" Url="html/T_Gemstone_IO_Collections_FileBackedDictionary_2.htm" />
+  <HelpKINode Title="Gemstone.IO.Collections.FileBackedHashSet(Of T) class" Url="html/T_Gemstone_IO_Collections_FileBackedHashSet_1.htm" />
+  <HelpKINode Title="Gemstone.IO.Collections.FileBackedHashSet&lt;T&gt; class" Url="html/T_Gemstone_IO_Collections_FileBackedHashSet_1.htm" />
+  <HelpKINode Title="Gemstone.IO.Collections.RollingWindow(Of T) class" Url="html/T_Gemstone_IO_Collections_RollingWindow_1.htm" />
+  <HelpKINode Title="Gemstone.IO.Collections.RollingWindow&lt;T&gt; class" Url="html/T_Gemstone_IO_Collections_RollingWindow_1.htm" />
+  <HelpKINode Title="Gemstone.IO.InterprocessCache class" Url="html/T_Gemstone_IO_InterprocessCache.htm" />
+  <HelpKINode Title="Gemstone.IO.SafeFileWatcher class" Url="html/T_Gemstone_IO_SafeFileWatcher.htm" />
+  <HelpKINode Title="GetEnumerator method">
+    <HelpKINode Title="FileBackedDictionary(TKey, TValue).GetEnumerator Method " Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_GetEnumerator.htm" />
+    <HelpKINode Title="FileBackedHashSet(T).GetEnumerator Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_GetEnumerator.htm" />
+    <HelpKINode Title="RollingWindow(T).GetEnumerator Method " Url="html/M_Gemstone_IO_Collections_RollingWindow_1_GetEnumerator.htm" />
+  </HelpKINode>
+  <HelpKINode Title="GetKeys method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_GetKeys.htm" />
+  <HelpKINode Title="GetValues method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_GetValues.htm" />
+  <HelpKINode Title="IncludeSubdirectories property" Url="html/P_Gemstone_IO_SafeFileWatcher_IncludeSubdirectories.htm" />
+  <HelpKINode Title="IndexOf method" Url="html/M_Gemstone_IO_Collections_RollingWindow_1_IndexOf.htm" />
+  <HelpKINode Title="Insert method" Url="html/M_Gemstone_IO_Collections_RollingWindow_1_Insert.htm" />
+  <HelpKINode Title="InternalBufferSize property" Url="html/P_Gemstone_IO_SafeFileWatcher_InternalBufferSize.htm" />
+  <HelpKINode Title="InterprocessCache class">
+    <HelpKINode Title="InterprocessCache Class" Url="html/T_Gemstone_IO_InterprocessCache.htm" />
+    <HelpKINode Title="constructor" Url="html/Overload_Gemstone_IO_InterprocessCache__ctor.htm" />
+    <HelpKINode Title="fields" Url="html/Fields_T_Gemstone_IO_InterprocessCache.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Gemstone_IO_InterprocessCache.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_InterprocessCache.htm" />
+  </HelpKINode>
+  <HelpKINode Title="InterprocessCache.AutoSave property" Url="html/P_Gemstone_IO_InterprocessCache_AutoSave.htm" />
+  <HelpKINode Title="InterprocessCache.DefaultMaximumRetryAttempts field" Url="html/F_Gemstone_IO_InterprocessCache_DefaultMaximumRetryAttempts.htm" />
+  <HelpKINode Title="InterprocessCache.DefaultRetryDelayInterval field" Url="html/F_Gemstone_IO_InterprocessCache_DefaultRetryDelayInterval.htm" />
+  <HelpKINode Title="InterprocessCache.Dispose method" Url="html/Overload_Gemstone_IO_InterprocessCache_Dispose.htm" />
+  <HelpKINode Title="InterprocessCache.FileData property" Url="html/P_Gemstone_IO_InterprocessCache_FileData.htm" />
+  <HelpKINode Title="InterprocessCache.FileName property" Url="html/P_Gemstone_IO_InterprocessCache_FileName.htm" />
+  <HelpKINode Title="InterprocessCache.Finalize method" Url="html/M_Gemstone_IO_InterprocessCache_Finalize.htm" />
+  <HelpKINode Title="InterprocessCache.InterprocessCache constructor" Url="html/Overload_Gemstone_IO_InterprocessCache__ctor.htm" />
+  <HelpKINode Title="InterprocessCache.Load method" Url="html/M_Gemstone_IO_InterprocessCache_Load.htm" />
+  <HelpKINode Title="InterprocessCache.LoadFileData method" Url="html/M_Gemstone_IO_InterprocessCache_LoadFileData.htm" />
+  <HelpKINode Title="InterprocessCache.MaximumConcurrentLocks property" Url="html/P_Gemstone_IO_InterprocessCache_MaximumConcurrentLocks.htm" />
+  <HelpKINode Title="InterprocessCache.MaximumRetryAttempts property" Url="html/P_Gemstone_IO_InterprocessCache_MaximumRetryAttempts.htm" />
+  <HelpKINode Title="InterprocessCache.ReloadOnChange property" Url="html/P_Gemstone_IO_InterprocessCache_ReloadOnChange.htm" />
+  <HelpKINode Title="InterprocessCache.RetryDelayInterval property" Url="html/P_Gemstone_IO_InterprocessCache_RetryDelayInterval.htm" />
+  <HelpKINode Title="InterprocessCache.Save method" Url="html/M_Gemstone_IO_InterprocessCache_Save.htm" />
+  <HelpKINode Title="InterprocessCache.SaveFileData method" Url="html/M_Gemstone_IO_InterprocessCache_SaveFileData.htm" />
+  <HelpKINode Title="InterprocessCache.WaitForLoad method" Url="html/Overload_Gemstone_IO_InterprocessCache_WaitForLoad.htm" />
+  <HelpKINode Title="InterprocessCache.WaitForSave method" Url="html/Overload_Gemstone_IO_InterprocessCache_WaitForSave.htm" />
+  <HelpKINode Title="IntersectWith method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_IntersectWith.htm" />
+  <HelpKINode Title="IsProperSubsetOf method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_IsProperSubsetOf.htm" />
+  <HelpKINode Title="IsProperSupersetOf method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_IsProperSupersetOf.htm" />
+  <HelpKINode Title="IsReadOnly property">
+    <HelpKINode Title="FileBackedDictionary(TKey, TValue).IsReadOnly Property " Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_IsReadOnly.htm" />
+    <HelpKINode Title="FileBackedHashSet(T).IsReadOnly Property " Url="html/P_Gemstone_IO_Collections_FileBackedHashSet_1_IsReadOnly.htm" />
+    <HelpKINode Title="RollingWindow(T).IsReadOnly Property " Url="html/P_Gemstone_IO_Collections_RollingWindow_1_IsReadOnly.htm" />
+  </HelpKINode>
+  <HelpKINode Title="IsSubsetOf method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_IsSubsetOf.htm" />
+  <HelpKINode Title="IsSupersetOf method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_IsSupersetOf.htm" />
+  <HelpKINode Title="Item property">
+    <HelpKINode Title="FileBackedDictionary(TKey, TValue).Item Property " Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_Item.htm" />
+    <HelpKINode Title="RollingWindow(T).Item Property " Url="html/P_Gemstone_IO_Collections_RollingWindow_1_Item.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Keys property" Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_Keys.htm" />
+  <HelpKINode Title="Length property" Url="html/P_Gemstone_IO_CachedFileStream_Length.htm" />
+  <HelpKINode Title="Load method" Url="html/M_Gemstone_IO_InterprocessCache_Load.htm" />
+  <HelpKINode Title="LoadFileData method" Url="html/M_Gemstone_IO_InterprocessCache_LoadFileData.htm" />
+  <HelpKINode Title="MaximumConcurrentLocks property" Url="html/P_Gemstone_IO_InterprocessCache_MaximumConcurrentLocks.htm" />
+  <HelpKINode Title="MaximumRetryAttempts property" Url="html/P_Gemstone_IO_InterprocessCache_MaximumRetryAttempts.htm" />
+  <HelpKINode Title="ModBus enumeration member" Url="html/T_Gemstone_IO_Checksums_ChecksumType.htm" />
+  <HelpKINode Title="ModBusCrcChecksum method" Url="html/M_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions_ModBusCrcChecksum.htm" />
+  <HelpKINode Title="NotifyFilter property" Url="html/P_Gemstone_IO_SafeFileWatcher_NotifyFilter.htm" />
+  <HelpKINode Title="Open method">
+    <HelpKINode Title="FileBackedDictionary(TKey, TValue).Open Method " Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_Open.htm" />
+    <HelpKINode Title="FileBackedHashSet(T).Open Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Open.htm" />
+  </HelpKINode>
+  <HelpKINode Title="OpenRead method">
+    <HelpKINode Title="FileBackedDictionary(TKey, TValue).OpenRead Method " Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_OpenRead.htm" />
+    <HelpKINode Title="FileBackedHashSet(T).OpenRead Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_OpenRead.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Overlaps method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Overlaps.htm" />
+  <HelpKINode Title="Path property" Url="html/P_Gemstone_IO_SafeFileWatcher_Path.htm" />
+  <HelpKINode Title="Position property" Url="html/P_Gemstone_IO_CachedFileStream_Position.htm" />
+  <HelpKINode Title="Read method" Url="html/M_Gemstone_IO_CachedFileStream_Read.htm" />
+  <HelpKINode Title="ReloadOnChange property" Url="html/P_Gemstone_IO_InterprocessCache_ReloadOnChange.htm" />
+  <HelpKINode Title="Remove method">
+    <HelpKINode Title="FileBackedDictionary(TKey, TValue).Remove Method " Url="html/Overload_Gemstone_IO_Collections_FileBackedDictionary_2_Remove.htm" />
+    <HelpKINode Title="FileBackedHashSet(T).Remove Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Remove.htm" />
+    <HelpKINode Title="RollingWindow(T).Remove Method " Url="html/M_Gemstone_IO_Collections_RollingWindow_1_Remove.htm" />
+  </HelpKINode>
+  <HelpKINode Title="RemoveAt method" Url="html/M_Gemstone_IO_Collections_RollingWindow_1_RemoveAt.htm" />
+  <HelpKINode Title="RemoveWhere method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_RemoveWhere.htm" />
+  <HelpKINode Title="Renamed event" Url="html/E_Gemstone_IO_SafeFileWatcher_Renamed.htm" />
+  <HelpKINode Title="Reset method">
+    <HelpKINode Title="Adler32.Reset Method " Url="html/M_Gemstone_IO_Checksums_Adler32_Reset.htm" />
+    <HelpKINode Title="Crc16.Reset Method " Url="html/Overload_Gemstone_IO_Checksums_Crc16_Reset.htm" />
+    <HelpKINode Title="Crc32.Reset Method " Url="html/M_Gemstone_IO_Checksums_Crc32_Reset.htm" />
+    <HelpKINode Title="CrcCCITT.Reset Method " Url="html/M_Gemstone_IO_Checksums_CrcCCITT_Reset.htm" />
+    <HelpKINode Title="Xor16.Reset Method " Url="html/M_Gemstone_IO_Checksums_Xor16_Reset.htm" />
+    <HelpKINode Title="Xor32.Reset Method " Url="html/M_Gemstone_IO_Checksums_Xor32_Reset.htm" />
+    <HelpKINode Title="Xor64.Reset Method " Url="html/M_Gemstone_IO_Checksums_Xor64_Reset.htm" />
+    <HelpKINode Title="Xor8.Reset Method " Url="html/M_Gemstone_IO_Checksums_Xor8_Reset.htm" />
+  </HelpKINode>
+  <HelpKINode Title="RetryDelayInterval property" Url="html/P_Gemstone_IO_InterprocessCache_RetryDelayInterval.htm" />
+  <HelpKINode Title="RollingWindow(Of T) class">
+    <HelpKINode Title="RollingWindow(T) Class" Url="html/T_Gemstone_IO_Collections_RollingWindow_1.htm" />
+    <HelpKINode Title="constructor" Url="html/M_Gemstone_IO_Collections_RollingWindow_1__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Gemstone_IO_Collections_RollingWindow_1.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_Collections_RollingWindow_1.htm" />
+  </HelpKINode>
+  <HelpKINode Title="RollingWindow(Of T).Add method" Url="html/M_Gemstone_IO_Collections_RollingWindow_1_Add.htm" />
+  <HelpKINode Title="RollingWindow(Of T).Clear method" Url="html/M_Gemstone_IO_Collections_RollingWindow_1_Clear.htm" />
+  <HelpKINode Title="RollingWindow(Of T).Contains method" Url="html/M_Gemstone_IO_Collections_RollingWindow_1_Contains.htm" />
+  <HelpKINode Title="RollingWindow(Of T).CopyTo method" Url="html/M_Gemstone_IO_Collections_RollingWindow_1_CopyTo.htm" />
+  <HelpKINode Title="RollingWindow(Of T).Count property" Url="html/P_Gemstone_IO_Collections_RollingWindow_1_Count.htm" />
+  <HelpKINode Title="RollingWindow(Of T).GetEnumerator method" Url="html/M_Gemstone_IO_Collections_RollingWindow_1_GetEnumerator.htm" />
+  <HelpKINode Title="RollingWindow(Of T).IndexOf method" Url="html/M_Gemstone_IO_Collections_RollingWindow_1_IndexOf.htm" />
+  <HelpKINode Title="RollingWindow(Of T).Insert method" Url="html/M_Gemstone_IO_Collections_RollingWindow_1_Insert.htm" />
+  <HelpKINode Title="RollingWindow(Of T).IsReadOnly property" Url="html/P_Gemstone_IO_Collections_RollingWindow_1_IsReadOnly.htm" />
+  <HelpKINode Title="RollingWindow(Of T).Item property" Url="html/P_Gemstone_IO_Collections_RollingWindow_1_Item.htm" />
+  <HelpKINode Title="RollingWindow(Of T).Remove method" Url="html/M_Gemstone_IO_Collections_RollingWindow_1_Remove.htm" />
+  <HelpKINode Title="RollingWindow(Of T).RemoveAt method" Url="html/M_Gemstone_IO_Collections_RollingWindow_1_RemoveAt.htm" />
+  <HelpKINode Title="RollingWindow(Of T).RollingWindow constructor" Url="html/M_Gemstone_IO_Collections_RollingWindow_1__ctor.htm" />
+  <HelpKINode Title="RollingWindow(Of T).WindowSize property" Url="html/P_Gemstone_IO_Collections_RollingWindow_1_WindowSize.htm" />
+  <HelpKINode Title="RollingWindow&lt;T&gt; class">
+    <HelpKINode Title="RollingWindow(T) Class" Url="html/T_Gemstone_IO_Collections_RollingWindow_1.htm" />
+    <HelpKINode Title="constructor" Url="html/M_Gemstone_IO_Collections_RollingWindow_1__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Gemstone_IO_Collections_RollingWindow_1.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_Collections_RollingWindow_1.htm" />
+  </HelpKINode>
+  <HelpKINode Title="RollingWindow&lt;T&gt;.Add method" Url="html/M_Gemstone_IO_Collections_RollingWindow_1_Add.htm" />
+  <HelpKINode Title="RollingWindow&lt;T&gt;.Clear method" Url="html/M_Gemstone_IO_Collections_RollingWindow_1_Clear.htm" />
+  <HelpKINode Title="RollingWindow&lt;T&gt;.Contains method" Url="html/M_Gemstone_IO_Collections_RollingWindow_1_Contains.htm" />
+  <HelpKINode Title="RollingWindow&lt;T&gt;.CopyTo method" Url="html/M_Gemstone_IO_Collections_RollingWindow_1_CopyTo.htm" />
+  <HelpKINode Title="RollingWindow&lt;T&gt;.Count property" Url="html/P_Gemstone_IO_Collections_RollingWindow_1_Count.htm" />
+  <HelpKINode Title="RollingWindow&lt;T&gt;.GetEnumerator method" Url="html/M_Gemstone_IO_Collections_RollingWindow_1_GetEnumerator.htm" />
+  <HelpKINode Title="RollingWindow&lt;T&gt;.IndexOf method" Url="html/M_Gemstone_IO_Collections_RollingWindow_1_IndexOf.htm" />
+  <HelpKINode Title="RollingWindow&lt;T&gt;.Insert method" Url="html/M_Gemstone_IO_Collections_RollingWindow_1_Insert.htm" />
+  <HelpKINode Title="RollingWindow&lt;T&gt;.IsReadOnly property" Url="html/P_Gemstone_IO_Collections_RollingWindow_1_IsReadOnly.htm" />
+  <HelpKINode Title="RollingWindow&lt;T&gt;.Item property" Url="html/P_Gemstone_IO_Collections_RollingWindow_1_Item.htm" />
+  <HelpKINode Title="RollingWindow&lt;T&gt;.Remove method" Url="html/M_Gemstone_IO_Collections_RollingWindow_1_Remove.htm" />
+  <HelpKINode Title="RollingWindow&lt;T&gt;.RemoveAt method" Url="html/M_Gemstone_IO_Collections_RollingWindow_1_RemoveAt.htm" />
+  <HelpKINode Title="RollingWindow&lt;T&gt;.RollingWindow constructor" Url="html/M_Gemstone_IO_Collections_RollingWindow_1__ctor.htm" />
+  <HelpKINode Title="RollingWindow&lt;T&gt;.WindowSize property" Url="html/P_Gemstone_IO_Collections_RollingWindow_1_WindowSize.htm" />
+  <HelpKINode Title="SafeFileWatcher class">
+    <HelpKINode Title="SafeFileWatcher Class" Url="html/T_Gemstone_IO_SafeFileWatcher.htm" />
+    <HelpKINode Title="constructor" Url="html/Overload_Gemstone_IO_SafeFileWatcher__ctor.htm" />
+    <HelpKINode Title="events" Url="html/Events_T_Gemstone_IO_SafeFileWatcher.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Gemstone_IO_SafeFileWatcher.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_SafeFileWatcher.htm" />
+  </HelpKINode>
+  <HelpKINode Title="SafeFileWatcher.BeginInit method" Url="html/M_Gemstone_IO_SafeFileWatcher_BeginInit.htm" />
+  <HelpKINode Title="SafeFileWatcher.Changed event" Url="html/E_Gemstone_IO_SafeFileWatcher_Changed.htm" />
+  <HelpKINode Title="SafeFileWatcher.Created event" Url="html/E_Gemstone_IO_SafeFileWatcher_Created.htm" />
+  <HelpKINode Title="SafeFileWatcher.Deleted event" Url="html/E_Gemstone_IO_SafeFileWatcher_Deleted.htm" />
+  <HelpKINode Title="SafeFileWatcher.Dispose method" Url="html/Overload_Gemstone_IO_SafeFileWatcher_Dispose.htm" />
+  <HelpKINode Title="SafeFileWatcher.EnableRaisingEvents property" Url="html/P_Gemstone_IO_SafeFileWatcher_EnableRaisingEvents.htm" />
+  <HelpKINode Title="SafeFileWatcher.EndInit method" Url="html/M_Gemstone_IO_SafeFileWatcher_EndInit.htm" />
+  <HelpKINode Title="SafeFileWatcher.Error event" Url="html/E_Gemstone_IO_SafeFileWatcher_Error.htm" />
+  <HelpKINode Title="SafeFileWatcher.Filter property" Url="html/P_Gemstone_IO_SafeFileWatcher_Filter.htm" />
+  <HelpKINode Title="SafeFileWatcher.Finalize method" Url="html/M_Gemstone_IO_SafeFileWatcher_Finalize.htm" />
+  <HelpKINode Title="SafeFileWatcher.IncludeSubdirectories property" Url="html/P_Gemstone_IO_SafeFileWatcher_IncludeSubdirectories.htm" />
+  <HelpKINode Title="SafeFileWatcher.InternalBufferSize property" Url="html/P_Gemstone_IO_SafeFileWatcher_InternalBufferSize.htm" />
+  <HelpKINode Title="SafeFileWatcher.NotifyFilter property" Url="html/P_Gemstone_IO_SafeFileWatcher_NotifyFilter.htm" />
+  <HelpKINode Title="SafeFileWatcher.Path property" Url="html/P_Gemstone_IO_SafeFileWatcher_Path.htm" />
+  <HelpKINode Title="SafeFileWatcher.Renamed event" Url="html/E_Gemstone_IO_SafeFileWatcher_Renamed.htm" />
+  <HelpKINode Title="SafeFileWatcher.SafeFileWatcher constructor" Url="html/Overload_Gemstone_IO_SafeFileWatcher__ctor.htm" />
+  <HelpKINode Title="SafeFileWatcher.Site property" Url="html/P_Gemstone_IO_SafeFileWatcher_Site.htm" />
+  <HelpKINode Title="SafeFileWatcher.SynchronizingObject property" Url="html/P_Gemstone_IO_SafeFileWatcher_SynchronizingObject.htm" />
+  <HelpKINode Title="SafeFileWatcher.WaitForChanged method" Url="html/Overload_Gemstone_IO_SafeFileWatcher_WaitForChanged.htm" />
+  <HelpKINode Title="Save method" Url="html/M_Gemstone_IO_InterprocessCache_Save.htm" />
+  <HelpKINode Title="SaveFileData method" Url="html/M_Gemstone_IO_InterprocessCache_SaveFileData.htm" />
+  <HelpKINode Title="Seek method" Url="html/M_Gemstone_IO_CachedFileStream_Seek.htm" />
+  <HelpKINode Title="SetEquals method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_SetEquals.htm" />
+  <HelpKINode Title="SetLength method" Url="html/M_Gemstone_IO_CachedFileStream_SetLength.htm" />
+  <HelpKINode Title="Signature property">
+    <HelpKINode Title="FileBackedDictionary(TKey, TValue).Signature Property " Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_Signature.htm" />
+    <HelpKINode Title="FileBackedHashSet(T).Signature Property " Url="html/P_Gemstone_IO_Collections_FileBackedHashSet_1_Signature.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Site property" Url="html/P_Gemstone_IO_SafeFileWatcher_Site.htm" />
+  <HelpKINode Title="SymmetricExceptWith method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_SymmetricExceptWith.htm" />
+  <HelpKINode Title="SynchronizingObject property" Url="html/P_Gemstone_IO_SafeFileWatcher_SynchronizingObject.htm" />
+  <HelpKINode Title="TryGetValue method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_TryGetValue.htm" />
+  <HelpKINode Title="UnionWith method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_UnionWith.htm" />
+  <HelpKINode Title="Update method">
+    <HelpKINode Title="Adler32.Update Method " Url="html/Overload_Gemstone_IO_Checksums_Adler32_Update.htm" />
+    <HelpKINode Title="Crc16.Update Method " Url="html/Overload_Gemstone_IO_Checksums_Crc16_Update.htm" />
+    <HelpKINode Title="Crc32.Update Method " Url="html/Overload_Gemstone_IO_Checksums_Crc32_Update.htm" />
+    <HelpKINode Title="CrcCCITT.Update Method " Url="html/Overload_Gemstone_IO_Checksums_CrcCCITT_Update.htm" />
+    <HelpKINode Title="Xor16.Update Method " Url="html/Overload_Gemstone_IO_Checksums_Xor16_Update.htm" />
+    <HelpKINode Title="Xor32.Update Method " Url="html/Overload_Gemstone_IO_Checksums_Xor32_Update.htm" />
+    <HelpKINode Title="Xor64.Update Method " Url="html/Overload_Gemstone_IO_Checksums_Xor64_Update.htm" />
+    <HelpKINode Title="Xor8.Update Method " Url="html/Overload_Gemstone_IO_Checksums_Xor8_Update.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Value property">
+    <HelpKINode Title="Adler32.Value Property " Url="html/P_Gemstone_IO_Checksums_Adler32_Value.htm" />
+    <HelpKINode Title="Crc16.Value Property " Url="html/P_Gemstone_IO_Checksums_Crc16_Value.htm" />
+    <HelpKINode Title="Crc32.Value Property " Url="html/P_Gemstone_IO_Checksums_Crc32_Value.htm" />
+    <HelpKINode Title="CrcCCITT.Value Property " Url="html/P_Gemstone_IO_Checksums_CrcCCITT_Value.htm" />
+    <HelpKINode Title="Xor16.Value Property " Url="html/P_Gemstone_IO_Checksums_Xor16_Value.htm" />
+    <HelpKINode Title="Xor32.Value Property " Url="html/P_Gemstone_IO_Checksums_Xor32_Value.htm" />
+    <HelpKINode Title="Xor64.Value Property " Url="html/P_Gemstone_IO_Checksums_Xor64_Value.htm" />
+    <HelpKINode Title="Xor8.Value Property " Url="html/P_Gemstone_IO_Checksums_Xor8_Value.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Values property" Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_Values.htm" />
+  <HelpKINode Title="WaitForChanged method" Url="html/Overload_Gemstone_IO_SafeFileWatcher_WaitForChanged.htm" />
+  <HelpKINode Title="WaitForLoad method" Url="html/Overload_Gemstone_IO_InterprocessCache_WaitForLoad.htm" />
+  <HelpKINode Title="WaitForSave method" Url="html/Overload_Gemstone_IO_InterprocessCache_WaitForSave.htm" />
+  <HelpKINode Title="welcome">
+    <HelpKINode Title="getting started, root, gemstone" Url="html/About.htm" />
+  </HelpKINode>
+  <HelpKINode Title="WindowSize property" Url="html/P_Gemstone_IO_Collections_RollingWindow_1_WindowSize.htm" />
+  <HelpKINode Title="Write method" Url="html/M_Gemstone_IO_CachedFileStream_Write.htm" />
+  <HelpKINode Title="Xor16 class">
+    <HelpKINode Title="Xor16 Class" Url="html/T_Gemstone_IO_Checksums_Xor16.htm" />
+    <HelpKINode Title="constructor" Url="html/M_Gemstone_IO_Checksums_Xor16__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Gemstone_IO_Checksums_Xor16.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_Checksums_Xor16.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Xor16.Reset method" Url="html/M_Gemstone_IO_Checksums_Xor16_Reset.htm" />
+  <HelpKINode Title="Xor16.Update method" Url="html/Overload_Gemstone_IO_Checksums_Xor16_Update.htm" />
+  <HelpKINode Title="Xor16.Value property" Url="html/P_Gemstone_IO_Checksums_Xor16_Value.htm" />
+  <HelpKINode Title="Xor16.Xor16 constructor" Url="html/M_Gemstone_IO_Checksums_Xor16__ctor.htm" />
+  <HelpKINode Title="Xor16Checksum method" Url="html/M_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions_Xor16Checksum.htm" />
+  <HelpKINode Title="Xor32 class">
+    <HelpKINode Title="Xor32 Class" Url="html/T_Gemstone_IO_Checksums_Xor32.htm" />
+    <HelpKINode Title="constructor" Url="html/M_Gemstone_IO_Checksums_Xor32__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Gemstone_IO_Checksums_Xor32.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_Checksums_Xor32.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Xor32.Reset method" Url="html/M_Gemstone_IO_Checksums_Xor32_Reset.htm" />
+  <HelpKINode Title="Xor32.Update method" Url="html/Overload_Gemstone_IO_Checksums_Xor32_Update.htm" />
+  <HelpKINode Title="Xor32.Value property" Url="html/P_Gemstone_IO_Checksums_Xor32_Value.htm" />
+  <HelpKINode Title="Xor32.Xor32 constructor" Url="html/M_Gemstone_IO_Checksums_Xor32__ctor.htm" />
+  <HelpKINode Title="Xor32Checksum method" Url="html/M_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions_Xor32Checksum.htm" />
+  <HelpKINode Title="Xor64 class">
+    <HelpKINode Title="Xor64 Class" Url="html/T_Gemstone_IO_Checksums_Xor64.htm" />
+    <HelpKINode Title="constructor" Url="html/M_Gemstone_IO_Checksums_Xor64__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Gemstone_IO_Checksums_Xor64.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_Checksums_Xor64.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Xor64.Reset method" Url="html/M_Gemstone_IO_Checksums_Xor64_Reset.htm" />
+  <HelpKINode Title="Xor64.Update method" Url="html/Overload_Gemstone_IO_Checksums_Xor64_Update.htm" />
+  <HelpKINode Title="Xor64.Value property" Url="html/P_Gemstone_IO_Checksums_Xor64_Value.htm" />
+  <HelpKINode Title="Xor64.Xor64 constructor" Url="html/M_Gemstone_IO_Checksums_Xor64__ctor.htm" />
+  <HelpKINode Title="Xor64Checksum method" Url="html/M_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions_Xor64Checksum.htm" />
+  <HelpKINode Title="Xor8 class">
+    <HelpKINode Title="Xor8 Class" Url="html/T_Gemstone_IO_Checksums_Xor8.htm" />
+    <HelpKINode Title="constructor" Url="html/M_Gemstone_IO_Checksums_Xor8__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Gemstone_IO_Checksums_Xor8.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_Checksums_Xor8.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Xor8.Reset method" Url="html/M_Gemstone_IO_Checksums_Xor8_Reset.htm" />
+  <HelpKINode Title="Xor8.Update method" Url="html/Overload_Gemstone_IO_Checksums_Xor8_Update.htm" />
+  <HelpKINode Title="Xor8.Value property" Url="html/P_Gemstone_IO_Checksums_Xor8_Value.htm" />
+  <HelpKINode Title="Xor8.Xor8 constructor" Url="html/M_Gemstone_IO_Checksums_Xor8__ctor.htm" />
+  <HelpKINode Title="Xor8Checksum method" Url="html/M_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions_Xor8Checksum.htm" />
+</HelpKI>

@@ -1,0 +1,369 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<HelpTOC>
+
+  <HelpTOCNode Title="About" Url="html/About.htm" />
+  <HelpTOCNode Id="e72d7308-4ec9-436c-aa62-d3fdcf4ef872" Title="Gemstone.IO" Url="html/N_Gemstone_IO.htm">
+    <HelpTOCNode Id="57198770-e770-49bc-9ea9-0482ac4ae26e" Title="CachedFileStream Class" Url="html/T_Gemstone_IO_CachedFileStream.htm">
+      <HelpTOCNode Id="b8d18f44-05e3-4889-8535-6c2c430c7ccc" Title="CachedFileStream Constructor " Url="html/Overload_Gemstone_IO_CachedFileStream__ctor.htm">
+        <HelpTOCNode Title="CachedFileStream Constructor (String, FileMode)" Url="html/M_Gemstone_IO_CachedFileStream__ctor.htm" />
+        <HelpTOCNode Title="CachedFileStream Constructor (String, FileMode, FileAccess)" Url="html/M_Gemstone_IO_CachedFileStream__ctor_1.htm" />
+        <HelpTOCNode Title="CachedFileStream Constructor (String, FileMode, FileAccess, FileShare)" Url="html/M_Gemstone_IO_CachedFileStream__ctor_2.htm" />
+        <HelpTOCNode Title="CachedFileStream Constructor (String, FileMode, FileAccess, FileShare, Int32)" Url="html/M_Gemstone_IO_CachedFileStream__ctor_3.htm" />
+        <HelpTOCNode Title="CachedFileStream Constructor (String, FileMode, FileAccess, FileShare, Int32, Boolean)" Url="html/M_Gemstone_IO_CachedFileStream__ctor_4.htm" />
+        <HelpTOCNode Title="CachedFileStream Constructor (String, FileMode, FileAccess, FileShare, Int32, FileOptions)" Url="html/M_Gemstone_IO_CachedFileStream__ctor_5.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Id="703c8505-a3ef-4cf4-a308-5efb9c448cf4" Title="CachedFileStream Properties" Url="html/Properties_T_Gemstone_IO_CachedFileStream.htm">
+        <HelpTOCNode Title="BlockSize Property " Url="html/P_Gemstone_IO_CachedFileStream_BlockSize.htm" />
+        <HelpTOCNode Title="CacheSize Property " Url="html/P_Gemstone_IO_CachedFileStream_CacheSize.htm" />
+        <HelpTOCNode Title="CanRead Property " Url="html/P_Gemstone_IO_CachedFileStream_CanRead.htm" />
+        <HelpTOCNode Title="CanSeek Property " Url="html/P_Gemstone_IO_CachedFileStream_CanSeek.htm" />
+        <HelpTOCNode Title="CanWrite Property " Url="html/P_Gemstone_IO_CachedFileStream_CanWrite.htm" />
+        <HelpTOCNode Title="Length Property " Url="html/P_Gemstone_IO_CachedFileStream_Length.htm" />
+        <HelpTOCNode Title="Position Property " Url="html/P_Gemstone_IO_CachedFileStream_Position.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Id="0a0107ef-b635-416f-bf0d-48d1c6e996e2" Title="CachedFileStream Methods" Url="html/Methods_T_Gemstone_IO_CachedFileStream.htm">
+        <HelpTOCNode Id="471b507e-2bd3-453f-b4fc-41fa7b46c962" Title="Dispose Method " Url="html/Overload_Gemstone_IO_CachedFileStream_Dispose.htm">
+          <HelpTOCNode Title="Dispose Method (Boolean)" Url="html/M_Gemstone_IO_CachedFileStream_Dispose.htm" />
+        </HelpTOCNode>
+        <HelpTOCNode Id="e4378f47-e212-48cd-aa04-113edcee2e9f" Title="Flush Method " Url="html/Overload_Gemstone_IO_CachedFileStream_Flush.htm">
+          <HelpTOCNode Title="Flush Method " Url="html/M_Gemstone_IO_CachedFileStream_Flush.htm" />
+          <HelpTOCNode Title="Flush Method (Boolean)" Url="html/M_Gemstone_IO_CachedFileStream_Flush_1.htm" />
+        </HelpTOCNode>
+        <HelpTOCNode Title="Read Method " Url="html/M_Gemstone_IO_CachedFileStream_Read.htm" />
+        <HelpTOCNode Title="Seek Method " Url="html/M_Gemstone_IO_CachedFileStream_Seek.htm" />
+        <HelpTOCNode Title="SetLength Method " Url="html/M_Gemstone_IO_CachedFileStream_SetLength.htm" />
+        <HelpTOCNode Title="Write Method " Url="html/M_Gemstone_IO_CachedFileStream_Write.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Id="c476b9c7-3cc6-46bf-a8b5-37f14c4081a9" Title="CachedFileStream Fields" Url="html/Fields_T_Gemstone_IO_CachedFileStream.htm">
+        <HelpTOCNode Title="DefaultBlockSize Field" Url="html/F_Gemstone_IO_CachedFileStream_DefaultBlockSize.htm" />
+        <HelpTOCNode Title="DefaultCacheSize Field" Url="html/F_Gemstone_IO_CachedFileStream_DefaultCacheSize.htm" />
+      </HelpTOCNode>
+    </HelpTOCNode>
+    <HelpTOCNode Id="8c3282e8-c114-4b9d-8016-e375d12b37af" Title="InterprocessCache Class" Url="html/T_Gemstone_IO_InterprocessCache.htm">
+      <HelpTOCNode Id="f50b47d0-95c6-4988-ac03-8d57a6220412" Title="InterprocessCache Constructor " Url="html/Overload_Gemstone_IO_InterprocessCache__ctor.htm">
+        <HelpTOCNode Title="InterprocessCache Constructor " Url="html/M_Gemstone_IO_InterprocessCache__ctor.htm" />
+        <HelpTOCNode Title="InterprocessCache Constructor (Int32)" Url="html/M_Gemstone_IO_InterprocessCache__ctor_1.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Id="753c7d94-b56a-44de-975e-1a0e5671fc09" Title="InterprocessCache Properties" Url="html/Properties_T_Gemstone_IO_InterprocessCache.htm">
+        <HelpTOCNode Title="AutoSave Property " Url="html/P_Gemstone_IO_InterprocessCache_AutoSave.htm" />
+        <HelpTOCNode Title="FileData Property " Url="html/P_Gemstone_IO_InterprocessCache_FileData.htm" />
+        <HelpTOCNode Title="FileName Property " Url="html/P_Gemstone_IO_InterprocessCache_FileName.htm" />
+        <HelpTOCNode Title="MaximumConcurrentLocks Property " Url="html/P_Gemstone_IO_InterprocessCache_MaximumConcurrentLocks.htm" />
+        <HelpTOCNode Title="MaximumRetryAttempts Property " Url="html/P_Gemstone_IO_InterprocessCache_MaximumRetryAttempts.htm" />
+        <HelpTOCNode Title="ReloadOnChange Property " Url="html/P_Gemstone_IO_InterprocessCache_ReloadOnChange.htm" />
+        <HelpTOCNode Title="RetryDelayInterval Property " Url="html/P_Gemstone_IO_InterprocessCache_RetryDelayInterval.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Id="adbf1884-a5d8-4835-ba94-82885fede1ad" Title="InterprocessCache Methods" Url="html/Methods_T_Gemstone_IO_InterprocessCache.htm">
+        <HelpTOCNode Id="45acad48-cf20-4ac4-a1cf-035f363dc77b" Title="Dispose Method " Url="html/Overload_Gemstone_IO_InterprocessCache_Dispose.htm">
+          <HelpTOCNode Title="Dispose Method " Url="html/M_Gemstone_IO_InterprocessCache_Dispose.htm" />
+          <HelpTOCNode Title="Dispose Method (Boolean)" Url="html/M_Gemstone_IO_InterprocessCache_Dispose_1.htm" />
+        </HelpTOCNode>
+        <HelpTOCNode Title="Finalize Method " Url="html/M_Gemstone_IO_InterprocessCache_Finalize.htm" />
+        <HelpTOCNode Title="Load Method " Url="html/M_Gemstone_IO_InterprocessCache_Load.htm" />
+        <HelpTOCNode Title="LoadFileData Method " Url="html/M_Gemstone_IO_InterprocessCache_LoadFileData.htm" />
+        <HelpTOCNode Title="Save Method " Url="html/M_Gemstone_IO_InterprocessCache_Save.htm" />
+        <HelpTOCNode Title="SaveFileData Method " Url="html/M_Gemstone_IO_InterprocessCache_SaveFileData.htm" />
+        <HelpTOCNode Id="91f69228-bfc5-43d9-8547-3190836bd71e" Title="WaitForLoad Method " Url="html/Overload_Gemstone_IO_InterprocessCache_WaitForLoad.htm">
+          <HelpTOCNode Title="WaitForLoad Method " Url="html/M_Gemstone_IO_InterprocessCache_WaitForLoad.htm" />
+          <HelpTOCNode Title="WaitForLoad Method (Int32)" Url="html/M_Gemstone_IO_InterprocessCache_WaitForLoad_1.htm" />
+        </HelpTOCNode>
+        <HelpTOCNode Id="258e4eab-a2ac-470f-836f-a4e5b28642d1" Title="WaitForSave Method " Url="html/Overload_Gemstone_IO_InterprocessCache_WaitForSave.htm">
+          <HelpTOCNode Title="WaitForSave Method " Url="html/M_Gemstone_IO_InterprocessCache_WaitForSave.htm" />
+          <HelpTOCNode Title="WaitForSave Method (Int32)" Url="html/M_Gemstone_IO_InterprocessCache_WaitForSave_1.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+      <HelpTOCNode Id="99aa12b1-0beb-4a17-98a5-3b54676307ac" Title="InterprocessCache Fields" Url="html/Fields_T_Gemstone_IO_InterprocessCache.htm">
+        <HelpTOCNode Title="DefaultMaximumRetryAttempts Field" Url="html/F_Gemstone_IO_InterprocessCache_DefaultMaximumRetryAttempts.htm" />
+        <HelpTOCNode Title="DefaultRetryDelayInterval Field" Url="html/F_Gemstone_IO_InterprocessCache_DefaultRetryDelayInterval.htm" />
+      </HelpTOCNode>
+    </HelpTOCNode>
+    <HelpTOCNode Id="ff60fa23-cb05-4fc7-966c-f52f5a4332dc" Title="SafeFileWatcher Class" Url="html/T_Gemstone_IO_SafeFileWatcher.htm">
+      <HelpTOCNode Id="04ff6e63-0ddf-4078-bae7-96156d1c489b" Title="SafeFileWatcher Constructor " Url="html/Overload_Gemstone_IO_SafeFileWatcher__ctor.htm">
+        <HelpTOCNode Title="SafeFileWatcher Constructor " Url="html/M_Gemstone_IO_SafeFileWatcher__ctor.htm" />
+        <HelpTOCNode Title="SafeFileWatcher Constructor (String)" Url="html/M_Gemstone_IO_SafeFileWatcher__ctor_1.htm" />
+        <HelpTOCNode Title="SafeFileWatcher Constructor (String, String)" Url="html/M_Gemstone_IO_SafeFileWatcher__ctor_2.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Id="3545f1de-f2eb-41e4-bbda-382641b4cf97" Title="SafeFileWatcher Properties" Url="html/Properties_T_Gemstone_IO_SafeFileWatcher.htm">
+        <HelpTOCNode Title="EnableRaisingEvents Property " Url="html/P_Gemstone_IO_SafeFileWatcher_EnableRaisingEvents.htm" />
+        <HelpTOCNode Title="Filter Property " Url="html/P_Gemstone_IO_SafeFileWatcher_Filter.htm" />
+        <HelpTOCNode Title="IncludeSubdirectories Property " Url="html/P_Gemstone_IO_SafeFileWatcher_IncludeSubdirectories.htm" />
+        <HelpTOCNode Title="InternalBufferSize Property " Url="html/P_Gemstone_IO_SafeFileWatcher_InternalBufferSize.htm" />
+        <HelpTOCNode Title="NotifyFilter Property " Url="html/P_Gemstone_IO_SafeFileWatcher_NotifyFilter.htm" />
+        <HelpTOCNode Title="Path Property " Url="html/P_Gemstone_IO_SafeFileWatcher_Path.htm" />
+        <HelpTOCNode Title="Site Property " Url="html/P_Gemstone_IO_SafeFileWatcher_Site.htm" />
+        <HelpTOCNode Title="SynchronizingObject Property " Url="html/P_Gemstone_IO_SafeFileWatcher_SynchronizingObject.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Id="9375d116-43c6-442b-9cf0-627a21534b4c" Title="SafeFileWatcher Methods" Url="html/Methods_T_Gemstone_IO_SafeFileWatcher.htm">
+        <HelpTOCNode Title="BeginInit Method " Url="html/M_Gemstone_IO_SafeFileWatcher_BeginInit.htm" />
+        <HelpTOCNode Id="60ba286e-adc8-46e0-a128-c817d3d68552" Title="Dispose Method " Url="html/Overload_Gemstone_IO_SafeFileWatcher_Dispose.htm">
+          <HelpTOCNode Title="Dispose Method " Url="html/M_Gemstone_IO_SafeFileWatcher_Dispose.htm" />
+          <HelpTOCNode Title="Dispose Method (Boolean)" Url="html/M_Gemstone_IO_SafeFileWatcher_Dispose_1.htm" />
+        </HelpTOCNode>
+        <HelpTOCNode Title="EndInit Method " Url="html/M_Gemstone_IO_SafeFileWatcher_EndInit.htm" />
+        <HelpTOCNode Title="Finalize Method " Url="html/M_Gemstone_IO_SafeFileWatcher_Finalize.htm" />
+        <HelpTOCNode Id="d4b2964b-a500-4e91-bbd9-9347b2177d87" Title="WaitForChanged Method " Url="html/Overload_Gemstone_IO_SafeFileWatcher_WaitForChanged.htm">
+          <HelpTOCNode Title="WaitForChanged Method (WatcherChangeTypes)" Url="html/M_Gemstone_IO_SafeFileWatcher_WaitForChanged.htm" />
+          <HelpTOCNode Title="WaitForChanged Method (WatcherChangeTypes, Int32)" Url="html/M_Gemstone_IO_SafeFileWatcher_WaitForChanged_1.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+      <HelpTOCNode Id="a5667764-8f32-4752-be45-ee05409d2d72" Title="SafeFileWatcher Events" Url="html/Events_T_Gemstone_IO_SafeFileWatcher.htm">
+        <HelpTOCNode Title="Changed Event" Url="html/E_Gemstone_IO_SafeFileWatcher_Changed.htm" />
+        <HelpTOCNode Title="Created Event" Url="html/E_Gemstone_IO_SafeFileWatcher_Created.htm" />
+        <HelpTOCNode Title="Deleted Event" Url="html/E_Gemstone_IO_SafeFileWatcher_Deleted.htm" />
+        <HelpTOCNode Title="Error Event" Url="html/E_Gemstone_IO_SafeFileWatcher_Error.htm" />
+        <HelpTOCNode Title="Renamed Event" Url="html/E_Gemstone_IO_SafeFileWatcher_Renamed.htm" />
+      </HelpTOCNode>
+    </HelpTOCNode>
+  </HelpTOCNode>
+  <HelpTOCNode Id="a8126ba1-a888-426c-83ee-6dfbc3ad2d4f" Title="Gemstone.IO.Checksums" Url="html/N_Gemstone_IO_Checksums.htm">
+    <HelpTOCNode Id="b5922bfa-159f-4919-9ff2-a9b5e7be6119" Title="Adler32 Class" Url="html/T_Gemstone_IO_Checksums_Adler32.htm">
+      <HelpTOCNode Title="Adler32 Constructor " Url="html/M_Gemstone_IO_Checksums_Adler32__ctor.htm" />
+      <HelpTOCNode Id="eaadcaa1-5c96-4773-9219-3fcd96e31565" Title="Adler32 Properties" Url="html/Properties_T_Gemstone_IO_Checksums_Adler32.htm">
+        <HelpTOCNode Title="Value Property " Url="html/P_Gemstone_IO_Checksums_Adler32_Value.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Id="09501b75-9dd1-4293-9835-c04a17d5c7e4" Title="Adler32 Methods" Url="html/Methods_T_Gemstone_IO_Checksums_Adler32.htm">
+        <HelpTOCNode Title="Reset Method " Url="html/M_Gemstone_IO_Checksums_Adler32_Reset.htm" />
+        <HelpTOCNode Id="769339b5-7c38-472b-9339-86b327fabe47" Title="Update Method " Url="html/Overload_Gemstone_IO_Checksums_Adler32_Update.htm">
+          <HelpTOCNode Title="Update Method (Byte)" Url="html/M_Gemstone_IO_Checksums_Adler32_Update.htm" />
+          <HelpTOCNode Title="Update Method (Byte[])" Url="html/M_Gemstone_IO_Checksums_Adler32_Update_1.htm" />
+          <HelpTOCNode Title="Update Method (Byte[], Int32, Int32)" Url="html/M_Gemstone_IO_Checksums_Adler32_Update_2.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+    </HelpTOCNode>
+    <HelpTOCNode Title="ChecksumType Enumeration" Url="html/T_Gemstone_IO_Checksums_ChecksumType.htm" />
+    <HelpTOCNode Id="16a75fbe-9c22-4771-8572-24b5a3970bd8" Title="Crc16 Class" Url="html/T_Gemstone_IO_Checksums_Crc16.htm">
+      <HelpTOCNode Id="37f594a2-9a37-4cab-a5ea-f13e22808340" Title="Crc16 Constructor " Url="html/Overload_Gemstone_IO_Checksums_Crc16__ctor.htm">
+        <HelpTOCNode Title="Crc16 Constructor " Url="html/M_Gemstone_IO_Checksums_Crc16__ctor.htm" />
+        <HelpTOCNode Title="Crc16 Constructor (ChecksumType)" Url="html/M_Gemstone_IO_Checksums_Crc16__ctor_1.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Id="bbeb94d3-248f-49ee-9480-548164f3b296" Title="Crc16 Properties" Url="html/Properties_T_Gemstone_IO_Checksums_Crc16.htm">
+        <HelpTOCNode Title="Value Property " Url="html/P_Gemstone_IO_Checksums_Crc16_Value.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Id="4291ab4b-dcfe-4048-8e38-895de8631cd8" Title="Crc16 Methods" Url="html/Methods_T_Gemstone_IO_Checksums_Crc16.htm">
+        <HelpTOCNode Id="d81b7ca5-6e07-46e3-b845-d5f0241e83de" Title="Reset Method " Url="html/Overload_Gemstone_IO_Checksums_Crc16_Reset.htm">
+          <HelpTOCNode Title="Reset Method " Url="html/M_Gemstone_IO_Checksums_Crc16_Reset.htm" />
+          <HelpTOCNode Title="Reset Method (ChecksumType)" Url="html/M_Gemstone_IO_Checksums_Crc16_Reset_1.htm" />
+        </HelpTOCNode>
+        <HelpTOCNode Id="b2529ec7-d56a-44d8-ad06-85b841dd96da" Title="Update Method " Url="html/Overload_Gemstone_IO_Checksums_Crc16_Update.htm">
+          <HelpTOCNode Title="Update Method (Byte)" Url="html/M_Gemstone_IO_Checksums_Crc16_Update.htm" />
+          <HelpTOCNode Title="Update Method (Byte[])" Url="html/M_Gemstone_IO_Checksums_Crc16_Update_1.htm" />
+          <HelpTOCNode Title="Update Method (Byte[], Int32, Int32)" Url="html/M_Gemstone_IO_Checksums_Crc16_Update_2.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+    </HelpTOCNode>
+    <HelpTOCNode Id="b651f969-bfdd-4c72-bab5-fde1e5d811b3" Title="Crc32 Class" Url="html/T_Gemstone_IO_Checksums_Crc32.htm">
+      <HelpTOCNode Title="Crc32 Constructor " Url="html/M_Gemstone_IO_Checksums_Crc32__ctor.htm" />
+      <HelpTOCNode Id="db904c43-2850-458f-8983-2dfd5458db1d" Title="Crc32 Properties" Url="html/Properties_T_Gemstone_IO_Checksums_Crc32.htm">
+        <HelpTOCNode Title="Value Property " Url="html/P_Gemstone_IO_Checksums_Crc32_Value.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Id="92bcd138-9b86-4eea-a4ab-1f9c6285c476" Title="Crc32 Methods" Url="html/Methods_T_Gemstone_IO_Checksums_Crc32.htm">
+        <HelpTOCNode Title="Compute Method " Url="html/M_Gemstone_IO_Checksums_Crc32_Compute.htm" />
+        <HelpTOCNode Title="Reset Method " Url="html/M_Gemstone_IO_Checksums_Crc32_Reset.htm" />
+        <HelpTOCNode Id="885ae70b-ecaf-478d-b4ea-933d38639f8c" Title="Update Method " Url="html/Overload_Gemstone_IO_Checksums_Crc32_Update.htm">
+          <HelpTOCNode Title="Update Method (Byte[])" Url="html/M_Gemstone_IO_Checksums_Crc32_Update.htm" />
+          <HelpTOCNode Title="Update Method (Int32)" Url="html/M_Gemstone_IO_Checksums_Crc32_Update_2.htm" />
+          <HelpTOCNode Title="Update Method (Byte[], Int32, Int32)" Url="html/M_Gemstone_IO_Checksums_Crc32_Update_1.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+    </HelpTOCNode>
+    <HelpTOCNode Id="006d7733-0137-4456-ba3a-120d045d6eb0" Title="CrcCCITT Class" Url="html/T_Gemstone_IO_Checksums_CrcCCITT.htm">
+      <HelpTOCNode Title="CrcCCITT Constructor " Url="html/M_Gemstone_IO_Checksums_CrcCCITT__ctor.htm" />
+      <HelpTOCNode Id="6bebf6a1-9ebd-4fe5-9160-972e0c9a653f" Title="CrcCCITT Properties" Url="html/Properties_T_Gemstone_IO_Checksums_CrcCCITT.htm">
+        <HelpTOCNode Title="Value Property " Url="html/P_Gemstone_IO_Checksums_CrcCCITT_Value.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Id="cfbe3b9c-70ac-43e6-b20b-770fc0d6cb87" Title="CrcCCITT Methods" Url="html/Methods_T_Gemstone_IO_Checksums_CrcCCITT.htm">
+        <HelpTOCNode Title="Reset Method " Url="html/M_Gemstone_IO_Checksums_CrcCCITT_Reset.htm" />
+        <HelpTOCNode Id="2822f080-cabe-41d7-a111-75df5455631c" Title="Update Method " Url="html/Overload_Gemstone_IO_Checksums_CrcCCITT_Update.htm">
+          <HelpTOCNode Title="Update Method (Byte)" Url="html/M_Gemstone_IO_Checksums_CrcCCITT_Update.htm" />
+          <HelpTOCNode Title="Update Method (Byte[])" Url="html/M_Gemstone_IO_Checksums_CrcCCITT_Update_1.htm" />
+          <HelpTOCNode Title="Update Method (Byte[], Int32, Int32)" Url="html/M_Gemstone_IO_Checksums_CrcCCITT_Update_2.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+    </HelpTOCNode>
+    <HelpTOCNode Id="25170569-370b-410e-9481-96fcb640acf9" Title="Xor16 Class" Url="html/T_Gemstone_IO_Checksums_Xor16.htm">
+      <HelpTOCNode Title="Xor16 Constructor " Url="html/M_Gemstone_IO_Checksums_Xor16__ctor.htm" />
+      <HelpTOCNode Id="209962b5-648e-4b54-8325-5ddfab7a3d6b" Title="Xor16 Properties" Url="html/Properties_T_Gemstone_IO_Checksums_Xor16.htm">
+        <HelpTOCNode Title="Value Property " Url="html/P_Gemstone_IO_Checksums_Xor16_Value.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Id="4dede959-d7fb-4a28-87f3-c9e4dd3fcb02" Title="Xor16 Methods" Url="html/Methods_T_Gemstone_IO_Checksums_Xor16.htm">
+        <HelpTOCNode Title="Reset Method " Url="html/M_Gemstone_IO_Checksums_Xor16_Reset.htm" />
+        <HelpTOCNode Id="43701427-2c23-4cf8-9070-bb51aa48831e" Title="Update Method " Url="html/Overload_Gemstone_IO_Checksums_Xor16_Update.htm">
+          <HelpTOCNode Title="Update Method (Byte[])" Url="html/M_Gemstone_IO_Checksums_Xor16_Update.htm" />
+          <HelpTOCNode Title="Update Method (UInt16)" Url="html/M_Gemstone_IO_Checksums_Xor16_Update_2.htm" />
+          <HelpTOCNode Title="Update Method (Byte[], Int32, Int32)" Url="html/M_Gemstone_IO_Checksums_Xor16_Update_1.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+    </HelpTOCNode>
+    <HelpTOCNode Id="51596662-3c2b-439e-98b2-b52e808f32a5" Title="Xor32 Class" Url="html/T_Gemstone_IO_Checksums_Xor32.htm">
+      <HelpTOCNode Title="Xor32 Constructor " Url="html/M_Gemstone_IO_Checksums_Xor32__ctor.htm" />
+      <HelpTOCNode Id="206869ba-c382-4d33-b6e2-ab6f609755d6" Title="Xor32 Properties" Url="html/Properties_T_Gemstone_IO_Checksums_Xor32.htm">
+        <HelpTOCNode Title="Value Property " Url="html/P_Gemstone_IO_Checksums_Xor32_Value.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Id="64d81845-88cc-4bff-aa13-5df4248285b7" Title="Xor32 Methods" Url="html/Methods_T_Gemstone_IO_Checksums_Xor32.htm">
+        <HelpTOCNode Title="Reset Method " Url="html/M_Gemstone_IO_Checksums_Xor32_Reset.htm" />
+        <HelpTOCNode Id="fa6e566b-49f0-4595-8423-55cd1c1725c5" Title="Update Method " Url="html/Overload_Gemstone_IO_Checksums_Xor32_Update.htm">
+          <HelpTOCNode Title="Update Method (Byte[])" Url="html/M_Gemstone_IO_Checksums_Xor32_Update.htm" />
+          <HelpTOCNode Title="Update Method (UInt32)" Url="html/M_Gemstone_IO_Checksums_Xor32_Update_2.htm" />
+          <HelpTOCNode Title="Update Method (Byte[], Int32, Int32)" Url="html/M_Gemstone_IO_Checksums_Xor32_Update_1.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+    </HelpTOCNode>
+    <HelpTOCNode Id="0c48ba5a-2c75-4ee3-a890-b89c6ea82b98" Title="Xor64 Class" Url="html/T_Gemstone_IO_Checksums_Xor64.htm">
+      <HelpTOCNode Title="Xor64 Constructor " Url="html/M_Gemstone_IO_Checksums_Xor64__ctor.htm" />
+      <HelpTOCNode Id="fc75e20a-9559-4c48-a8d4-5d9ade25b238" Title="Xor64 Properties" Url="html/Properties_T_Gemstone_IO_Checksums_Xor64.htm">
+        <HelpTOCNode Title="Value Property " Url="html/P_Gemstone_IO_Checksums_Xor64_Value.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Id="968507c2-2f45-4cb1-bbbd-b70c543a1f22" Title="Xor64 Methods" Url="html/Methods_T_Gemstone_IO_Checksums_Xor64.htm">
+        <HelpTOCNode Title="Reset Method " Url="html/M_Gemstone_IO_Checksums_Xor64_Reset.htm" />
+        <HelpTOCNode Id="9a392e20-17a7-434c-a227-902f1c864943" Title="Update Method " Url="html/Overload_Gemstone_IO_Checksums_Xor64_Update.htm">
+          <HelpTOCNode Title="Update Method (Byte[])" Url="html/M_Gemstone_IO_Checksums_Xor64_Update.htm" />
+          <HelpTOCNode Title="Update Method (UInt64)" Url="html/M_Gemstone_IO_Checksums_Xor64_Update_2.htm" />
+          <HelpTOCNode Title="Update Method (Byte[], Int32, Int32)" Url="html/M_Gemstone_IO_Checksums_Xor64_Update_1.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+    </HelpTOCNode>
+    <HelpTOCNode Id="e7493a1c-446e-4903-ac2e-24db1d45b386" Title="Xor8 Class" Url="html/T_Gemstone_IO_Checksums_Xor8.htm">
+      <HelpTOCNode Title="Xor8 Constructor " Url="html/M_Gemstone_IO_Checksums_Xor8__ctor.htm" />
+      <HelpTOCNode Id="646928af-2f91-48dd-ba95-fdfd6f191b37" Title="Xor8 Properties" Url="html/Properties_T_Gemstone_IO_Checksums_Xor8.htm">
+        <HelpTOCNode Title="Value Property " Url="html/P_Gemstone_IO_Checksums_Xor8_Value.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Id="fc5d22cc-fa56-4091-8b35-831eaa4a0f6f" Title="Xor8 Methods" Url="html/Methods_T_Gemstone_IO_Checksums_Xor8.htm">
+        <HelpTOCNode Title="Reset Method " Url="html/M_Gemstone_IO_Checksums_Xor8_Reset.htm" />
+        <HelpTOCNode Id="c09c703c-6642-4ea9-91bb-e86aef88e6c5" Title="Update Method " Url="html/Overload_Gemstone_IO_Checksums_Xor8_Update.htm">
+          <HelpTOCNode Title="Update Method (Byte)" Url="html/M_Gemstone_IO_Checksums_Xor8_Update.htm" />
+          <HelpTOCNode Title="Update Method (Byte[])" Url="html/M_Gemstone_IO_Checksums_Xor8_Update_1.htm" />
+          <HelpTOCNode Title="Update Method (Byte[], Int32, Int32)" Url="html/M_Gemstone_IO_Checksums_Xor8_Update_2.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+    </HelpTOCNode>
+  </HelpTOCNode>
+  <HelpTOCNode Id="ee63dcc9-d021-4401-bdc9-9ef03abba3d2" Title="Gemstone.IO.Checksums.ChecksumExtensions" Url="html/N_Gemstone_IO_Checksums_ChecksumExtensions.htm">
+    <HelpTOCNode Id="512913ba-0fc6-4a45-a8d2-a99bf41ba016" Title="ChecksumExtensions Class" Url="html/T_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions.htm">
+      <HelpTOCNode Id="f47d56d4-18ed-4613-b144-deaabc513ae0" Title="ChecksumExtensions Methods" Url="html/Methods_T_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions.htm">
+        <HelpTOCNode Title="Adler32Checksum Method " Url="html/M_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions_Adler32Checksum.htm" />
+        <HelpTOCNode Title="Crc16Checksum Method " Url="html/M_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions_Crc16Checksum.htm" />
+        <HelpTOCNode Title="Crc32Checksum Method " Url="html/M_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions_Crc32Checksum.htm" />
+        <HelpTOCNode Title="CrcCCITTChecksum Method " Url="html/M_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions_CrcCCITTChecksum.htm" />
+        <HelpTOCNode Title="ModBusCrcChecksum Method " Url="html/M_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions_ModBusCrcChecksum.htm" />
+        <HelpTOCNode Title="Xor16Checksum Method " Url="html/M_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions_Xor16Checksum.htm" />
+        <HelpTOCNode Title="Xor32Checksum Method " Url="html/M_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions_Xor32Checksum.htm" />
+        <HelpTOCNode Title="Xor64Checksum Method " Url="html/M_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions_Xor64Checksum.htm" />
+        <HelpTOCNode Title="Xor8Checksum Method " Url="html/M_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions_Xor8Checksum.htm" />
+      </HelpTOCNode>
+    </HelpTOCNode>
+  </HelpTOCNode>
+  <HelpTOCNode Id="298d601a-26ed-40e9-b792-634d2db1bc95" Title="Gemstone.IO.Collections" Url="html/N_Gemstone_IO_Collections.htm">
+    <HelpTOCNode Id="ce587628-384c-4dd7-ab10-e276af4508d5" Title="FileBackedDictionary(TKey, TValue) Class" Url="html/T_Gemstone_IO_Collections_FileBackedDictionary_2.htm">
+      <HelpTOCNode Id="ff73cdfa-1aae-4177-9abd-3315e5716dad" Title="FileBackedDictionary(TKey, TValue) Constructor " Url="html/Overload_Gemstone_IO_Collections_FileBackedDictionary_2__ctor.htm">
+        <HelpTOCNode Title="FileBackedDictionary(TKey, TValue) Constructor " Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2__ctor.htm" />
+        <HelpTOCNode Title="FileBackedDictionary(TKey, TValue) Constructor (IDictionary(TKey, TValue))" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2__ctor_1.htm" />
+        <HelpTOCNode Title="FileBackedDictionary(TKey, TValue) Constructor (IEqualityComparer(TKey))" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2__ctor_3.htm" />
+        <HelpTOCNode Title="FileBackedDictionary(TKey, TValue) Constructor (String)" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2__ctor_4.htm" />
+        <HelpTOCNode Title="FileBackedDictionary(TKey, TValue) Constructor (IDictionary(TKey, TValue), IEqualityComparer(TKey))" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2__ctor_2.htm" />
+        <HelpTOCNode Title="FileBackedDictionary(TKey, TValue) Constructor (String, IDictionary(TKey, TValue))" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2__ctor_5.htm" />
+        <HelpTOCNode Title="FileBackedDictionary(TKey, TValue) Constructor (String, IEqualityComparer(TKey))" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2__ctor_7.htm" />
+        <HelpTOCNode Title="FileBackedDictionary(TKey, TValue) Constructor (String, IDictionary(TKey, TValue), IEqualityComparer(TKey))" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2__ctor_6.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Id="8d1cff1f-e23c-4228-8890-baa90a09bc36" Title="FileBackedDictionary(TKey, TValue) Properties" Url="html/Properties_T_Gemstone_IO_Collections_FileBackedDictionary_2.htm">
+        <HelpTOCNode Title="CacheSize Property " Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_CacheSize.htm" />
+        <HelpTOCNode Title="Count Property " Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_Count.htm" />
+        <HelpTOCNode Title="DefaultSignature Property " Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_DefaultSignature.htm" />
+        <HelpTOCNode Title="FilePath Property " Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_FilePath.htm" />
+        <HelpTOCNode Title="FragmentationCount Property " Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_FragmentationCount.htm" />
+        <HelpTOCNode Title="IsReadOnly Property " Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_IsReadOnly.htm" />
+        <HelpTOCNode Title="Item Property " Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_Item.htm" />
+        <HelpTOCNode Title="Keys Property " Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_Keys.htm" />
+        <HelpTOCNode Title="Signature Property " Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_Signature.htm" />
+        <HelpTOCNode Title="Values Property " Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_Values.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Id="9ce8b099-4df5-41f1-b14f-440ac7a1a288" Title="FileBackedDictionary(TKey, TValue) Methods" Url="html/Methods_T_Gemstone_IO_Collections_FileBackedDictionary_2.htm">
+        <HelpTOCNode Id="4d2f1ec3-9ac3-47bb-8e64-ab52c0275681" Title="Add Method " Url="html/Overload_Gemstone_IO_Collections_FileBackedDictionary_2_Add.htm">
+          <HelpTOCNode Title="Add Method (KeyValuePair(TKey, TValue))" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_Add.htm" />
+          <HelpTOCNode Title="Add Method (TKey, TValue)" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_Add_1.htm" />
+        </HelpTOCNode>
+        <HelpTOCNode Title="Clear Method " Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_Clear.htm" />
+        <HelpTOCNode Title="Close Method " Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_Close.htm" />
+        <HelpTOCNode Title="Compact Method " Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_Compact.htm" />
+        <HelpTOCNode Title="Contains Method " Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_Contains.htm" />
+        <HelpTOCNode Title="ContainsKey Method " Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_ContainsKey.htm" />
+        <HelpTOCNode Title="CopyTo Method " Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_CopyTo.htm" />
+        <HelpTOCNode Title="Dispose Method " Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_Dispose.htm" />
+        <HelpTOCNode Title="GetEnumerator Method " Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_GetEnumerator.htm" />
+        <HelpTOCNode Title="GetKeys Method " Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_GetKeys.htm" />
+        <HelpTOCNode Title="GetValues Method " Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_GetValues.htm" />
+        <HelpTOCNode Title="Open Method " Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_Open.htm" />
+        <HelpTOCNode Title="OpenRead Method " Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_OpenRead.htm" />
+        <HelpTOCNode Id="19a0ef46-4c62-4096-89aa-19c6010a7b0c" Title="Remove Method " Url="html/Overload_Gemstone_IO_Collections_FileBackedDictionary_2_Remove.htm">
+          <HelpTOCNode Title="Remove Method (KeyValuePair(TKey, TValue))" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_Remove.htm" />
+          <HelpTOCNode Title="Remove Method (TKey)" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_Remove_1.htm" />
+        </HelpTOCNode>
+        <HelpTOCNode Title="TryGetValue Method " Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_TryGetValue.htm" />
+      </HelpTOCNode>
+    </HelpTOCNode>
+    <HelpTOCNode Id="c72cbf54-558c-4b33-a85c-4d08ca912ed3" Title="FileBackedHashSet(T) Class" Url="html/T_Gemstone_IO_Collections_FileBackedHashSet_1.htm">
+      <HelpTOCNode Id="1d2e2f7c-f13d-4021-913e-2b7135ba98ef" Title="FileBackedHashSet(T) Constructor " Url="html/Overload_Gemstone_IO_Collections_FileBackedHashSet_1__ctor.htm">
+        <HelpTOCNode Title="FileBackedHashSet(T) Constructor " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1__ctor.htm" />
+        <HelpTOCNode Title="FileBackedHashSet(T) Constructor (IEnumerable(T))" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1__ctor_1.htm" />
+        <HelpTOCNode Title="FileBackedHashSet(T) Constructor (IEqualityComparer(T))" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1__ctor_3.htm" />
+        <HelpTOCNode Title="FileBackedHashSet(T) Constructor (String)" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1__ctor_4.htm" />
+        <HelpTOCNode Title="FileBackedHashSet(T) Constructor (IEnumerable(T), IEqualityComparer(T))" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1__ctor_2.htm" />
+        <HelpTOCNode Title="FileBackedHashSet(T) Constructor (String, IEnumerable(T))" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1__ctor_5.htm" />
+        <HelpTOCNode Title="FileBackedHashSet(T) Constructor (String, IEqualityComparer(T))" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1__ctor_7.htm" />
+        <HelpTOCNode Title="FileBackedHashSet(T) Constructor (String, IEnumerable(T), IEqualityComparer(T))" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1__ctor_6.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Id="9304c1b3-f281-4777-9cdd-0f8eaf76da3e" Title="FileBackedHashSet(T) Properties" Url="html/Properties_T_Gemstone_IO_Collections_FileBackedHashSet_1.htm">
+        <HelpTOCNode Title="CacheSize Property " Url="html/P_Gemstone_IO_Collections_FileBackedHashSet_1_CacheSize.htm" />
+        <HelpTOCNode Title="Count Property " Url="html/P_Gemstone_IO_Collections_FileBackedHashSet_1_Count.htm" />
+        <HelpTOCNode Title="DefaultSignature Property " Url="html/P_Gemstone_IO_Collections_FileBackedHashSet_1_DefaultSignature.htm" />
+        <HelpTOCNode Title="FilePath Property " Url="html/P_Gemstone_IO_Collections_FileBackedHashSet_1_FilePath.htm" />
+        <HelpTOCNode Title="FragmentationCount Property " Url="html/P_Gemstone_IO_Collections_FileBackedHashSet_1_FragmentationCount.htm" />
+        <HelpTOCNode Title="IsReadOnly Property " Url="html/P_Gemstone_IO_Collections_FileBackedHashSet_1_IsReadOnly.htm" />
+        <HelpTOCNode Title="Signature Property " Url="html/P_Gemstone_IO_Collections_FileBackedHashSet_1_Signature.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Id="dc3de96b-15df-43f9-a297-f05212d4546f" Title="FileBackedHashSet(T) Methods" Url="html/Methods_T_Gemstone_IO_Collections_FileBackedHashSet_1.htm">
+        <HelpTOCNode Title="Add Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Add.htm" />
+        <HelpTOCNode Title="Clear Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Clear.htm" />
+        <HelpTOCNode Title="Close Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Close.htm" />
+        <HelpTOCNode Title="Compact Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Compact.htm" />
+        <HelpTOCNode Title="Contains Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Contains.htm" />
+        <HelpTOCNode Title="CopyTo Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_CopyTo.htm" />
+        <HelpTOCNode Title="Dispose Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Dispose.htm" />
+        <HelpTOCNode Title="ExceptWith Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_ExceptWith.htm" />
+        <HelpTOCNode Title="GetEnumerator Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_GetEnumerator.htm" />
+        <HelpTOCNode Title="IntersectWith Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_IntersectWith.htm" />
+        <HelpTOCNode Title="IsProperSubsetOf Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_IsProperSubsetOf.htm" />
+        <HelpTOCNode Title="IsProperSupersetOf Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_IsProperSupersetOf.htm" />
+        <HelpTOCNode Title="IsSubsetOf Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_IsSubsetOf.htm" />
+        <HelpTOCNode Title="IsSupersetOf Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_IsSupersetOf.htm" />
+        <HelpTOCNode Title="Open Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Open.htm" />
+        <HelpTOCNode Title="OpenRead Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_OpenRead.htm" />
+        <HelpTOCNode Title="Overlaps Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Overlaps.htm" />
+        <HelpTOCNode Title="Remove Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Remove.htm" />
+        <HelpTOCNode Title="RemoveWhere Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_RemoveWhere.htm" />
+        <HelpTOCNode Title="SetEquals Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_SetEquals.htm" />
+        <HelpTOCNode Title="SymmetricExceptWith Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_SymmetricExceptWith.htm" />
+        <HelpTOCNode Title="UnionWith Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_UnionWith.htm" />
+      </HelpTOCNode>
+    </HelpTOCNode>
+    <HelpTOCNode Id="4ef71027-5ee4-4893-9f5e-a1146792b693" Title="RollingWindow(T) Class" Url="html/T_Gemstone_IO_Collections_RollingWindow_1.htm">
+      <HelpTOCNode Title="RollingWindow(T) Constructor " Url="html/M_Gemstone_IO_Collections_RollingWindow_1__ctor.htm" />
+      <HelpTOCNode Id="37f39bda-ddd0-4d58-bd5a-a98f6d4d8bbb" Title="RollingWindow(T) Properties" Url="html/Properties_T_Gemstone_IO_Collections_RollingWindow_1.htm">
+        <HelpTOCNode Title="Count Property " Url="html/P_Gemstone_IO_Collections_RollingWindow_1_Count.htm" />
+        <HelpTOCNode Title="IsReadOnly Property " Url="html/P_Gemstone_IO_Collections_RollingWindow_1_IsReadOnly.htm" />
+        <HelpTOCNode Title="Item Property " Url="html/P_Gemstone_IO_Collections_RollingWindow_1_Item.htm" />
+        <HelpTOCNode Title="WindowSize Property " Url="html/P_Gemstone_IO_Collections_RollingWindow_1_WindowSize.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Id="8c2fc052-5a82-442b-a55d-301ba77ce7b2" Title="RollingWindow(T) Methods" Url="html/Methods_T_Gemstone_IO_Collections_RollingWindow_1.htm">
+        <HelpTOCNode Title="Add Method " Url="html/M_Gemstone_IO_Collections_RollingWindow_1_Add.htm" />
+        <HelpTOCNode Title="Clear Method " Url="html/M_Gemstone_IO_Collections_RollingWindow_1_Clear.htm" />
+        <HelpTOCNode Title="Contains Method " Url="html/M_Gemstone_IO_Collections_RollingWindow_1_Contains.htm" />
+        <HelpTOCNode Title="CopyTo Method " Url="html/M_Gemstone_IO_Collections_RollingWindow_1_CopyTo.htm" />
+        <HelpTOCNode Title="GetEnumerator Method " Url="html/M_Gemstone_IO_Collections_RollingWindow_1_GetEnumerator.htm" />
+        <HelpTOCNode Title="IndexOf Method " Url="html/M_Gemstone_IO_Collections_RollingWindow_1_IndexOf.htm" />
+        <HelpTOCNode Title="Insert Method " Url="html/M_Gemstone_IO_Collections_RollingWindow_1_Insert.htm" />
+        <HelpTOCNode Title="Remove Method " Url="html/M_Gemstone_IO_Collections_RollingWindow_1_Remove.htm" />
+        <HelpTOCNode Title="RemoveAt Method " Url="html/M_Gemstone_IO_Collections_RollingWindow_1_RemoveAt.htm" />
+      </HelpTOCNode>
+    </HelpTOCNode>
+  </HelpTOCNode>
+</HelpTOC>
