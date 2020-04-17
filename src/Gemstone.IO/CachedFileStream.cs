@@ -115,7 +115,7 @@ namespace Gemstone.IO
         private long m_position;
         private long m_length;
 
-        private readonly FileStream m_fileStream;
+        private readonly FileStream m_fileStream = default!;
         private readonly Dictionary<long, Block> m_blockLookup;
         private readonly Dictionary<long, Block> m_dirtyBlockLookup;
         private readonly List<Block> m_queue;
@@ -316,10 +316,6 @@ namespace Gemstone.IO
 
         #endif
 
-        // TODO: This is a temporary workaround as suppress message attribute should be enough, see: https://github.com/dotnet/roslyn/issues/39094
-        #pragma warning disable CS8618
-
-        [SuppressMessage("Code Quality", "CS8618:Non-nullable field is uninitialized. Consider declaring as nullable.", Justification = "m_fileStream is properly initialized")]
         private CachedFileStream(int blockSize)
         {
             if (blockSize <= 0)
