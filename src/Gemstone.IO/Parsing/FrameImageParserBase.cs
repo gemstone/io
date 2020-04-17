@@ -38,6 +38,7 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Text;
 using Gemstone.ArrayExtensions;
+using Gemstone.EventHandlerExtensions;
 using Gemstone.Threading.Collections;
 using Gemstone.TypeExtensions;
 
@@ -370,7 +371,7 @@ namespace Gemstone.IO.Parsing
             else
             {
                 // Publish parsed output immediately
-                DataParsed?.Invoke(this, outputArgs);
+                DataParsed?.SafeInvoke(this, outputArgs);
             }
         }
 
@@ -378,20 +379,20 @@ namespace Gemstone.IO.Parsing
         /// <see cref="AsyncQueue{T}"/> handler used to publish queued outputs.
         /// </summary>
         /// <param name="outputArgs">Event args containing new output to publish.</param>
-        protected virtual void PublishParsedOutput(EventArgs<TOutputType> outputArgs) => DataParsed?.Invoke(this, outputArgs);
+        protected virtual void PublishParsedOutput(EventArgs<TOutputType> outputArgs) => DataParsed?.SafeInvoke(this, outputArgs);
 
         /// <summary>
         /// Raises the <see cref="OutputTypeNotFound"/> event.
         /// </summary>
         /// <param name="id">The ID of the output type that was not found.</param>
-        protected virtual void OnOutputTypeNotFound(TTypeIdentifier id) => OutputTypeNotFound?.Invoke(this, new EventArgs<TTypeIdentifier>(id));
+        protected virtual void OnOutputTypeNotFound(TTypeIdentifier id) => OutputTypeNotFound?.SafeInvoke(this, new EventArgs<TTypeIdentifier>(id));
 
         /// <summary>
         /// Raises the <see cref="DuplicateTypeHandlerEncountered"/> event.
         /// </summary>
         /// <param name="duplicateType">The <see cref="Type"/> that defines a type ID that has already been defined.</param>
         /// <param name="id">The ID of the output type that was defined more than once.</param>
-        protected virtual void OnDuplicateTypeHandlerEncountered(Type duplicateType, TTypeIdentifier id) => DuplicateTypeHandlerEncountered?.Invoke(this, new EventArgs<Type, TTypeIdentifier>(duplicateType, id));
+        protected virtual void OnDuplicateTypeHandlerEncountered(Type duplicateType, TTypeIdentifier id) => DuplicateTypeHandlerEncountered?.SafeInvoke(this, new EventArgs<Type, TTypeIdentifier>(duplicateType, id));
 
         // Expose exceptions encountered via async queue processing to parsing exception event
         private void m_parsedOutputQueue_ProcessException(object sender, EventArgs<Exception> e) => OnParsingException(e.Argument);

@@ -37,6 +37,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using Gemstone.ArrayExtensions;
+using Gemstone.EventHandlerExtensions;
 using Gemstone.Threading.Collections;
 
 #pragma warning disable 0809
@@ -365,7 +366,7 @@ namespace Gemstone.IO.Parsing
         /// </summary>
         /// <param name="source">Identifier for the data source.</param>
         /// <param name="output">The objects that were deserialized from binary images from the <paramref name="source"/> data stream.</param>
-        protected virtual void OnSourceDataParsed(TSourceIdentifier source, IList<TOutputType> output) => SourceDataParsed?.Invoke(this, new EventArgs<TSourceIdentifier, IList<TOutputType>>(source, output));
+        protected virtual void OnSourceDataParsed(TSourceIdentifier source, IList<TOutputType> output) => SourceDataParsed?.SafeInvoke(this, new EventArgs<TSourceIdentifier, IList<TOutputType>>(source, output));
 
         /// <summary>
         /// Raises the <see cref="BinaryImageParserBase.DataDiscarded"/> event.

@@ -26,6 +26,7 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Security;
+using Gemstone.EventHandlerExtensions;
 
 namespace Gemstone.IO
 {
@@ -381,15 +382,15 @@ namespace Gemstone.IO
         /// </summary>
         public void EndInit() => m_fileSystemWatcher.EndInit();
 
-        private void OnChanged(FileSystemEventArgs e) => Changed?.Invoke(this, e);
+        private void OnChanged(FileSystemEventArgs e) => Changed?.SafeInvoke(this, e);
 
-        private void OnCreated(FileSystemEventArgs e) => Created?.Invoke(this, e);
+        private void OnCreated(FileSystemEventArgs e) => Created?.SafeInvoke(this, e);
 
-        private void OnDeleted(FileSystemEventArgs e) => Deleted?.Invoke(this, e);
+        private void OnDeleted(FileSystemEventArgs e) => Deleted?.SafeInvoke(this, e);
 
-        private void OnRenamed(RenamedEventArgs e) => Renamed?.Invoke(this, e);
+        private void OnRenamed(RenamedEventArgs e) => Renamed?.SafeInvoke(this, e);
 
-        private void OnError(ErrorEventArgs e) => Error?.Invoke(this, e);
+        private void OnError(ErrorEventArgs e) => Error?.SafeInvoke(this, e);
 
         #endregion
 
