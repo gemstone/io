@@ -1819,5 +1819,400 @@
             Gets the size of the window maintained by the <see cref="T:Gemstone.IO.Collections.RollingWindow`1" />.
             </summary>
     </member>
+    <member name="T:Gemstone.IO.Parsing.CommonHeaderBase`1">
+      <summary>
+            Represents the base class for a common binary image header implementation.
+            </summary>
+      <typeparam name="TTypeIdentifier">Type of identifier used to distinguish output types.</typeparam>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.CommonHeaderBase`1.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Gemstone.IO.Parsing.CommonHeaderBase`1</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="P:Gemstone.IO.Parsing.CommonHeaderBase`1.State">
+      <summary>
+            Gets or sets any additional state information that might be needed for parsing.
+            </summary>
+    </member>
+    <member name="P:Gemstone.IO.Parsing.CommonHeaderBase`1.TypeID">
+      <summary>
+            Gets or sets the identifier used for identifying the <see cref="T:System.Type" /> to be parsed.
+            </summary>
+    </member>
+    <member name="T:Gemstone.IO.Parsing.FrameImageParserBase`2">
+      <summary>
+            This class defines a basic implementation of parsing functionality suitable for automating the parsing of
+            a binary data stream represented as frames with common headers and returning the parsed data via an event.
+            </summary>
+      <typeparam name="TTypeIdentifier">Type of identifier used to distinguish output types.</typeparam>
+      <typeparam name="TOutputType">Type of the interface or class used to represent outputs.</typeparam>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.FrameImageParserBase`2.#ctor">
+      <summary>
+            Creates a new instance of the <see cref="T:Gemstone.IO.Parsing.FrameImageParserBase`2" /> class.
+            </summary>
+    </member>
+    <member name="E:Gemstone.IO.Parsing.FrameImageParserBase`2.DataParsed">
+      <summary>
+            Occurs when a data image is deserialized successfully to one of the output types that the data
+            image represents.
+            </summary>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.FrameImageParserBase`2.Dispose(System.Boolean)">
+      <summary>
+            Releases the unmanaged resources used by the <see cref="T:Gemstone.IO.Parsing.FrameImageParserBase`2" /> object and optionally releases the managed resources.
+            </summary>
+      <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
+    </member>
+    <member name="E:Gemstone.IO.Parsing.FrameImageParserBase`2.DuplicateTypeHandlerEncountered">
+      <summary>
+            Occurs when more than one type has been defined that can deserialize the specified output type.
+            </summary>
+    </member>
+    <member name="P:Gemstone.IO.Parsing.FrameImageParserBase`2.Enabled">
+      <summary>
+            Gets or sets a boolean value that indicates whether the frame image parser is currently enabled.
+            </summary>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.FrameImageParserBase`2.OnDataParsed(`1)">
+      <summary>
+            Raises the <see cref="E:Gemstone.IO.Parsing.FrameImageParserBase`2.DataParsed" /> event.
+            </summary>
+      <param name="output">The object that was deserialized from binary image.</param>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.FrameImageParserBase`2.OnDuplicateTypeHandlerEncountered(System.Type,`0)">
+      <summary>
+            Raises the <see cref="E:Gemstone.IO.Parsing.FrameImageParserBase`2.DuplicateTypeHandlerEncountered" /> event.
+            </summary>
+      <param name="duplicateType">The <see cref="T:System.Type" /> that defines a type ID that has already been defined.</param>
+      <param name="id">The ID of the output type that was defined more than once.</param>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.FrameImageParserBase`2.OnOutputTypeNotFound(`0)">
+      <summary>
+            Raises the <see cref="E:Gemstone.IO.Parsing.FrameImageParserBase`2.OutputTypeNotFound" /> event.
+            </summary>
+      <param name="id">The ID of the output type that was not found.</param>
+    </member>
+    <member name="E:Gemstone.IO.Parsing.FrameImageParserBase`2.OutputTypeNotFound">
+      <summary>
+            Occurs when matching an output type for deserializing the data image could not be found.
+            </summary>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.FrameImageParserBase`2.ParseCommonHeader(System.Byte[],System.Int32,System.Int32)">
+      <summary>
+            Parses a common header instance that implements <see cref="T:Gemstone.IO.Parsing.ICommonHeader`1" /> for the output type represented
+            in the binary image.
+            </summary>
+      <param name="buffer">Buffer containing data to parse.</param>
+      <param name="offset">Offset index into buffer that represents where to start parsing.</param>
+      <param name="length">Maximum length of valid data from offset.</param>
+      <returns>The <see cref="T:Gemstone.IO.Parsing.ICommonHeader`1" /> which includes a type ID for the <see cref="T:System.Type" /> to be parsed.</returns>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.FrameImageParserBase`2.ParseFrame(System.Byte[],System.Int32,System.Int32)">
+      <summary>
+            Output type specific frame parsing algorithm.
+            </summary>
+      <param name="buffer">Buffer containing data to parse.</param>
+      <param name="offset">Offset index into buffer that represents where to start parsing.</param>
+      <param name="length">Maximum length of valid data from offset.</param>
+      <returns>The length of the data that was parsed.</returns>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.FrameImageParserBase`2.PublishParsedOutput(Gemstone.EventArgs{`1})">
+      <summary>
+        <see cref="T:Gemstone.Threading.Collections.AsyncQueue`1" /> handler used to publish queued outputs.
+            </summary>
+      <param name="outputArgs">Event args containing new output to publish.</param>
+    </member>
+    <member name="P:Gemstone.IO.Parsing.FrameImageParserBase`2.QueuedOutputs">
+      <summary>
+            Gets the total number of parsed outputs that are currently queued for publication, if any.
+            </summary>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.FrameImageParserBase`2.Start">
+      <summary>
+            Start the data parser.
+            </summary>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.FrameImageParserBase`2.Start(System.Collections.Generic.IEnumerable{System.Type})">
+      <summary>
+            Starts the data parser given the specified type implementations.
+            </summary>
+      <param name="implementations">Output type implementations to establish for the parser.</param>
+    </member>
+    <member name="P:Gemstone.IO.Parsing.FrameImageParserBase`2.Status">
+      <summary>
+            Gets current status of <see cref="T:Gemstone.IO.Parsing.FrameImageParserBase`2" />.
+            </summary>
+    </member>
+    <member name="T:Gemstone.IO.Parsing.ICommonHeader`1">
+      <summary>
+            Defines the common header of a frame image for a set of parsed types, consisting at least of a type ID.
+            </summary>
+      <typeparam name="TTypeIdentifier">Type of identifier used to distinguish output types.</typeparam>
+    </member>
+    <member name="P:Gemstone.IO.Parsing.ICommonHeader`1.State">
+      <summary>
+            Gets or sets any additional state information that might be needed for parsing.
+            </summary>
+    </member>
+    <member name="P:Gemstone.IO.Parsing.ICommonHeader`1.TypeID">
+      <summary>
+            Gets or sets the identifier used for identifying the <see cref="T:System.Type" /> to be parsed.
+            </summary>
+    </member>
+    <member name="T:Gemstone.IO.Parsing.IFrameImageParser`2">
+      <summary>
+            This interface represents a basic implementation of parsing functionality suitable for automating the parsing of
+            a binary data stream represented as frames with common headers and returning the parsed data via an event.
+            </summary>
+      <typeparam name="TTypeIdentifier">Type of identifier used to distinguish output types.</typeparam>
+      <typeparam name="TOutputType">Type of the interface or class used to represent outputs.</typeparam>
+    </member>
+    <member name="E:Gemstone.IO.Parsing.IFrameImageParser`2.DataParsed">
+      <summary>
+            Occurs when a data image is deserialized successfully to one of the output types that the data
+            image represents.
+            </summary>
+    </member>
+    <member name="E:Gemstone.IO.Parsing.IFrameImageParser`2.OutputTypeNotFound">
+      <summary>
+            Occurs when matching a output type for deserializing the data image could not be found.
+            </summary>
+    </member>
+    <member name="T:Gemstone.IO.Parsing.ISupportFrameImage`1">
+      <summary>
+            Specifies that this <see cref="T:System.Type" /> can produce or consume a frame of data represented as a binary image.
+            </summary>
+      <typeparam name="TTypeIdentifier">Type of the frame identifier.</typeparam>
+    </member>
+    <member name="P:Gemstone.IO.Parsing.ISupportFrameImage`1.AllowQueuedPublication">
+      <summary>
+            Gets flag that determines if frame image can queued for publication or should be processed immediately.
+            </summary>
+    </member>
+    <member name="P:Gemstone.IO.Parsing.ISupportFrameImage`1.CommonHeader">
+      <summary>
+            Gets or sets current <see cref="T:Gemstone.IO.Parsing.ICommonHeader`1" />.
+            </summary>
+    </member>
+    <member name="P:Gemstone.IO.Parsing.ISupportFrameImage`1.TypeID">
+      <summary>
+            Gets the identifier that can be used for identifying the <see cref="T:System.Type" />.
+            </summary>
+    </member>
+    <member name="T:Gemstone.IO.Parsing.ISupportSourceIdentifiableFrameImage`2">
+      <summary>
+            Specifies that this <see cref="T:System.Type" /> can produce or consume a frame of data represented as a binary image
+            that can be identified by its data source.
+            </summary>
+      <typeparam name="TSourceIdentifier">Type of identifier for the data source.</typeparam>
+      <typeparam name="TTypeIdentifier">Type of the frame identifier.</typeparam>
+    </member>
+    <member name="P:Gemstone.IO.Parsing.ISupportSourceIdentifiableFrameImage`2.Source">
+      <summary>
+            Gets or sets the data source identifier of the frame image.
+            </summary>
+    </member>
+    <member name="T:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3">
+      <summary>
+            This class defines a basic implementation of parsing functionality suitable for automating the parsing of multiple
+            binary data streams, each represented as frames with common headers and returning the parsed data via an event.
+            </summary>
+      <typeparam name="TSourceIdentifier">Type of identifier for the data source.</typeparam>
+      <typeparam name="TTypeIdentifier">Type of identifier used to distinguish output types.</typeparam>
+      <typeparam name="TOutputType">Type of the interface or class used to represent outputs.</typeparam>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.#ctor">
+      <summary>
+            Creates a new instance of the <see cref="T:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3" /> class.
+            </summary>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.OnDataDiscarded(System.Byte[])">
+      <summary>
+            Raises the <see cref="E:Gemstone.IO.Parsing.BinaryImageParserBase.DataDiscarded" /> event.
+            </summary>
+      <param name="buffer">Source buffer that contains output that failed to parse.</param>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.OnDataParsed(`2)">
+      <summary>
+            Raises the <see cref="E:Gemstone.IO.Parsing.FrameImageParserBase`2.DataParsed" /> event.
+            </summary>
+      <param name="output">The object that was deserialized from binary image.</param>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.OnSourceDataParsed(`0,System.Collections.Generic.IList{`2})">
+      <summary>
+            Raises the <see cref="E:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.SourceDataParsed" /> event.
+            </summary>
+      <param name="source">Identifier for the data source.</param>
+      <param name="output">The objects that were deserialized from binary images from the <paramref name="source" /> data stream.</param>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.Parse(Gemstone.IO.Parsing.ISupportBinaryImage)">
+      <summary>
+            Not implemented. Consumers should call the <see cref="M:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.Parse(`0,Gemstone.IO.Parsing.ISupportBinaryImage)" /> method instead to make sure data source ID gets tracked with data buffer.
+            </summary>
+      <param name="image">A <see cref="T:Gemstone.IO.Parsing.ISupportBinaryImage" />.</param>
+      <exception cref="T:System.NotImplementedException">This method should not be called directly.</exception>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.Parse(`0,Gemstone.IO.Parsing.ISupportBinaryImage)">
+      <summary>
+            Queues the object implementing the <see cref="T:Gemstone.IO.Parsing.ISupportBinaryImage" /> interface, from the specified data source, onto the stream for parsing.
+            </summary>
+      <param name="source">Identifier of the data source.</param>
+      <param name="image">Object to be parsed that implements the <see cref="T:Gemstone.IO.Parsing.ISupportBinaryImage" /> interface.</param>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.Parse(`0,System.Byte[])">
+      <summary>
+            Queues a sequence of bytes, from the specified data source, onto the stream for parsing.
+            </summary>
+      <param name="source">Identifier of the data source.</param>
+      <param name="buffer">An array of bytes to queue for parsing</param>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.Parse(`0,System.Byte[],System.Int32,System.Int32)">
+      <summary>
+            Queues a sequence of bytes, from the specified data source, onto the stream for parsing.
+            </summary>
+      <param name="source">Identifier of the data source.</param>
+      <param name="buffer">An array of bytes. This method copies count bytes from buffer to the queue.</param>
+      <param name="offset">The zero-based byte offset in buffer at which to begin copying bytes to the current stream.</param>
+      <param name="count">The number of bytes to be written to the current stream.</param>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.PurgeBuffer(`0)">
+      <summary>
+            Clears the internal buffer of unparsed data received from the specified <paramref name="source" />.
+            </summary>
+      <param name="source">Identifier of the data source.</param>
+    </member>
+    <member name="P:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.QueuedBuffers">
+      <summary>
+            Gets the total number of buffers that are currently queued for processing, if any.
+            </summary>
+    </member>
+    <member name="E:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.SourceDataParsed">
+      <summary>
+            Occurs when a data image is deserialized successfully to one or more of the output types that the data image represents.
+            </summary>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.Start">
+      <summary>
+            Start the streaming data parser.
+            </summary>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.Start(System.Collections.Generic.IEnumerable{System.Type})">
+      <summary>
+            Starts the data parser given the specified type implementations.
+            </summary>
+      <param name="implementations">Output type implementations to establish for the parser.</param>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.Write(System.Byte[],System.Int32,System.Int32)">
+      <summary>
+            Not implemented. Consumers should call the <see cref="M:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.Parse(`0,System.Byte[],System.Int32,System.Int32)" /> method instead to make sure data source ID gets tracked with data buffer.
+            </summary>
+      <param name="buffer">A <see cref="T:System.Byte" /> array.</param>
+      <param name="count">An <see cref="T:System.Int32" /> for the offset.</param>
+      <param name="offset">An <see cref="T:System.Int32" /> for the count.</param>
+      <exception cref="T:System.NotImplementedException">This method should not be called directly.</exception>
+    </member>
+    <member name="T:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.SourceIdentifiableBuffer">
+      <summary>
+            Represents a source identifiable buffer.
+            </summary>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.SourceIdentifiableBuffer.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.SourceIdentifiableBuffer</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="F:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.SourceIdentifiableBuffer.Buffer">
+      <summary>
+            Defines the buffer which is identifiable by its associated <see cref="F:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.SourceIdentifiableBuffer.Source" />.
+            </summary>
+    </member>
+    <member name="P:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.SourceIdentifiableBuffer.Count">
+      <summary>
+            Gets or sets valid number of bytes within the <see cref="F:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.SourceIdentifiableBuffer.Buffer" />.
+            </summary>
+    </member>
+    <member name="P:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.SourceIdentifiableBuffer.Enabled">
+      <summary>
+            Gets or sets enabled state of <see cref="T:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.SourceIdentifiableBuffer" />.
+            </summary>
+    </member>
+    <member name="F:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.SourceIdentifiableBuffer.Source">
+      <summary>
+            Defines the source identifier of the <see cref="F:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.SourceIdentifiableBuffer.Buffer" />.
+            </summary>
+    </member>
+    <member name="T:Gemstone.IO.Parsing.TemplatedExpressionParser">
+      <summary>
+            Represents a template based token substitution parser that supports binary and advanced expressions.
+            </summary>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.TemplatedExpressionParser.#ctor">
+      <summary>
+            Creates a new <see cref="T:Gemstone.IO.Parsing.TemplatedExpressionParser" />.
+            </summary>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.TemplatedExpressionParser.#ctor(System.Char,System.Char,System.Char,System.Char)">
+      <summary>
+            Creates a new <see cref="T:Gemstone.IO.Parsing.TemplatedExpressionParser" /> with desired delimiters.
+            </summary>
+      <param name="startTokenDelimiter">Character that identifies the beginning of a token.</param>
+      <param name="endTokenDelimiter">Character that identifies the end of a token.</param>
+      <param name="startExpressionDelimiter">Character that identifies the beginning of an expression.</param>
+      <param name="endExpressionDelimiter">Character that identifies the beginning of an expression.</param>
+      <exception cref="T:System.ArgumentException">
+            All delimiters must be unique -- or -- the symbol <c>'u'</c> is reserved for encoding and cannot be used as a delimiter.
+            </exception>
+    </member>
+    <member name="P:Gemstone.IO.Parsing.TemplatedExpressionParser.EndExpressionDelimiter">
+      <summary>
+            Gets the character that identifies the end of an expression.
+            </summary>
+    </member>
+    <member name="P:Gemstone.IO.Parsing.TemplatedExpressionParser.EndTokenDelimiter">
+      <summary>
+            Gets the character that identifies the end of a token.
+            </summary>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.TemplatedExpressionParser.Execute(System.Collections.Generic.IDictionary{System.String,System.String},System.Boolean,System.Boolean,System.Boolean)">
+      <summary>
+            Executes replacements using provided <paramref name="substitutions" /> dictionary on the currently defined
+            <see cref="P:Gemstone.IO.Parsing.TemplatedExpressionParser.TemplatedExpression" /> value and optionally evaluates any expressions.
+            </summary>
+      <param name="substitutions">Dictionary of substitutions. Dictionary keys are tokens to be replaced by the values.</param>
+      <param name="ignoreCase">Determines if substitutions should be case insensitive. Defaults to <c>true</c>.</param>
+      <param name="evaluateExpressions">Determines if expressions should be evaluated. Defaults to <c>true</c>.</param>
+      <param name="escapeSubstitutionValues">Determines if reserved symbols in substitution values should be automatically escaped. Defaults to <c>true</c>.</param>
+      <returns>A string that was based on <see cref="P:Gemstone.IO.Parsing.TemplatedExpressionParser.TemplatedExpression" /> with tokens replaced and expressions evaluated.</returns>
+    </member>
+    <member name="P:Gemstone.IO.Parsing.TemplatedExpressionParser.ReservedSymbols">
+      <summary>
+            Gets the reserved symbols - this includes all delimiters and expression operators.
+            </summary>
+    </member>
+    <member name="P:Gemstone.IO.Parsing.TemplatedExpressionParser.StartExpressionDelimiter">
+      <summary>
+            Gets the character that identifies the start of an expression.
+            </summary>
+    </member>
+    <member name="P:Gemstone.IO.Parsing.TemplatedExpressionParser.StartTokenDelimiter">
+      <summary>
+            Gets the character that identifies the beginning of a token.
+            </summary>
+    </member>
+    <member name="P:Gemstone.IO.Parsing.TemplatedExpressionParser.TemplatedExpression">
+      <summary>
+            Gets or sets the templated expression to use.
+            </summary>
+    </member>
   </members>
 </doc>

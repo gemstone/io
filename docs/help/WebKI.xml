@@ -16,9 +16,11 @@
   <HelpKINode Title="Adler32.Update method" Url="html/Overload_Gemstone_IO_Checksums_Adler32_Update.htm" />
   <HelpKINode Title="Adler32.Value property" Url="html/P_Gemstone_IO_Checksums_Adler32_Value.htm" />
   <HelpKINode Title="Adler32Checksum method" Url="html/M_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions_Adler32Checksum.htm" />
+  <HelpKINode Title="AllowQueuedPublication property" Url="html/P_Gemstone_IO_Parsing_ISupportFrameImage_1_AllowQueuedPublication.htm" />
   <HelpKINode Title="AutoSave property" Url="html/P_Gemstone_IO_InterprocessCache_AutoSave.htm" />
   <HelpKINode Title="BeginInit method" Url="html/M_Gemstone_IO_SafeFileWatcher_BeginInit.htm" />
   <HelpKINode Title="BlockSize property" Url="html/P_Gemstone_IO_CachedFileStream_BlockSize.htm" />
+  <HelpKINode Title="Buffer field" Url="html/F_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_SourceIdentifiableBuffer_Buffer.htm" />
   <HelpKINode Title="CachedFileStream class">
     <HelpKINode Title="CachedFileStream Class" Url="html/T_Gemstone_IO_CachedFileStream.htm" />
     <HelpKINode Title="constructor" Url="html/Overload_Gemstone_IO_CachedFileStream__ctor.htm" />
@@ -74,6 +76,25 @@
     <HelpKINode Title="FileBackedDictionary(TKey, TValue).Close Method " Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_Close.htm" />
     <HelpKINode Title="FileBackedHashSet(T).Close Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Close.htm" />
   </HelpKINode>
+  <HelpKINode Title="CommonHeader property" Url="html/P_Gemstone_IO_Parsing_ISupportFrameImage_1_CommonHeader.htm" />
+  <HelpKINode Title="CommonHeaderBase(Of TTypeIdentifier) class">
+    <HelpKINode Title="CommonHeaderBase(TTypeIdentifier) Class" Url="html/T_Gemstone_IO_Parsing_CommonHeaderBase_1.htm" />
+    <HelpKINode Title="constructor" Url="html/M_Gemstone_IO_Parsing_CommonHeaderBase_1__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Gemstone_IO_Parsing_CommonHeaderBase_1.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_Parsing_CommonHeaderBase_1.htm" />
+  </HelpKINode>
+  <HelpKINode Title="CommonHeaderBase(Of TTypeIdentifier).CommonHeaderBase constructor" Url="html/M_Gemstone_IO_Parsing_CommonHeaderBase_1__ctor.htm" />
+  <HelpKINode Title="CommonHeaderBase(Of TTypeIdentifier).State property" Url="html/P_Gemstone_IO_Parsing_CommonHeaderBase_1_State.htm" />
+  <HelpKINode Title="CommonHeaderBase(Of TTypeIdentifier).TypeID property" Url="html/P_Gemstone_IO_Parsing_CommonHeaderBase_1_TypeID.htm" />
+  <HelpKINode Title="CommonHeaderBase&lt;TTypeIdentifier&gt; class">
+    <HelpKINode Title="CommonHeaderBase(TTypeIdentifier) Class" Url="html/T_Gemstone_IO_Parsing_CommonHeaderBase_1.htm" />
+    <HelpKINode Title="constructor" Url="html/M_Gemstone_IO_Parsing_CommonHeaderBase_1__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Gemstone_IO_Parsing_CommonHeaderBase_1.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_Parsing_CommonHeaderBase_1.htm" />
+  </HelpKINode>
+  <HelpKINode Title="CommonHeaderBase&lt;TTypeIdentifier&gt;.CommonHeaderBase constructor" Url="html/M_Gemstone_IO_Parsing_CommonHeaderBase_1__ctor.htm" />
+  <HelpKINode Title="CommonHeaderBase&lt;TTypeIdentifier&gt;.State property" Url="html/P_Gemstone_IO_Parsing_CommonHeaderBase_1_State.htm" />
+  <HelpKINode Title="CommonHeaderBase&lt;TTypeIdentifier&gt;.TypeID property" Url="html/P_Gemstone_IO_Parsing_CommonHeaderBase_1_TypeID.htm" />
   <HelpKINode Title="Compact method">
     <HelpKINode Title="FileBackedDictionary(TKey, TValue).Compact Method " Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_Compact.htm" />
     <HelpKINode Title="FileBackedHashSet(T).Compact Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Compact.htm" />
@@ -93,6 +114,7 @@
   <HelpKINode Title="Count property">
     <HelpKINode Title="FileBackedDictionary(TKey, TValue).Count Property " Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_Count.htm" />
     <HelpKINode Title="FileBackedHashSet(T).Count Property " Url="html/P_Gemstone_IO_Collections_FileBackedHashSet_1_Count.htm" />
+    <HelpKINode Title="MultiSourceFrameImageParserBase(TSourceIdentifier, TTypeIdentifier, TOutputType).SourceIdentifiableBuffer.Count Property " Url="html/P_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_SourceIdentifiableBuffer_Count.htm" />
     <HelpKINode Title="RollingWindow(T).Count Property " Url="html/P_Gemstone_IO_Collections_RollingWindow_1_Count.htm" />
   </HelpKINode>
   <HelpKINode Title="Crc16 class">
@@ -131,6 +153,10 @@
   <HelpKINode Title="CrcCCITT.Value property" Url="html/P_Gemstone_IO_Checksums_CrcCCITT_Value.htm" />
   <HelpKINode Title="CrcCCITTChecksum method" Url="html/M_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions_CrcCCITTChecksum.htm" />
   <HelpKINode Title="Created event" Url="html/E_Gemstone_IO_SafeFileWatcher_Created.htm" />
+  <HelpKINode Title="DataParsed event">
+    <HelpKINode Title="FrameImageParserBase(TTypeIdentifier, TOutputType).DataParsed Event" Url="html/E_Gemstone_IO_Parsing_FrameImageParserBase_2_DataParsed.htm" />
+    <HelpKINode Title="IFrameImageParser(TTypeIdentifier, TOutputType).DataParsed Event" Url="html/E_Gemstone_IO_Parsing_IFrameImageParser_2_DataParsed.htm" />
+  </HelpKINode>
   <HelpKINode Title="DefaultBlockSize field" Url="html/F_Gemstone_IO_CachedFileStream_DefaultBlockSize.htm" />
   <HelpKINode Title="DefaultCacheSize field" Url="html/F_Gemstone_IO_CachedFileStream_DefaultCacheSize.htm" />
   <HelpKINode Title="DefaultMaximumRetryAttempts field" Url="html/F_Gemstone_IO_InterprocessCache_DefaultMaximumRetryAttempts.htm" />
@@ -144,13 +170,22 @@
     <HelpKINode Title="CachedFileStream.Dispose Method " Url="html/Overload_Gemstone_IO_CachedFileStream_Dispose.htm" />
     <HelpKINode Title="FileBackedDictionary(TKey, TValue).Dispose Method " Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_Dispose.htm" />
     <HelpKINode Title="FileBackedHashSet(T).Dispose Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Dispose.htm" />
+    <HelpKINode Title="FrameImageParserBase(TTypeIdentifier, TOutputType).Dispose Method " Url="html/Overload_Gemstone_IO_Parsing_FrameImageParserBase_2_Dispose.htm" />
     <HelpKINode Title="InterprocessCache.Dispose Method " Url="html/Overload_Gemstone_IO_InterprocessCache_Dispose.htm" />
     <HelpKINode Title="SafeFileWatcher.Dispose Method " Url="html/Overload_Gemstone_IO_SafeFileWatcher_Dispose.htm" />
   </HelpKINode>
+  <HelpKINode Title="DuplicateTypeHandlerEncountered event" Url="html/E_Gemstone_IO_Parsing_FrameImageParserBase_2_DuplicateTypeHandlerEncountered.htm" />
+  <HelpKINode Title="Enabled property">
+    <HelpKINode Title="FrameImageParserBase(TTypeIdentifier, TOutputType).Enabled Property " Url="html/P_Gemstone_IO_Parsing_FrameImageParserBase_2_Enabled.htm" />
+    <HelpKINode Title="MultiSourceFrameImageParserBase(TSourceIdentifier, TTypeIdentifier, TOutputType).SourceIdentifiableBuffer.Enabled Property " Url="html/P_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_SourceIdentifiableBuffer_Enabled.htm" />
+  </HelpKINode>
   <HelpKINode Title="EnableRaisingEvents property" Url="html/P_Gemstone_IO_SafeFileWatcher_EnableRaisingEvents.htm" />
+  <HelpKINode Title="EndExpressionDelimiter property" Url="html/P_Gemstone_IO_Parsing_TemplatedExpressionParser_EndExpressionDelimiter.htm" />
   <HelpKINode Title="EndInit method" Url="html/M_Gemstone_IO_SafeFileWatcher_EndInit.htm" />
+  <HelpKINode Title="EndTokenDelimiter property" Url="html/P_Gemstone_IO_Parsing_TemplatedExpressionParser_EndTokenDelimiter.htm" />
   <HelpKINode Title="Error event" Url="html/E_Gemstone_IO_SafeFileWatcher_Error.htm" />
   <HelpKINode Title="ExceptWith method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_ExceptWith.htm" />
+  <HelpKINode Title="Execute method" Url="html/M_Gemstone_IO_Parsing_TemplatedExpressionParser_Execute.htm" />
   <HelpKINode Title="FileBackedDictionary(Of TKey, TValue) class">
     <HelpKINode Title="FileBackedDictionary(TKey, TValue) Class" Url="html/T_Gemstone_IO_Collections_FileBackedDictionary_2.htm" />
     <HelpKINode Title="constructor" Url="html/Overload_Gemstone_IO_Collections_FileBackedDictionary_2__ctor.htm" />
@@ -303,6 +338,52 @@
     <HelpKINode Title="FileBackedDictionary(TKey, TValue).FragmentationCount Property " Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_FragmentationCount.htm" />
     <HelpKINode Title="FileBackedHashSet(T).FragmentationCount Property " Url="html/P_Gemstone_IO_Collections_FileBackedHashSet_1_FragmentationCount.htm" />
   </HelpKINode>
+  <HelpKINode Title="FrameImageParserBase(Of TTypeIdentifier, TOutputType) class">
+    <HelpKINode Title="FrameImageParserBase(TTypeIdentifier, TOutputType) Class" Url="html/T_Gemstone_IO_Parsing_FrameImageParserBase_2.htm" />
+    <HelpKINode Title="constructor" Url="html/M_Gemstone_IO_Parsing_FrameImageParserBase_2__ctor.htm" />
+    <HelpKINode Title="events" Url="html/Events_T_Gemstone_IO_Parsing_FrameImageParserBase_2.htm" />
+    <HelpKINode Title="fields" Url="html/Fields_T_Gemstone_IO_Parsing_FrameImageParserBase_2.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Gemstone_IO_Parsing_FrameImageParserBase_2.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_Parsing_FrameImageParserBase_2.htm" />
+  </HelpKINode>
+  <HelpKINode Title="FrameImageParserBase(Of TTypeIdentifier, TOutputType).DataParsed event" Url="html/E_Gemstone_IO_Parsing_FrameImageParserBase_2_DataParsed.htm" />
+  <HelpKINode Title="FrameImageParserBase(Of TTypeIdentifier, TOutputType).Dispose method" Url="html/Overload_Gemstone_IO_Parsing_FrameImageParserBase_2_Dispose.htm" />
+  <HelpKINode Title="FrameImageParserBase(Of TTypeIdentifier, TOutputType).DuplicateTypeHandlerEncountered event" Url="html/E_Gemstone_IO_Parsing_FrameImageParserBase_2_DuplicateTypeHandlerEncountered.htm" />
+  <HelpKINode Title="FrameImageParserBase(Of TTypeIdentifier, TOutputType).Enabled property" Url="html/P_Gemstone_IO_Parsing_FrameImageParserBase_2_Enabled.htm" />
+  <HelpKINode Title="FrameImageParserBase(Of TTypeIdentifier, TOutputType).FrameImageParserBase constructor" Url="html/M_Gemstone_IO_Parsing_FrameImageParserBase_2__ctor.htm" />
+  <HelpKINode Title="FrameImageParserBase(Of TTypeIdentifier, TOutputType).OnDataParsed method" Url="html/M_Gemstone_IO_Parsing_FrameImageParserBase_2_OnDataParsed.htm" />
+  <HelpKINode Title="FrameImageParserBase(Of TTypeIdentifier, TOutputType).OnDuplicateTypeHandlerEncountered method" Url="html/M_Gemstone_IO_Parsing_FrameImageParserBase_2_OnDuplicateTypeHandlerEncountered.htm" />
+  <HelpKINode Title="FrameImageParserBase(Of TTypeIdentifier, TOutputType).OnOutputTypeNotFound method" Url="html/M_Gemstone_IO_Parsing_FrameImageParserBase_2_OnOutputTypeNotFound.htm" />
+  <HelpKINode Title="FrameImageParserBase(Of TTypeIdentifier, TOutputType).OutputTypeNotFound event" Url="html/E_Gemstone_IO_Parsing_FrameImageParserBase_2_OutputTypeNotFound.htm" />
+  <HelpKINode Title="FrameImageParserBase(Of TTypeIdentifier, TOutputType).ParseCommonHeader method" Url="html/M_Gemstone_IO_Parsing_FrameImageParserBase_2_ParseCommonHeader.htm" />
+  <HelpKINode Title="FrameImageParserBase(Of TTypeIdentifier, TOutputType).ParseFrame method" Url="html/M_Gemstone_IO_Parsing_FrameImageParserBase_2_ParseFrame.htm" />
+  <HelpKINode Title="FrameImageParserBase(Of TTypeIdentifier, TOutputType).PublishParsedOutput method" Url="html/M_Gemstone_IO_Parsing_FrameImageParserBase_2_PublishParsedOutput.htm" />
+  <HelpKINode Title="FrameImageParserBase(Of TTypeIdentifier, TOutputType).QueuedOutputs property" Url="html/P_Gemstone_IO_Parsing_FrameImageParserBase_2_QueuedOutputs.htm" />
+  <HelpKINode Title="FrameImageParserBase(Of TTypeIdentifier, TOutputType).Start method" Url="html/Overload_Gemstone_IO_Parsing_FrameImageParserBase_2_Start.htm" />
+  <HelpKINode Title="FrameImageParserBase(Of TTypeIdentifier, TOutputType).Status property" Url="html/P_Gemstone_IO_Parsing_FrameImageParserBase_2_Status.htm" />
+  <HelpKINode Title="FrameImageParserBase&lt;TTypeIdentifier, TOutputType&gt; class">
+    <HelpKINode Title="FrameImageParserBase(TTypeIdentifier, TOutputType) Class" Url="html/T_Gemstone_IO_Parsing_FrameImageParserBase_2.htm" />
+    <HelpKINode Title="constructor" Url="html/M_Gemstone_IO_Parsing_FrameImageParserBase_2__ctor.htm" />
+    <HelpKINode Title="events" Url="html/Events_T_Gemstone_IO_Parsing_FrameImageParserBase_2.htm" />
+    <HelpKINode Title="fields" Url="html/Fields_T_Gemstone_IO_Parsing_FrameImageParserBase_2.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Gemstone_IO_Parsing_FrameImageParserBase_2.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_Parsing_FrameImageParserBase_2.htm" />
+  </HelpKINode>
+  <HelpKINode Title="FrameImageParserBase&lt;TTypeIdentifier, TOutputType&gt;.DataParsed event" Url="html/E_Gemstone_IO_Parsing_FrameImageParserBase_2_DataParsed.htm" />
+  <HelpKINode Title="FrameImageParserBase&lt;TTypeIdentifier, TOutputType&gt;.Dispose method" Url="html/Overload_Gemstone_IO_Parsing_FrameImageParserBase_2_Dispose.htm" />
+  <HelpKINode Title="FrameImageParserBase&lt;TTypeIdentifier, TOutputType&gt;.DuplicateTypeHandlerEncountered event" Url="html/E_Gemstone_IO_Parsing_FrameImageParserBase_2_DuplicateTypeHandlerEncountered.htm" />
+  <HelpKINode Title="FrameImageParserBase&lt;TTypeIdentifier, TOutputType&gt;.Enabled property" Url="html/P_Gemstone_IO_Parsing_FrameImageParserBase_2_Enabled.htm" />
+  <HelpKINode Title="FrameImageParserBase&lt;TTypeIdentifier, TOutputType&gt;.FrameImageParserBase constructor" Url="html/M_Gemstone_IO_Parsing_FrameImageParserBase_2__ctor.htm" />
+  <HelpKINode Title="FrameImageParserBase&lt;TTypeIdentifier, TOutputType&gt;.OnDataParsed method" Url="html/M_Gemstone_IO_Parsing_FrameImageParserBase_2_OnDataParsed.htm" />
+  <HelpKINode Title="FrameImageParserBase&lt;TTypeIdentifier, TOutputType&gt;.OnDuplicateTypeHandlerEncountered method" Url="html/M_Gemstone_IO_Parsing_FrameImageParserBase_2_OnDuplicateTypeHandlerEncountered.htm" />
+  <HelpKINode Title="FrameImageParserBase&lt;TTypeIdentifier, TOutputType&gt;.OnOutputTypeNotFound method" Url="html/M_Gemstone_IO_Parsing_FrameImageParserBase_2_OnOutputTypeNotFound.htm" />
+  <HelpKINode Title="FrameImageParserBase&lt;TTypeIdentifier, TOutputType&gt;.OutputTypeNotFound event" Url="html/E_Gemstone_IO_Parsing_FrameImageParserBase_2_OutputTypeNotFound.htm" />
+  <HelpKINode Title="FrameImageParserBase&lt;TTypeIdentifier, TOutputType&gt;.ParseCommonHeader method" Url="html/M_Gemstone_IO_Parsing_FrameImageParserBase_2_ParseCommonHeader.htm" />
+  <HelpKINode Title="FrameImageParserBase&lt;TTypeIdentifier, TOutputType&gt;.ParseFrame method" Url="html/M_Gemstone_IO_Parsing_FrameImageParserBase_2_ParseFrame.htm" />
+  <HelpKINode Title="FrameImageParserBase&lt;TTypeIdentifier, TOutputType&gt;.PublishParsedOutput method" Url="html/M_Gemstone_IO_Parsing_FrameImageParserBase_2_PublishParsedOutput.htm" />
+  <HelpKINode Title="FrameImageParserBase&lt;TTypeIdentifier, TOutputType&gt;.QueuedOutputs property" Url="html/P_Gemstone_IO_Parsing_FrameImageParserBase_2_QueuedOutputs.htm" />
+  <HelpKINode Title="FrameImageParserBase&lt;TTypeIdentifier, TOutputType&gt;.Start method" Url="html/Overload_Gemstone_IO_Parsing_FrameImageParserBase_2_Start.htm" />
+  <HelpKINode Title="FrameImageParserBase&lt;TTypeIdentifier, TOutputType&gt;.Status property" Url="html/P_Gemstone_IO_Parsing_FrameImageParserBase_2_Status.htm" />
   <HelpKINode Title="Gemstone.IO namespace" Url="html/N_Gemstone_IO.htm" />
   <HelpKINode Title="Gemstone.IO.CachedFileStream class" Url="html/T_Gemstone_IO_CachedFileStream.htm" />
   <HelpKINode Title="Gemstone.IO.Checksums namespace" Url="html/N_Gemstone_IO_Checksums.htm" />
@@ -325,6 +406,24 @@
   <HelpKINode Title="Gemstone.IO.Collections.RollingWindow(Of T) class" Url="html/T_Gemstone_IO_Collections_RollingWindow_1.htm" />
   <HelpKINode Title="Gemstone.IO.Collections.RollingWindow&lt;T&gt; class" Url="html/T_Gemstone_IO_Collections_RollingWindow_1.htm" />
   <HelpKINode Title="Gemstone.IO.InterprocessCache class" Url="html/T_Gemstone_IO_InterprocessCache.htm" />
+  <HelpKINode Title="Gemstone.IO.Parsing namespace" Url="html/N_Gemstone_IO_Parsing.htm" />
+  <HelpKINode Title="Gemstone.IO.Parsing.CommonHeaderBase(Of TTypeIdentifier) class" Url="html/T_Gemstone_IO_Parsing_CommonHeaderBase_1.htm" />
+  <HelpKINode Title="Gemstone.IO.Parsing.CommonHeaderBase&lt;TTypeIdentifier&gt; class" Url="html/T_Gemstone_IO_Parsing_CommonHeaderBase_1.htm" />
+  <HelpKINode Title="Gemstone.IO.Parsing.FrameImageParserBase(Of TTypeIdentifier, TOutputType) class" Url="html/T_Gemstone_IO_Parsing_FrameImageParserBase_2.htm" />
+  <HelpKINode Title="Gemstone.IO.Parsing.FrameImageParserBase&lt;TTypeIdentifier, TOutputType&gt; class" Url="html/T_Gemstone_IO_Parsing_FrameImageParserBase_2.htm" />
+  <HelpKINode Title="Gemstone.IO.Parsing.ICommonHeader(Of TTypeIdentifier) interface" Url="html/T_Gemstone_IO_Parsing_ICommonHeader_1.htm" />
+  <HelpKINode Title="Gemstone.IO.Parsing.ICommonHeader&lt;TTypeIdentifier&gt; interface" Url="html/T_Gemstone_IO_Parsing_ICommonHeader_1.htm" />
+  <HelpKINode Title="Gemstone.IO.Parsing.IFrameImageParser(Of TTypeIdentifier, TOutputType) interface" Url="html/T_Gemstone_IO_Parsing_IFrameImageParser_2.htm" />
+  <HelpKINode Title="Gemstone.IO.Parsing.IFrameImageParser&lt;TTypeIdentifier, TOutputType&gt; interface" Url="html/T_Gemstone_IO_Parsing_IFrameImageParser_2.htm" />
+  <HelpKINode Title="Gemstone.IO.Parsing.ISupportFrameImage(Of TTypeIdentifier) interface" Url="html/T_Gemstone_IO_Parsing_ISupportFrameImage_1.htm" />
+  <HelpKINode Title="Gemstone.IO.Parsing.ISupportFrameImage&lt;TTypeIdentifier&gt; interface" Url="html/T_Gemstone_IO_Parsing_ISupportFrameImage_1.htm" />
+  <HelpKINode Title="Gemstone.IO.Parsing.ISupportSourceIdentifiableFrameImage(Of TSourceIdentifier, TTypeIdentifier) interface" Url="html/T_Gemstone_IO_Parsing_ISupportSourceIdentifiableFrameImage_2.htm" />
+  <HelpKINode Title="Gemstone.IO.Parsing.ISupportSourceIdentifiableFrameImage&lt;TSourceIdentifier, TTypeIdentifier&gt; interface" Url="html/T_Gemstone_IO_Parsing_ISupportSourceIdentifiableFrameImage_2.htm" />
+  <HelpKINode Title="Gemstone.IO.Parsing.MultiSourceFrameImageParserBase(Of TSourceIdentifier, TTypeIdentifier, TOutputType) class" Url="html/T_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3.htm" />
+  <HelpKINode Title="Gemstone.IO.Parsing.MultiSourceFrameImageParserBase(Of TSourceIdentifier, TTypeIdentifier, TOutputType).SourceIdentifiableBuffer class" Url="html/T_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_SourceIdentifiableBuffer.htm" />
+  <HelpKINode Title="Gemstone.IO.Parsing.MultiSourceFrameImageParserBase&lt;TSourceIdentifier, TTypeIdentifier, TOutputType&gt; class" Url="html/T_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3.htm" />
+  <HelpKINode Title="Gemstone.IO.Parsing.MultiSourceFrameImageParserBase&lt;TSourceIdentifier, TTypeIdentifier, TOutputType&gt;.SourceIdentifiableBuffer class" Url="html/T_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_SourceIdentifiableBuffer.htm" />
+  <HelpKINode Title="Gemstone.IO.Parsing.TemplatedExpressionParser class" Url="html/T_Gemstone_IO_Parsing_TemplatedExpressionParser.htm" />
   <HelpKINode Title="Gemstone.IO.SafeFileWatcher class" Url="html/T_Gemstone_IO_SafeFileWatcher.htm" />
   <HelpKINode Title="GetEnumerator method">
     <HelpKINode Title="FileBackedDictionary(TKey, TValue).GetEnumerator Method " Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_GetEnumerator.htm" />
@@ -333,6 +432,34 @@
   </HelpKINode>
   <HelpKINode Title="GetKeys method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_GetKeys.htm" />
   <HelpKINode Title="GetValues method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_GetValues.htm" />
+  <HelpKINode Title="ICommonHeader(Of TTypeIdentifier) interface">
+    <HelpKINode Title="ICommonHeader(TTypeIdentifier) Interface" Url="html/T_Gemstone_IO_Parsing_ICommonHeader_1.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_Parsing_ICommonHeader_1.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ICommonHeader(Of TTypeIdentifier).State property" Url="html/P_Gemstone_IO_Parsing_ICommonHeader_1_State.htm" />
+  <HelpKINode Title="ICommonHeader(Of TTypeIdentifier).TypeID property" Url="html/P_Gemstone_IO_Parsing_ICommonHeader_1_TypeID.htm" />
+  <HelpKINode Title="ICommonHeader&lt;TTypeIdentifier&gt; interface">
+    <HelpKINode Title="ICommonHeader(TTypeIdentifier) Interface" Url="html/T_Gemstone_IO_Parsing_ICommonHeader_1.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_Parsing_ICommonHeader_1.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ICommonHeader&lt;TTypeIdentifier&gt;.State property" Url="html/P_Gemstone_IO_Parsing_ICommonHeader_1_State.htm" />
+  <HelpKINode Title="ICommonHeader&lt;TTypeIdentifier&gt;.TypeID property" Url="html/P_Gemstone_IO_Parsing_ICommonHeader_1_TypeID.htm" />
+  <HelpKINode Title="IFrameImageParser(Of TTypeIdentifier, TOutputType) interface">
+    <HelpKINode Title="IFrameImageParser(TTypeIdentifier, TOutputType) Interface" Url="html/T_Gemstone_IO_Parsing_IFrameImageParser_2.htm" />
+    <HelpKINode Title="events" Url="html/Events_T_Gemstone_IO_Parsing_IFrameImageParser_2.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Gemstone_IO_Parsing_IFrameImageParser_2.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_Parsing_IFrameImageParser_2.htm" />
+  </HelpKINode>
+  <HelpKINode Title="IFrameImageParser(Of TTypeIdentifier, TOutputType).DataParsed event" Url="html/E_Gemstone_IO_Parsing_IFrameImageParser_2_DataParsed.htm" />
+  <HelpKINode Title="IFrameImageParser(Of TTypeIdentifier, TOutputType).OutputTypeNotFound event" Url="html/E_Gemstone_IO_Parsing_IFrameImageParser_2_OutputTypeNotFound.htm" />
+  <HelpKINode Title="IFrameImageParser&lt;TTypeIdentifier, TOutputType&gt; interface">
+    <HelpKINode Title="IFrameImageParser(TTypeIdentifier, TOutputType) Interface" Url="html/T_Gemstone_IO_Parsing_IFrameImageParser_2.htm" />
+    <HelpKINode Title="events" Url="html/Events_T_Gemstone_IO_Parsing_IFrameImageParser_2.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Gemstone_IO_Parsing_IFrameImageParser_2.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_Parsing_IFrameImageParser_2.htm" />
+  </HelpKINode>
+  <HelpKINode Title="IFrameImageParser&lt;TTypeIdentifier, TOutputType&gt;.DataParsed event" Url="html/E_Gemstone_IO_Parsing_IFrameImageParser_2_DataParsed.htm" />
+  <HelpKINode Title="IFrameImageParser&lt;TTypeIdentifier, TOutputType&gt;.OutputTypeNotFound event" Url="html/E_Gemstone_IO_Parsing_IFrameImageParser_2_OutputTypeNotFound.htm" />
   <HelpKINode Title="IncludeSubdirectories property" Url="html/P_Gemstone_IO_SafeFileWatcher_IncludeSubdirectories.htm" />
   <HelpKINode Title="IndexOf method" Url="html/M_Gemstone_IO_Collections_RollingWindow_1_IndexOf.htm" />
   <HelpKINode Title="Insert method" Url="html/M_Gemstone_IO_Collections_RollingWindow_1_Insert.htm" />
@@ -372,6 +499,34 @@
   </HelpKINode>
   <HelpKINode Title="IsSubsetOf method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_IsSubsetOf.htm" />
   <HelpKINode Title="IsSupersetOf method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_IsSupersetOf.htm" />
+  <HelpKINode Title="ISupportFrameImage(Of TTypeIdentifier) interface">
+    <HelpKINode Title="ISupportFrameImage(TTypeIdentifier) Interface" Url="html/T_Gemstone_IO_Parsing_ISupportFrameImage_1.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Gemstone_IO_Parsing_ISupportFrameImage_1.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_Parsing_ISupportFrameImage_1.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ISupportFrameImage(Of TTypeIdentifier).AllowQueuedPublication property" Url="html/P_Gemstone_IO_Parsing_ISupportFrameImage_1_AllowQueuedPublication.htm" />
+  <HelpKINode Title="ISupportFrameImage(Of TTypeIdentifier).CommonHeader property" Url="html/P_Gemstone_IO_Parsing_ISupportFrameImage_1_CommonHeader.htm" />
+  <HelpKINode Title="ISupportFrameImage(Of TTypeIdentifier).TypeID property" Url="html/P_Gemstone_IO_Parsing_ISupportFrameImage_1_TypeID.htm" />
+  <HelpKINode Title="ISupportFrameImage&lt;TTypeIdentifier&gt; interface">
+    <HelpKINode Title="ISupportFrameImage(TTypeIdentifier) Interface" Url="html/T_Gemstone_IO_Parsing_ISupportFrameImage_1.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Gemstone_IO_Parsing_ISupportFrameImage_1.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_Parsing_ISupportFrameImage_1.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ISupportFrameImage&lt;TTypeIdentifier&gt;.AllowQueuedPublication property" Url="html/P_Gemstone_IO_Parsing_ISupportFrameImage_1_AllowQueuedPublication.htm" />
+  <HelpKINode Title="ISupportFrameImage&lt;TTypeIdentifier&gt;.CommonHeader property" Url="html/P_Gemstone_IO_Parsing_ISupportFrameImage_1_CommonHeader.htm" />
+  <HelpKINode Title="ISupportFrameImage&lt;TTypeIdentifier&gt;.TypeID property" Url="html/P_Gemstone_IO_Parsing_ISupportFrameImage_1_TypeID.htm" />
+  <HelpKINode Title="ISupportSourceIdentifiableFrameImage(Of TSourceIdentifier, TTypeIdentifier) interface">
+    <HelpKINode Title="ISupportSourceIdentifiableFrameImage(TSourceIdentifier, TTypeIdentifier) Interface" Url="html/T_Gemstone_IO_Parsing_ISupportSourceIdentifiableFrameImage_2.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Gemstone_IO_Parsing_ISupportSourceIdentifiableFrameImage_2.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_Parsing_ISupportSourceIdentifiableFrameImage_2.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ISupportSourceIdentifiableFrameImage(Of TSourceIdentifier, TTypeIdentifier).Source property" Url="html/P_Gemstone_IO_Parsing_ISupportSourceIdentifiableFrameImage_2_Source.htm" />
+  <HelpKINode Title="ISupportSourceIdentifiableFrameImage&lt;TSourceIdentifier, TTypeIdentifier&gt; interface">
+    <HelpKINode Title="ISupportSourceIdentifiableFrameImage(TSourceIdentifier, TTypeIdentifier) Interface" Url="html/T_Gemstone_IO_Parsing_ISupportSourceIdentifiableFrameImage_2.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Gemstone_IO_Parsing_ISupportSourceIdentifiableFrameImage_2.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_Parsing_ISupportSourceIdentifiableFrameImage_2.htm" />
+  </HelpKINode>
+  <HelpKINode Title="ISupportSourceIdentifiableFrameImage&lt;TSourceIdentifier, TTypeIdentifier&gt;.Source property" Url="html/P_Gemstone_IO_Parsing_ISupportSourceIdentifiableFrameImage_2_Source.htm" />
   <HelpKINode Title="Item property">
     <HelpKINode Title="FileBackedDictionary(TKey, TValue).Item Property " Url="html/P_Gemstone_IO_Collections_FileBackedDictionary_2_Item.htm" />
     <HelpKINode Title="RollingWindow(T).Item Property " Url="html/P_Gemstone_IO_Collections_RollingWindow_1_Item.htm" />
@@ -384,7 +539,69 @@
   <HelpKINode Title="MaximumRetryAttempts property" Url="html/P_Gemstone_IO_InterprocessCache_MaximumRetryAttempts.htm" />
   <HelpKINode Title="ModBus enumeration member" Url="html/T_Gemstone_IO_Checksums_ChecksumType.htm" />
   <HelpKINode Title="ModBusCrcChecksum method" Url="html/M_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions_ModBusCrcChecksum.htm" />
+  <HelpKINode Title="MultiSourceFrameImageParserBase(Of TSourceIdentifier, TTypeIdentifier, TOutputType) class">
+    <HelpKINode Title="MultiSourceFrameImageParserBase(TSourceIdentifier, TTypeIdentifier, TOutputType) Class" Url="html/T_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3.htm" />
+    <HelpKINode Title="constructor" Url="html/M_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3__ctor.htm" />
+    <HelpKINode Title="events" Url="html/Events_T_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3.htm" />
+    <HelpKINode Title="fields" Url="html/Fields_T_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3.htm" />
+  </HelpKINode>
+  <HelpKINode Title="MultiSourceFrameImageParserBase(Of TSourceIdentifier, TTypeIdentifier, TOutputType).MultiSourceFrameImageParserBase constructor" Url="html/M_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3__ctor.htm" />
+  <HelpKINode Title="MultiSourceFrameImageParserBase(Of TSourceIdentifier, TTypeIdentifier, TOutputType).OnDataDiscarded method" Url="html/M_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_OnDataDiscarded.htm" />
+  <HelpKINode Title="MultiSourceFrameImageParserBase(Of TSourceIdentifier, TTypeIdentifier, TOutputType).OnDataParsed method" Url="html/M_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_OnDataParsed.htm" />
+  <HelpKINode Title="MultiSourceFrameImageParserBase(Of TSourceIdentifier, TTypeIdentifier, TOutputType).OnSourceDataParsed method" Url="html/M_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_OnSourceDataParsed.htm" />
+  <HelpKINode Title="MultiSourceFrameImageParserBase(Of TSourceIdentifier, TTypeIdentifier, TOutputType).Parse method" Url="html/Overload_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_Parse.htm" />
+  <HelpKINode Title="MultiSourceFrameImageParserBase(Of TSourceIdentifier, TTypeIdentifier, TOutputType).PurgeBuffer method" Url="html/M_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_PurgeBuffer.htm" />
+  <HelpKINode Title="MultiSourceFrameImageParserBase(Of TSourceIdentifier, TTypeIdentifier, TOutputType).QueuedBuffers property" Url="html/P_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_QueuedBuffers.htm" />
+  <HelpKINode Title="MultiSourceFrameImageParserBase(Of TSourceIdentifier, TTypeIdentifier, TOutputType).SourceDataParsed event" Url="html/E_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_SourceDataParsed.htm" />
+  <HelpKINode Title="MultiSourceFrameImageParserBase(Of TSourceIdentifier, TTypeIdentifier, TOutputType).SourceIdentifiableBuffer class">
+    <HelpKINode Title="MultiSourceFrameImageParserBase(TSourceIdentifier, TTypeIdentifier, TOutputType).SourceIdentifiableBuffer Class" Url="html/T_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_SourceIdentifiableBuffer.htm" />
+    <HelpKINode Title="constructor" Url="html/M_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_SourceIdentifiableBuffer__ctor.htm" />
+  </HelpKINode>
+  <HelpKINode Title="MultiSourceFrameImageParserBase(Of TSourceIdentifier, TTypeIdentifier, TOutputType).SourceIdentifiableBuffer.Buffer field" Url="html/F_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_SourceIdentifiableBuffer_Buffer.htm" />
+  <HelpKINode Title="MultiSourceFrameImageParserBase(Of TSourceIdentifier, TTypeIdentifier, TOutputType).SourceIdentifiableBuffer.Count property" Url="html/P_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_SourceIdentifiableBuffer_Count.htm" />
+  <HelpKINode Title="MultiSourceFrameImageParserBase(Of TSourceIdentifier, TTypeIdentifier, TOutputType).SourceIdentifiableBuffer.Enabled property" Url="html/P_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_SourceIdentifiableBuffer_Enabled.htm" />
+  <HelpKINode Title="MultiSourceFrameImageParserBase(Of TSourceIdentifier, TTypeIdentifier, TOutputType).SourceIdentifiableBuffer.Source field" Url="html/F_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_SourceIdentifiableBuffer_Source.htm" />
+  <HelpKINode Title="MultiSourceFrameImageParserBase(Of TSourceIdentifier, TTypeIdentifier, TOutputType).SourceIdentifiableBuffer.SourceIdentifiableBuffer constructor" Url="html/M_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_SourceIdentifiableBuffer__ctor.htm" />
+  <HelpKINode Title="MultiSourceFrameImageParserBase(Of TSourceIdentifier, TTypeIdentifier, TOutputType).Start method" Url="html/Overload_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_Start.htm" />
+  <HelpKINode Title="MultiSourceFrameImageParserBase(Of TSourceIdentifier, TTypeIdentifier, TOutputType).Write method" Url="html/M_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_Write.htm" />
+  <HelpKINode Title="MultiSourceFrameImageParserBase&lt;TSourceIdentifier, TTypeIdentifier, TOutputType&gt; class">
+    <HelpKINode Title="MultiSourceFrameImageParserBase(TSourceIdentifier, TTypeIdentifier, TOutputType) Class" Url="html/T_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3.htm" />
+    <HelpKINode Title="constructor" Url="html/M_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3__ctor.htm" />
+    <HelpKINode Title="events" Url="html/Events_T_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3.htm" />
+    <HelpKINode Title="fields" Url="html/Fields_T_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3.htm" />
+  </HelpKINode>
+  <HelpKINode Title="MultiSourceFrameImageParserBase&lt;TSourceIdentifier, TTypeIdentifier, TOutputType&gt;.MultiSourceFrameImageParserBase constructor" Url="html/M_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3__ctor.htm" />
+  <HelpKINode Title="MultiSourceFrameImageParserBase&lt;TSourceIdentifier, TTypeIdentifier, TOutputType&gt;.OnDataDiscarded method" Url="html/M_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_OnDataDiscarded.htm" />
+  <HelpKINode Title="MultiSourceFrameImageParserBase&lt;TSourceIdentifier, TTypeIdentifier, TOutputType&gt;.OnDataParsed method" Url="html/M_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_OnDataParsed.htm" />
+  <HelpKINode Title="MultiSourceFrameImageParserBase&lt;TSourceIdentifier, TTypeIdentifier, TOutputType&gt;.OnSourceDataParsed method" Url="html/M_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_OnSourceDataParsed.htm" />
+  <HelpKINode Title="MultiSourceFrameImageParserBase&lt;TSourceIdentifier, TTypeIdentifier, TOutputType&gt;.Parse method" Url="html/Overload_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_Parse.htm" />
+  <HelpKINode Title="MultiSourceFrameImageParserBase&lt;TSourceIdentifier, TTypeIdentifier, TOutputType&gt;.PurgeBuffer method" Url="html/M_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_PurgeBuffer.htm" />
+  <HelpKINode Title="MultiSourceFrameImageParserBase&lt;TSourceIdentifier, TTypeIdentifier, TOutputType&gt;.QueuedBuffers property" Url="html/P_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_QueuedBuffers.htm" />
+  <HelpKINode Title="MultiSourceFrameImageParserBase&lt;TSourceIdentifier, TTypeIdentifier, TOutputType&gt;.SourceDataParsed event" Url="html/E_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_SourceDataParsed.htm" />
+  <HelpKINode Title="MultiSourceFrameImageParserBase&lt;TSourceIdentifier, TTypeIdentifier, TOutputType&gt;.SourceIdentifiableBuffer class">
+    <HelpKINode Title="MultiSourceFrameImageParserBase(TSourceIdentifier, TTypeIdentifier, TOutputType).SourceIdentifiableBuffer Class" Url="html/T_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_SourceIdentifiableBuffer.htm" />
+    <HelpKINode Title="constructor" Url="html/M_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_SourceIdentifiableBuffer__ctor.htm" />
+  </HelpKINode>
+  <HelpKINode Title="MultiSourceFrameImageParserBase&lt;TSourceIdentifier, TTypeIdentifier, TOutputType&gt;.SourceIdentifiableBuffer.Buffer field" Url="html/F_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_SourceIdentifiableBuffer_Buffer.htm" />
+  <HelpKINode Title="MultiSourceFrameImageParserBase&lt;TSourceIdentifier, TTypeIdentifier, TOutputType&gt;.SourceIdentifiableBuffer.Count property" Url="html/P_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_SourceIdentifiableBuffer_Count.htm" />
+  <HelpKINode Title="MultiSourceFrameImageParserBase&lt;TSourceIdentifier, TTypeIdentifier, TOutputType&gt;.SourceIdentifiableBuffer.Enabled property" Url="html/P_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_SourceIdentifiableBuffer_Enabled.htm" />
+  <HelpKINode Title="MultiSourceFrameImageParserBase&lt;TSourceIdentifier, TTypeIdentifier, TOutputType&gt;.SourceIdentifiableBuffer.Source field" Url="html/F_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_SourceIdentifiableBuffer_Source.htm" />
+  <HelpKINode Title="MultiSourceFrameImageParserBase&lt;TSourceIdentifier, TTypeIdentifier, TOutputType&gt;.SourceIdentifiableBuffer.SourceIdentifiableBuffer constructor" Url="html/M_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_SourceIdentifiableBuffer__ctor.htm" />
+  <HelpKINode Title="MultiSourceFrameImageParserBase&lt;TSourceIdentifier, TTypeIdentifier, TOutputType&gt;.Start method" Url="html/Overload_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_Start.htm" />
+  <HelpKINode Title="MultiSourceFrameImageParserBase&lt;TSourceIdentifier, TTypeIdentifier, TOutputType&gt;.Write method" Url="html/M_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_Write.htm" />
   <HelpKINode Title="NotifyFilter property" Url="html/P_Gemstone_IO_SafeFileWatcher_NotifyFilter.htm" />
+  <HelpKINode Title="OnDataDiscarded method" Url="html/M_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_OnDataDiscarded.htm" />
+  <HelpKINode Title="OnDataParsed method">
+    <HelpKINode Title="FrameImageParserBase(TTypeIdentifier, TOutputType).OnDataParsed Method " Url="html/M_Gemstone_IO_Parsing_FrameImageParserBase_2_OnDataParsed.htm" />
+    <HelpKINode Title="MultiSourceFrameImageParserBase(TSourceIdentifier, TTypeIdentifier, TOutputType).OnDataParsed Method " Url="html/M_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_OnDataParsed.htm" />
+  </HelpKINode>
+  <HelpKINode Title="OnDuplicateTypeHandlerEncountered method" Url="html/M_Gemstone_IO_Parsing_FrameImageParserBase_2_OnDuplicateTypeHandlerEncountered.htm" />
+  <HelpKINode Title="OnOutputTypeNotFound method" Url="html/M_Gemstone_IO_Parsing_FrameImageParserBase_2_OnOutputTypeNotFound.htm" />
+  <HelpKINode Title="OnSourceDataParsed method" Url="html/M_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_OnSourceDataParsed.htm" />
   <HelpKINode Title="Open method">
     <HelpKINode Title="FileBackedDictionary(TKey, TValue).Open Method " Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_Open.htm" />
     <HelpKINode Title="FileBackedHashSet(T).Open Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Open.htm" />
@@ -393,9 +610,20 @@
     <HelpKINode Title="FileBackedDictionary(TKey, TValue).OpenRead Method " Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_OpenRead.htm" />
     <HelpKINode Title="FileBackedHashSet(T).OpenRead Method " Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_OpenRead.htm" />
   </HelpKINode>
+  <HelpKINode Title="OutputTypeNotFound event">
+    <HelpKINode Title="FrameImageParserBase(TTypeIdentifier, TOutputType).OutputTypeNotFound Event" Url="html/E_Gemstone_IO_Parsing_FrameImageParserBase_2_OutputTypeNotFound.htm" />
+    <HelpKINode Title="IFrameImageParser(TTypeIdentifier, TOutputType).OutputTypeNotFound Event" Url="html/E_Gemstone_IO_Parsing_IFrameImageParser_2_OutputTypeNotFound.htm" />
+  </HelpKINode>
   <HelpKINode Title="Overlaps method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_Overlaps.htm" />
+  <HelpKINode Title="Parse method" Url="html/Overload_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_Parse.htm" />
+  <HelpKINode Title="ParseCommonHeader method" Url="html/M_Gemstone_IO_Parsing_FrameImageParserBase_2_ParseCommonHeader.htm" />
+  <HelpKINode Title="ParseFrame method" Url="html/M_Gemstone_IO_Parsing_FrameImageParserBase_2_ParseFrame.htm" />
   <HelpKINode Title="Path property" Url="html/P_Gemstone_IO_SafeFileWatcher_Path.htm" />
   <HelpKINode Title="Position property" Url="html/P_Gemstone_IO_CachedFileStream_Position.htm" />
+  <HelpKINode Title="PublishParsedOutput method" Url="html/M_Gemstone_IO_Parsing_FrameImageParserBase_2_PublishParsedOutput.htm" />
+  <HelpKINode Title="PurgeBuffer method" Url="html/M_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_PurgeBuffer.htm" />
+  <HelpKINode Title="QueuedBuffers property" Url="html/P_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_QueuedBuffers.htm" />
+  <HelpKINode Title="QueuedOutputs property" Url="html/P_Gemstone_IO_Parsing_FrameImageParserBase_2_QueuedOutputs.htm" />
   <HelpKINode Title="Read method" Url="html/M_Gemstone_IO_CachedFileStream_Read.htm" />
   <HelpKINode Title="ReloadOnChange property" Url="html/P_Gemstone_IO_InterprocessCache_ReloadOnChange.htm" />
   <HelpKINode Title="Remove method">
@@ -406,6 +634,7 @@
   <HelpKINode Title="RemoveAt method" Url="html/M_Gemstone_IO_Collections_RollingWindow_1_RemoveAt.htm" />
   <HelpKINode Title="RemoveWhere method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_RemoveWhere.htm" />
   <HelpKINode Title="Renamed event" Url="html/E_Gemstone_IO_SafeFileWatcher_Renamed.htm" />
+  <HelpKINode Title="ReservedSymbols property" Url="html/P_Gemstone_IO_Parsing_TemplatedExpressionParser_ReservedSymbols.htm" />
   <HelpKINode Title="Reset method">
     <HelpKINode Title="Adler32.Reset Method " Url="html/M_Gemstone_IO_Checksums_Adler32_Reset.htm" />
     <HelpKINode Title="Crc16.Reset Method " Url="html/Overload_Gemstone_IO_Checksums_Crc16_Reset.htm" />
@@ -493,9 +722,48 @@
     <HelpKINode Title="FileBackedHashSet(T).Signature Property " Url="html/P_Gemstone_IO_Collections_FileBackedHashSet_1_Signature.htm" />
   </HelpKINode>
   <HelpKINode Title="Site property" Url="html/P_Gemstone_IO_SafeFileWatcher_Site.htm" />
+  <HelpKINode Title="Source field" Url="html/F_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_SourceIdentifiableBuffer_Source.htm" />
+  <HelpKINode Title="Source property" Url="html/P_Gemstone_IO_Parsing_ISupportSourceIdentifiableFrameImage_2_Source.htm" />
+  <HelpKINode Title="SourceDataParsed event" Url="html/E_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_SourceDataParsed.htm" />
+  <HelpKINode Title="SourceIdentifiableBuffer class">
+    <HelpKINode Title="fields" Url="html/Fields_T_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_SourceIdentifiableBuffer.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_SourceIdentifiableBuffer.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_SourceIdentifiableBuffer.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Start method">
+    <HelpKINode Title="FrameImageParserBase(TTypeIdentifier, TOutputType).Start Method " Url="html/Overload_Gemstone_IO_Parsing_FrameImageParserBase_2_Start.htm" />
+    <HelpKINode Title="MultiSourceFrameImageParserBase(TSourceIdentifier, TTypeIdentifier, TOutputType).Start Method " Url="html/Overload_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_Start.htm" />
+  </HelpKINode>
+  <HelpKINode Title="StartExpressionDelimiter property" Url="html/P_Gemstone_IO_Parsing_TemplatedExpressionParser_StartExpressionDelimiter.htm" />
+  <HelpKINode Title="StartTokenDelimiter property" Url="html/P_Gemstone_IO_Parsing_TemplatedExpressionParser_StartTokenDelimiter.htm" />
+  <HelpKINode Title="State property">
+    <HelpKINode Title="CommonHeaderBase(TTypeIdentifier).State Property " Url="html/P_Gemstone_IO_Parsing_CommonHeaderBase_1_State.htm" />
+    <HelpKINode Title="ICommonHeader(TTypeIdentifier).State Property " Url="html/P_Gemstone_IO_Parsing_ICommonHeader_1_State.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Status property" Url="html/P_Gemstone_IO_Parsing_FrameImageParserBase_2_Status.htm" />
   <HelpKINode Title="SymmetricExceptWith method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_SymmetricExceptWith.htm" />
   <HelpKINode Title="SynchronizingObject property" Url="html/P_Gemstone_IO_SafeFileWatcher_SynchronizingObject.htm" />
+  <HelpKINode Title="TemplatedExpression property" Url="html/P_Gemstone_IO_Parsing_TemplatedExpressionParser_TemplatedExpression.htm" />
+  <HelpKINode Title="TemplatedExpressionParser class">
+    <HelpKINode Title="TemplatedExpressionParser Class" Url="html/T_Gemstone_IO_Parsing_TemplatedExpressionParser.htm" />
+    <HelpKINode Title="constructor" Url="html/Overload_Gemstone_IO_Parsing_TemplatedExpressionParser__ctor.htm" />
+    <HelpKINode Title="methods" Url="html/Methods_T_Gemstone_IO_Parsing_TemplatedExpressionParser.htm" />
+    <HelpKINode Title="properties" Url="html/Properties_T_Gemstone_IO_Parsing_TemplatedExpressionParser.htm" />
+  </HelpKINode>
+  <HelpKINode Title="TemplatedExpressionParser.EndExpressionDelimiter property" Url="html/P_Gemstone_IO_Parsing_TemplatedExpressionParser_EndExpressionDelimiter.htm" />
+  <HelpKINode Title="TemplatedExpressionParser.EndTokenDelimiter property" Url="html/P_Gemstone_IO_Parsing_TemplatedExpressionParser_EndTokenDelimiter.htm" />
+  <HelpKINode Title="TemplatedExpressionParser.Execute method" Url="html/M_Gemstone_IO_Parsing_TemplatedExpressionParser_Execute.htm" />
+  <HelpKINode Title="TemplatedExpressionParser.ReservedSymbols property" Url="html/P_Gemstone_IO_Parsing_TemplatedExpressionParser_ReservedSymbols.htm" />
+  <HelpKINode Title="TemplatedExpressionParser.StartExpressionDelimiter property" Url="html/P_Gemstone_IO_Parsing_TemplatedExpressionParser_StartExpressionDelimiter.htm" />
+  <HelpKINode Title="TemplatedExpressionParser.StartTokenDelimiter property" Url="html/P_Gemstone_IO_Parsing_TemplatedExpressionParser_StartTokenDelimiter.htm" />
+  <HelpKINode Title="TemplatedExpressionParser.TemplatedExpression property" Url="html/P_Gemstone_IO_Parsing_TemplatedExpressionParser_TemplatedExpression.htm" />
+  <HelpKINode Title="TemplatedExpressionParser.TemplatedExpressionParser constructor" Url="html/Overload_Gemstone_IO_Parsing_TemplatedExpressionParser__ctor.htm" />
   <HelpKINode Title="TryGetValue method" Url="html/M_Gemstone_IO_Collections_FileBackedDictionary_2_TryGetValue.htm" />
+  <HelpKINode Title="TypeID property">
+    <HelpKINode Title="CommonHeaderBase(TTypeIdentifier).TypeID Property " Url="html/P_Gemstone_IO_Parsing_CommonHeaderBase_1_TypeID.htm" />
+    <HelpKINode Title="ICommonHeader(TTypeIdentifier).TypeID Property " Url="html/P_Gemstone_IO_Parsing_ICommonHeader_1_TypeID.htm" />
+    <HelpKINode Title="ISupportFrameImage(TTypeIdentifier).TypeID Property " Url="html/P_Gemstone_IO_Parsing_ISupportFrameImage_1_TypeID.htm" />
+  </HelpKINode>
   <HelpKINode Title="UnionWith method" Url="html/M_Gemstone_IO_Collections_FileBackedHashSet_1_UnionWith.htm" />
   <HelpKINode Title="Update method">
     <HelpKINode Title="Adler32.Update Method " Url="html/Overload_Gemstone_IO_Checksums_Adler32_Update.htm" />
@@ -525,7 +793,10 @@
     <HelpKINode Title="getting started, root, gemstone" Url="html/About.htm" />
   </HelpKINode>
   <HelpKINode Title="WindowSize property" Url="html/P_Gemstone_IO_Collections_RollingWindow_1_WindowSize.htm" />
-  <HelpKINode Title="Write method" Url="html/M_Gemstone_IO_CachedFileStream_Write.htm" />
+  <HelpKINode Title="Write method">
+    <HelpKINode Title="CachedFileStream.Write Method " Url="html/M_Gemstone_IO_CachedFileStream_Write.htm" />
+    <HelpKINode Title="MultiSourceFrameImageParserBase(TSourceIdentifier, TTypeIdentifier, TOutputType).Write Method " Url="html/M_Gemstone_IO_Parsing_MultiSourceFrameImageParserBase_3_Write.htm" />
+  </HelpKINode>
   <HelpKINode Title="Xor16 class">
     <HelpKINode Title="Xor16 Class" Url="html/T_Gemstone_IO_Checksums_Xor16.htm" />
     <HelpKINode Title="constructor" Url="html/M_Gemstone_IO_Checksums_Xor16__ctor.htm" />
