@@ -114,7 +114,8 @@ namespace Gemstone.IO
         private long m_position;
         private long m_length;
 
-        private readonly FileStream m_fileStream;
+        // ReSharper disable once MemberInitializerValueIgnored
+        private readonly FileStream m_fileStream = default!;
         private readonly Dictionary<long, Block> m_blockLookup;
         private readonly Dictionary<long, Block> m_dirtyBlockLookup;
         private readonly List<Block> m_queue;
