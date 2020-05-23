@@ -34,7 +34,7 @@ using Gemstone.IO.Checksums;
 
 // ReSharper disable StaticFieldInGenericType
 // ReSharper disable UnusedMember.Local
-
+// ReSharper disable InconsistentNaming
 namespace Gemstone.IO.Collections
 {
     internal enum LookupTableType
@@ -339,7 +339,7 @@ namespace Gemstone.IO.Collections
                 {
                     char[] invalidPathChars = Path.GetInvalidPathChars();
 
-                    if (value.Any(invalidPathChars.Contains))
+                    if (value.Any(invalidPathChars.Contains!))
                         throw new ArgumentException($"Path contains one or more invalid characters: {value}", nameof(value));
                 }
 

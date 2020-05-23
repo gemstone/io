@@ -22,15 +22,15 @@
 //******************************************************************************************************
 
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Gemstone.IO.Collections;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Gemstone.IO.UnitTests.Collections
 {
-    [TestClass()]
+    [TestClass]
     public class FileBackedHashSetTest
     {
-        [TestMethod()]
+        [TestMethod]
         public void AddTest()
         {
             using (FileBackedHashSet<int> hashSet = new FileBackedHashSet<int>())
@@ -41,7 +41,7 @@ namespace Gemstone.IO.UnitTests.Collections
             }
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void RemoveTest()
         {
             using (FileBackedHashSet<int> hashSet = new FileBackedHashSet<int>())
@@ -54,7 +54,7 @@ namespace Gemstone.IO.UnitTests.Collections
             }
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void UnionWithTest()
         {
             using (FileBackedHashSet<int> hashSet = new FileBackedHashSet<int>())
@@ -71,7 +71,7 @@ namespace Gemstone.IO.UnitTests.Collections
             }
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void IntersectWithTest()
         {
             using (FileBackedHashSet<int> hashSet = new FileBackedHashSet<int>())
@@ -88,7 +88,7 @@ namespace Gemstone.IO.UnitTests.Collections
             }
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void ExceptWithTest()
         {
             using (FileBackedHashSet<int> hashSet = new FileBackedHashSet<int>())
@@ -105,7 +105,7 @@ namespace Gemstone.IO.UnitTests.Collections
             }
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void SymmetricExceptWithTest()
         {
             using (FileBackedHashSet<int> hashSet = new FileBackedHashSet<int>())
@@ -125,7 +125,7 @@ namespace Gemstone.IO.UnitTests.Collections
             }
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void IsSubsetOfTest()
         {
             using (FileBackedHashSet<int> hashSet = new FileBackedHashSet<int>())
@@ -141,7 +141,7 @@ namespace Gemstone.IO.UnitTests.Collections
             }
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void IsSupersetOfTest()
         {
             using (FileBackedHashSet<int> hashSet = new FileBackedHashSet<int>())
@@ -157,7 +157,7 @@ namespace Gemstone.IO.UnitTests.Collections
             }
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void IsProperSupersetOfTest()
         {
             using (FileBackedHashSet<int> hashSet = new FileBackedHashSet<int>())
@@ -173,7 +173,7 @@ namespace Gemstone.IO.UnitTests.Collections
             }
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void IsProperSubsetOfTest()
         {
             using (FileBackedHashSet<int> hashSet = new FileBackedHashSet<int>())
@@ -189,7 +189,7 @@ namespace Gemstone.IO.UnitTests.Collections
             }
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void OverlapsTest()
         {
             using (FileBackedHashSet<int> hashSet = new FileBackedHashSet<int>())
@@ -205,7 +205,7 @@ namespace Gemstone.IO.UnitTests.Collections
             }
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void SetEqualsTest()
         {
             using (FileBackedHashSet<int> hashSet = new FileBackedHashSet<int>())
@@ -221,7 +221,7 @@ namespace Gemstone.IO.UnitTests.Collections
             }
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void ClearTest()
         {
             using (FileBackedHashSet<int> hashSet = new FileBackedHashSet<int>())
@@ -235,7 +235,7 @@ namespace Gemstone.IO.UnitTests.Collections
             }
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void CopyToTest()
         {
             int[] array;
@@ -255,7 +255,7 @@ namespace Gemstone.IO.UnitTests.Collections
             }
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void CompactTest()
         {
             using (FileBackedHashSet<int> hashSet = new FileBackedHashSet<int>())

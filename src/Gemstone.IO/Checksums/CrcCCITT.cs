@@ -31,6 +31,7 @@
 
 using System;
 
+// ReSharper disable InconsistentNaming
 namespace Gemstone.IO.Checksums
 {
     /// <summary>Generates a 16-bit CRC-CCITT checksum.</summary>
@@ -76,10 +77,10 @@ namespace Gemstone.IO.Checksums
         public void Reset() => Value = CrcSeed;
 
         /// <summary>
-        /// Updates the checksum with the int bval.
+        /// Updates the checksum with the byte value.
         /// </summary>
         /// <param name="value">The <see cref="byte"/> value to use for the update.</param>
-        public void Update(byte value) => Value = (ushort)((Value << 8) ^ CrcTable[((Value >> 8) ^ value) & 0xff]);
+        public void Update(byte value) => Value = (ushort)((Value << 8) ^ s_crcTable[((Value >> 8) ^ value) & 0xff]);
 
         /// <summary>
         /// Updates the checksum with the bytes taken from the array.
@@ -111,7 +112,7 @@ namespace Gemstone.IO.Checksums
                 throw new ArgumentOutOfRangeException(nameof(offset));
 
             while (--count >= 0)
-                Value = (ushort)((Value << 8) ^ CrcTable[((Value >> 8) ^ buffer[offset++]) & 0xff]);
+                Value = (ushort)((Value << 8) ^ s_crcTable[((Value >> 8) ^ buffer[offset++]) & 0xff]);
         }
 
         #endregion
@@ -119,7 +120,7 @@ namespace Gemstone.IO.Checksums
         #region [ Static ]
 
         // Static Fields
-        private static readonly ushort[] CrcTable = {
+        private static readonly ushort[] s_crcTable = {
             0x0000, 0x1021, 0x2042, 0x3063, 0x4084, 0x50a5, 0x60c6, 0x70e7,
             0x8108, 0x9129, 0xa14a, 0xb16b, 0xc18c, 0xd1ad, 0xe1ce, 0xf1ef,
             0x1231, 0x0210, 0x3273, 0x2252, 0x52b5, 0x4294, 0x72f7, 0x62d6,

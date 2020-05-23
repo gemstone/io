@@ -27,7 +27,7 @@
 //
 //******************************************************************************************************
 
-
+// ReSharper disable InconsistentNaming
 namespace Gemstone.IO.Checksums.ChecksumExtensions
 {
     /// <summary>Defines extension functions related to computing checksums.</summary>

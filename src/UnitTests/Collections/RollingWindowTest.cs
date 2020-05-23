@@ -21,8 +21,8 @@
 //
 //******************************************************************************************************
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Gemstone.IO.Collections;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Gemstone.IO.UnitTests.Collections
 {

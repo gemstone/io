@@ -22,15 +22,15 @@
 //******************************************************************************************************
 
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Gemstone.IO.Collections;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Gemstone.IO.UnitTests.Collections
 {
-    [TestClass()]
+    [TestClass]
     public class FileBackedDictionaryTest
     {
-        [TestMethod()]
+        [TestMethod]
         public void AddTest()
         {
             using (FileBackedDictionary<int, int> dictionary = new FileBackedDictionary<int, int>())
@@ -41,7 +41,7 @@ namespace Gemstone.IO.UnitTests.Collections
             }
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void RemoveTest()
         {
             using (FileBackedDictionary<int, int> dictionary = new FileBackedDictionary<int, int>())
@@ -54,7 +54,7 @@ namespace Gemstone.IO.UnitTests.Collections
             }
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void TryGetValueTest()
         {
             using (FileBackedDictionary<int, int> dictionary = new FileBackedDictionary<int, int>())
@@ -65,7 +65,7 @@ namespace Gemstone.IO.UnitTests.Collections
             }
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void ClearTest()
         {
             using (FileBackedDictionary<int, int> dictionary = new FileBackedDictionary<int, int>())
@@ -79,7 +79,7 @@ namespace Gemstone.IO.UnitTests.Collections
             }
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void CopyToTest()
         {
             KeyValuePair<int, int>[] array;
@@ -102,7 +102,7 @@ namespace Gemstone.IO.UnitTests.Collections
             }
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void CompactTest()
         {
             using (FileBackedDictionary<int, int> dictionary = new FileBackedDictionary<int, int>())

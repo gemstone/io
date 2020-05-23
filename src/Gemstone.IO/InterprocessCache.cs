@@ -447,8 +447,7 @@ namespace Gemstone.IO
                     }
                     finally
                     {
-                        m_fileLock.ExitWriteLock();
-
+                        m_fileLock?.ExitWriteLock();
                         fileStream?.Close();
                     }
                 }
@@ -508,8 +507,7 @@ namespace Gemstone.IO
                         }
                         finally
                         {
-                            m_fileLock.ExitReadLock();
-
+                            m_fileLock?.ExitReadLock();
                             fileStream?.Close();
                         }
                     }

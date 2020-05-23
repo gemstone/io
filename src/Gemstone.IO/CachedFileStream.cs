@@ -23,7 +23,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 
@@ -115,7 +114,7 @@ namespace Gemstone.IO
         private long m_position;
         private long m_length;
 
-        private readonly FileStream m_fileStream = default!;
+        private readonly FileStream m_fileStream;
         private readonly Dictionary<long, Block> m_blockLookup;
         private readonly Dictionary<long, Block> m_dirtyBlockLookup;
         private readonly List<Block> m_queue;

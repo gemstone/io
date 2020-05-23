@@ -27,6 +27,7 @@
 
 using System;
 
+// ReSharper disable UnusedMemberInSuper.Global
 namespace Gemstone.IO.Parsing
 {
     /// <summary>
