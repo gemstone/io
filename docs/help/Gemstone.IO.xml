@@ -770,7 +770,7 @@
     </member>
     <member name="M:Gemstone.IO.Checksums.CrcCCITT.Update(System.Byte)">
       <summary>
-            Updates the checksum with the int bval.
+            Updates the checksum with the byte value.
             </summary>
       <param name="value">The <see cref="T:System.Byte" /> value to use for the update.</param>
     </member>
