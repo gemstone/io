@@ -583,7 +583,7 @@ namespace Gemstone.IO
         /// <summary>
         /// Retries specified serialize or deserialize event in case of file I/O failures.
         /// </summary>
-        private void m_retryTimer_Elapsed(object sender, ElapsedEventArgs e)
+        private void m_retryTimer_Elapsed(object? sender, ElapsedEventArgs e)
         {
             if (m_disposed)
                 return;
@@ -619,7 +619,7 @@ namespace Gemstone.IO
         /// </summary>
         /// <param name="sender">The object that triggered the event.</param>
         /// <param name="e">An object which provides data for directory events.</param>
-        private void m_fileWatcher_Changed(object sender, FileSystemEventArgs e)
+        private void m_fileWatcher_Changed(object? sender, FileSystemEventArgs e)
         {
             if (e.ChangeType == WatcherChangeTypes.Changed)
                 Load();

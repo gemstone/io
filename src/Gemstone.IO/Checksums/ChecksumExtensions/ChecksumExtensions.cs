@@ -41,7 +41,7 @@ namespace Gemstone.IO.Checksums.ChecksumExtensions
         /// <returns>Computed Adler-32 checksum over the specified portion of the buffer.</returns>
         public static uint Adler32Checksum(this byte[] data, int startIndex, int length)
         {
-            Adler32 checksum = new Adler32();
+            Adler32 checksum = new();
 
             checksum.Update(data, startIndex, length);
 
@@ -56,7 +56,7 @@ namespace Gemstone.IO.Checksums.ChecksumExtensions
         /// <returns>Computed CRC16 checksum over the specified portion of the buffer.</returns>
         public static ushort Crc16Checksum(this byte[] data, int startIndex, int length)
         {
-            Crc16 checksum = new Crc16();
+            Crc16 checksum = new();
 
             checksum.Update(data, startIndex, length);
 
@@ -75,7 +75,7 @@ namespace Gemstone.IO.Checksums.ChecksumExtensions
         /// </remarks>
         public static ushort CrcCCITTChecksum(this byte[] data, int startIndex, int length)
         {
-            CrcCCITT checksum = new CrcCCITT();
+            CrcCCITT checksum = new();
 
             checksum.Update(data, startIndex, length);
 
@@ -90,7 +90,7 @@ namespace Gemstone.IO.Checksums.ChecksumExtensions
         /// <returns>Computed CRC-ModBus checksum over the specified portion of the buffer.</returns>		
         public static ushort ModBusCrcChecksum(this byte[] data, int startIndex, int length)
         {
-            Crc16 checksum = new Crc16(ChecksumType.ModBus);
+            Crc16 checksum = new(ChecksumType.ModBus);
 
             checksum.Update(data, startIndex, length);
 
@@ -105,7 +105,7 @@ namespace Gemstone.IO.Checksums.ChecksumExtensions
         /// <returns>Computed CRC32 checksum over the specified portion of the buffer.</returns>
         public static uint Crc32Checksum(this byte[] data, int startIndex, int length)
         {
-            Crc32 checksum = new Crc32();
+            Crc32 checksum = new();
 
             checksum.Update(data, startIndex, length);
 
@@ -120,7 +120,7 @@ namespace Gemstone.IO.Checksums.ChecksumExtensions
         /// <returns>Byte length XOR check-sum.</returns>
         public static byte Xor8Checksum(this byte[] data, int startIndex, int length)
         {
-            Xor8 checksum = new Xor8();
+            Xor8 checksum = new();
 
             checksum.Update(data, startIndex, length);
 
@@ -135,7 +135,7 @@ namespace Gemstone.IO.Checksums.ChecksumExtensions
         /// <returns>Word length XOR check-sum.</returns>
         public static ushort Xor16Checksum(this byte[] data, int startIndex, int length)
         {
-            Xor16 checksum = new Xor16();
+            Xor16 checksum = new();
 
             checksum.Update(data, startIndex, length);
 
@@ -150,7 +150,7 @@ namespace Gemstone.IO.Checksums.ChecksumExtensions
         /// <returns>Double-word length XOR check-sum.</returns>
         public static uint Xor32Checksum(this byte[] data, int startIndex, int length)
         {
-            Xor32 checksum = new Xor32();
+            Xor32 checksum = new();
 
             checksum.Update(data, startIndex, length);
 
@@ -165,7 +165,7 @@ namespace Gemstone.IO.Checksums.ChecksumExtensions
         /// <returns>Quad-word length XOR check-sum.</returns>
         public static ulong Xor64Checksum(this byte[] data, int startIndex, int length)
         {
-            Xor64 checksum = new Xor64();
+            Xor64 checksum = new();
 
             checksum.Update(data, startIndex, length);
 

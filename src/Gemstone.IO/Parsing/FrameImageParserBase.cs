@@ -170,7 +170,7 @@ namespace Gemstone.IO.Parsing
         {
             get
             {
-                StringBuilder status = new StringBuilder();
+                StringBuilder status = new();
 
                 status.Append(base.Status);
                 status.AppendFormat("Total defined output types: {0}", m_outputTypes.Count);
@@ -226,7 +226,7 @@ namespace Gemstone.IO.Parsing
             // Call base class start method
             base.Start();
 
-            List<TypeInfo> outputTypes = new List<TypeInfo>();  // Temporarily hold output types until their IDs are determined.
+            List<TypeInfo> outputTypes = new();  // Temporarily hold output types until their IDs are determined.
 
             foreach (Type type in implementations)
             {
@@ -246,7 +246,7 @@ namespace Gemstone.IO.Parsing
                     //      - has a default public constructor
                     //      - is not abstract and can be instantiated.
                     //      - type is related to class or interface specified for the output
-                    TypeInfo outputType = new TypeInfo(type);
+                    TypeInfo outputType = new(type);
 
                     // We'll hold all of the matching types in this list temporarily until their IDs are determined.
                     outputTypes.Add(outputType);
@@ -361,7 +361,7 @@ namespace Gemstone.IO.Parsing
             if (DataParsed == null)
                 return;
 
-            EventArgs<TOutputType> outputArgs = new EventArgs<TOutputType>(output);
+            EventArgs<TOutputType> outputArgs = new(output);
 
             if (output.AllowQueuedPublication)
             {
@@ -395,7 +395,7 @@ namespace Gemstone.IO.Parsing
         protected virtual void OnDuplicateTypeHandlerEncountered(Type duplicateType, TTypeIdentifier id) => DuplicateTypeHandlerEncountered?.SafeInvoke(this, new EventArgs<Type, TTypeIdentifier>(duplicateType, id));
 
         // Expose exceptions encountered via async queue processing to parsing exception event
-        private void m_parsedOutputQueue_ProcessException(object sender, EventArgs<Exception> e) => OnParsingException(e.Argument);
+        private void m_parsedOutputQueue_ProcessException(object? sender, EventArgs<Exception> e) => OnParsingException(e.Argument);
 
         #endregion
     }

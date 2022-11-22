@@ -147,7 +147,7 @@ namespace Gemstone.IO
         // like an unmanaged resource, i.e., it always gets disposed, via the finalizer if need be.
         private void InitializeFileSystemWatcher()
         {
-            WeakReference<SafeFileWatcher> reference = new WeakReference<SafeFileWatcher>(this);
+            WeakReference<SafeFileWatcher> reference = new(this);
 
             m_fileSystemWatcher.Changed += (sender, e) => OnChanged(reference, e);
             m_fileSystemWatcher.Created += (sender, e) => OnCreated(reference, e);

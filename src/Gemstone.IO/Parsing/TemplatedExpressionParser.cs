@@ -316,7 +316,7 @@ namespace Gemstone.IO.Parsing
         [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         private List<ParsedExpression> ParseExpressions(string fieldReplacedTemplatedExpression, bool ignoreCase)
         {
-            List<ParsedExpression> parsedExpressions = new List<ParsedExpression>();
+            List<ParsedExpression> parsedExpressions = new();
 
             // Find all expressions using regular expression
             Match match = m_expressionParser.Match(fieldReplacedTemplatedExpression);
@@ -324,8 +324,8 @@ namespace Gemstone.IO.Parsing
             if (match.Success)
             {
                 Group capturedExpressions = match.Groups["Expressions"];
-                StringBuilder completeExpression = new StringBuilder();
-                List<bool> evaluations = new List<bool>();
+                StringBuilder completeExpression = new();
+                List<bool> evaluations = new();
                 int depth = 0, lastDepth = 0;
 
                 foreach (Capture capture in capturedExpressions.Captures)
@@ -512,7 +512,7 @@ namespace Gemstone.IO.Parsing
         // Returns list of complete expressions (used as base replacement text) and evaluation results
         private List<ParsedEvaluation> ParseEvaluations(string fieldReplacedTemplatedExpression)
         {
-            List<ParsedEvaluation> parsedEvaluations = new List<ParsedEvaluation>();
+            List<ParsedEvaluation> parsedEvaluations = new();
 
             MatchCollection matches = m_evaluationParser.Matches(fieldReplacedTemplatedExpression);
 

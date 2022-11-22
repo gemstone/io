@@ -33,7 +33,7 @@ namespace Gemstone.IO.UnitTests.Collections
         [TestMethod]
         public void AddTest()
         {
-            using (FileBackedDictionary<int, int> dictionary = new FileBackedDictionary<int, int>())
+            using (FileBackedDictionary<int, int> dictionary = new())
             {
                 dictionary.Add(0, 0);
                 Assert.IsTrue(dictionary.ContainsKey(0));
@@ -44,7 +44,7 @@ namespace Gemstone.IO.UnitTests.Collections
         [TestMethod]
         public void RemoveTest()
         {
-            using (FileBackedDictionary<int, int> dictionary = new FileBackedDictionary<int, int>())
+            using (FileBackedDictionary<int, int> dictionary = new())
             {
                 dictionary.Add(0, 0);
                 Assert.IsTrue(dictionary.ContainsKey(0));
@@ -57,7 +57,7 @@ namespace Gemstone.IO.UnitTests.Collections
         [TestMethod]
         public void TryGetValueTest()
         {
-            using (FileBackedDictionary<int, int> dictionary = new FileBackedDictionary<int, int>())
+            using (FileBackedDictionary<int, int> dictionary = new())
             {
                 dictionary.Add(0, 0);
                 Assert.IsTrue(dictionary.TryGetValue(0, out int value));
@@ -68,7 +68,7 @@ namespace Gemstone.IO.UnitTests.Collections
         [TestMethod]
         public void ClearTest()
         {
-            using (FileBackedDictionary<int, int> dictionary = new FileBackedDictionary<int, int>())
+            using (FileBackedDictionary<int, int> dictionary = new())
             {
                 for (int i = 0; i < 100; i++)
                     dictionary.Add(i, i);
@@ -84,7 +84,7 @@ namespace Gemstone.IO.UnitTests.Collections
         {
             KeyValuePair<int, int>[] array;
 
-            using (FileBackedDictionary<int, int> dictionary = new FileBackedDictionary<int, int>())
+            using (FileBackedDictionary<int, int> dictionary = new())
             {
                 for (int i = 1; i <= 100; i++)
                     dictionary.Add(i, i);
@@ -105,7 +105,7 @@ namespace Gemstone.IO.UnitTests.Collections
         [TestMethod]
         public void CompactTest()
         {
-            using (FileBackedDictionary<int, int> dictionary = new FileBackedDictionary<int, int>())
+            using (FileBackedDictionary<int, int> dictionary = new())
             {
                 for (int i = 0; i < 10000; i += 4)
                 {

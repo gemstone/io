@@ -61,7 +61,7 @@ namespace Gemstone.IO.UnitTests.Checksums
         [TestMethod]
         public void UpdateByteTest()
         {
-            Adler32 checksum = new Adler32();
+            Adler32 checksum = new();
 
             foreach (byte d in LicenseData)
                 checksum.Update(d);
@@ -75,7 +75,7 @@ namespace Gemstone.IO.UnitTests.Checksums
         [TestMethod]
         public void MixedUpdateTest()
         {
-            Adler32 checksum = new Adler32();
+            Adler32 checksum = new();
             int i = 0;
 
             checksum.Reset();

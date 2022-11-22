@@ -382,7 +382,7 @@ namespace Gemstone.IO.Parsing
         }
 
         // We just bubble any exceptions captured in process queue out to parsing exception event...
-        private void ProcessExceptionHandler(object sender, EventArgs<Exception> e) => OnParsingException(e.Argument);
+        private void ProcessExceptionHandler(object? sender, EventArgs<Exception> e) => OnParsingException(e.Argument);
 
         #endregion
     }

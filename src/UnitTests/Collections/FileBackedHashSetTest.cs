@@ -33,7 +33,7 @@ namespace Gemstone.IO.UnitTests.Collections
         [TestMethod]
         public void AddTest()
         {
-            using (FileBackedHashSet<int> hashSet = new FileBackedHashSet<int>())
+            using (FileBackedHashSet<int> hashSet = new())
             {
                 hashSet.Add(0);
                 Assert.IsTrue(hashSet.Contains(0));
@@ -44,7 +44,7 @@ namespace Gemstone.IO.UnitTests.Collections
         [TestMethod]
         public void RemoveTest()
         {
-            using (FileBackedHashSet<int> hashSet = new FileBackedHashSet<int>())
+            using (FileBackedHashSet<int> hashSet = new())
             {
                 hashSet.Add(0);
                 Assert.IsTrue(hashSet.Contains(0));
@@ -57,7 +57,7 @@ namespace Gemstone.IO.UnitTests.Collections
         [TestMethod]
         public void UnionWithTest()
         {
-            using (FileBackedHashSet<int> hashSet = new FileBackedHashSet<int>())
+            using (FileBackedHashSet<int> hashSet = new())
             {
                 for (int i = 0; i < 10; i++)
                     hashSet.Add(i);
@@ -74,7 +74,7 @@ namespace Gemstone.IO.UnitTests.Collections
         [TestMethod]
         public void IntersectWithTest()
         {
-            using (FileBackedHashSet<int> hashSet = new FileBackedHashSet<int>())
+            using (FileBackedHashSet<int> hashSet = new())
             {
                 for (int i = 0; i < 10; i++)
                     hashSet.Add(i);
@@ -91,7 +91,7 @@ namespace Gemstone.IO.UnitTests.Collections
         [TestMethod]
         public void ExceptWithTest()
         {
-            using (FileBackedHashSet<int> hashSet = new FileBackedHashSet<int>())
+            using (FileBackedHashSet<int> hashSet = new())
             {
                 for (int i = 0; i < 10; i++)
                     hashSet.Add(i);
@@ -108,7 +108,7 @@ namespace Gemstone.IO.UnitTests.Collections
         [TestMethod]
         public void SymmetricExceptWithTest()
         {
-            using (FileBackedHashSet<int> hashSet = new FileBackedHashSet<int>())
+            using (FileBackedHashSet<int> hashSet = new())
             {
                 for (int i = 0; i < 10; i++)
                     hashSet.Add(i);
@@ -128,7 +128,7 @@ namespace Gemstone.IO.UnitTests.Collections
         [TestMethod]
         public void IsSubsetOfTest()
         {
-            using (FileBackedHashSet<int> hashSet = new FileBackedHashSet<int>())
+            using (FileBackedHashSet<int> hashSet = new())
             {
                 for (int i = 0; i < 5; i++)
                     hashSet.Add(i);
@@ -144,7 +144,7 @@ namespace Gemstone.IO.UnitTests.Collections
         [TestMethod]
         public void IsSupersetOfTest()
         {
-            using (FileBackedHashSet<int> hashSet = new FileBackedHashSet<int>())
+            using (FileBackedHashSet<int> hashSet = new())
             {
                 for (int i = 0; i < 5; i++)
                     hashSet.Add(i);
@@ -160,7 +160,7 @@ namespace Gemstone.IO.UnitTests.Collections
         [TestMethod]
         public void IsProperSupersetOfTest()
         {
-            using (FileBackedHashSet<int> hashSet = new FileBackedHashSet<int>())
+            using (FileBackedHashSet<int> hashSet = new())
             {
                 for (int i = 0; i < 5; i++)
                     hashSet.Add(i);
@@ -176,7 +176,7 @@ namespace Gemstone.IO.UnitTests.Collections
         [TestMethod]
         public void IsProperSubsetOfTest()
         {
-            using (FileBackedHashSet<int> hashSet = new FileBackedHashSet<int>())
+            using (FileBackedHashSet<int> hashSet = new())
             {
                 for (int i = 0; i < 5; i++)
                     hashSet.Add(i);
@@ -192,7 +192,7 @@ namespace Gemstone.IO.UnitTests.Collections
         [TestMethod]
         public void OverlapsTest()
         {
-            using (FileBackedHashSet<int> hashSet = new FileBackedHashSet<int>())
+            using (FileBackedHashSet<int> hashSet = new())
             {
                 for (int i = 0; i < 5; i++)
                     hashSet.Add(i);
@@ -208,7 +208,7 @@ namespace Gemstone.IO.UnitTests.Collections
         [TestMethod]
         public void SetEqualsTest()
         {
-            using (FileBackedHashSet<int> hashSet = new FileBackedHashSet<int>())
+            using (FileBackedHashSet<int> hashSet = new())
             {
                 for (int i = 0; i < 5; i++)
                     hashSet.Add(i);
@@ -224,7 +224,7 @@ namespace Gemstone.IO.UnitTests.Collections
         [TestMethod]
         public void ClearTest()
         {
-            using (FileBackedHashSet<int> hashSet = new FileBackedHashSet<int>())
+            using (FileBackedHashSet<int> hashSet = new())
             {
                 for (int i = 0; i < 100; i++)
                     hashSet.Add(i);
@@ -240,7 +240,7 @@ namespace Gemstone.IO.UnitTests.Collections
         {
             int[] array;
 
-            using (FileBackedHashSet<int> hashSet = new FileBackedHashSet<int>())
+            using (FileBackedHashSet<int> hashSet = new())
             {
                 for (int i = 1; i <= 100; i++)
                     hashSet.Add(i);
@@ -258,7 +258,7 @@ namespace Gemstone.IO.UnitTests.Collections
         [TestMethod]
         public void CompactTest()
         {
-            using (FileBackedHashSet<int> hashSet = new FileBackedHashSet<int>())
+            using (FileBackedHashSet<int> hashSet = new())
             {
                 for (int i = 0; i < 10000; i += 4)
                 {

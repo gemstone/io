@@ -59,7 +59,7 @@ namespace Gemstone.IO.UnitTests.Checksums
         [TestMethod]
         public void UpdateByteTest()
         {
-            CrcCCITT checksum = new CrcCCITT();
+            CrcCCITT checksum = new();
 
             foreach (byte d in SampleData)
                 checksum.Update(d);
@@ -73,7 +73,7 @@ namespace Gemstone.IO.UnitTests.Checksums
         [TestMethod]
         public void MixedUpdateTest()
         {
-            CrcCCITT checksum = new CrcCCITT();
+            CrcCCITT checksum = new();
             int i = 0;
 
             checksum.Reset();

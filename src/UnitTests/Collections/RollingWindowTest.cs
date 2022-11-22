@@ -32,7 +32,7 @@ namespace Gemstone.IO.UnitTests.Collections
         [TestMethod]
         public void AddTest()
         {
-            RollingWindow<int> rollingWindow = new RollingWindow<int>(5);
+            RollingWindow<int> rollingWindow = new(5);
 
             for (int i = 0; i < rollingWindow.WindowSize; i++)
             {
@@ -52,7 +52,7 @@ namespace Gemstone.IO.UnitTests.Collections
         [TestMethod]
         public void InsertTest()
         {
-            RollingWindow<int> rollingWindow = new RollingWindow<int>(5);
+            RollingWindow<int> rollingWindow = new(5);
 
             rollingWindow.Insert(0, 1);
             rollingWindow.Insert(1, 3);
@@ -67,7 +67,7 @@ namespace Gemstone.IO.UnitTests.Collections
         [TestMethod]
         public void RemoveTest()
         {
-            RollingWindow<int> rollingWindow = new RollingWindow<int>(5);
+            RollingWindow<int> rollingWindow = new(5);
 
             for (int i = 0; i < rollingWindow.WindowSize; i++)
                 rollingWindow.Add(i);
@@ -84,7 +84,7 @@ namespace Gemstone.IO.UnitTests.Collections
         [TestMethod]
         public void RemoveAtTest()
         {
-            RollingWindow<int> rollingWindow = new RollingWindow<int>(5);
+            RollingWindow<int> rollingWindow = new(5);
 
             for (int i = 0; i < rollingWindow.WindowSize; i++)
                 rollingWindow.Add(i);
@@ -101,7 +101,7 @@ namespace Gemstone.IO.UnitTests.Collections
         [TestMethod]
         public void IndexOfTest()
         {
-            RollingWindow<int> rollingWindow = new RollingWindow<int>(5);
+            RollingWindow<int> rollingWindow = new(5);
 
             for (int i = 0; i < rollingWindow.WindowSize; i++)
                 rollingWindow.Add(i);
@@ -113,7 +113,7 @@ namespace Gemstone.IO.UnitTests.Collections
         [TestMethod]
         public void ContainsTest()
         {
-            RollingWindow<int> rollingWindow = new RollingWindow<int>(5);
+            RollingWindow<int> rollingWindow = new(5);
 
             for (int i = 0; i < rollingWindow.WindowSize; i++)
                 rollingWindow.Add(i);
@@ -125,7 +125,7 @@ namespace Gemstone.IO.UnitTests.Collections
         [TestMethod]
         public void ClearTest()
         {
-            RollingWindow<int> rollingWindow = new RollingWindow<int>(5);
+            RollingWindow<int> rollingWindow = new(5);
 
             for (int i = 0; i < rollingWindow.WindowSize; i++)
                 rollingWindow.Add(i);
@@ -138,7 +138,7 @@ namespace Gemstone.IO.UnitTests.Collections
         [TestMethod]
         public void CopyToTest()
         {
-            RollingWindow<int> rollingWindow = new RollingWindow<int>(5);
+            RollingWindow<int> rollingWindow = new(5);
             int[] array = new int[rollingWindow.WindowSize];
 
             for (int i = 0; i < rollingWindow.WindowSize + 1; i++)
@@ -153,7 +153,7 @@ namespace Gemstone.IO.UnitTests.Collections
         [TestMethod]
         public void GetEnumeratorTest()
         {
-            RollingWindow<int> rollingWindow = new RollingWindow<int>(5);
+            RollingWindow<int> rollingWindow = new(5);
             int count = 0;
 
             for (int i = 0; i < rollingWindow.WindowSize + 1; i++)

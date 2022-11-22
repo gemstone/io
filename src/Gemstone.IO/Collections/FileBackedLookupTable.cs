@@ -32,6 +32,9 @@ using System.Runtime.Serialization.Formatters.Binary;
 using Gemstone.GuidExtensions;
 using Gemstone.IO.Checksums;
 
+// BinaryFormatter is considered obsolete
+#pragma warning disable SYSLIB0011
+
 // ReSharper disable StaticFieldInGenericType
 // ReSharper disable UnusedMember.Local
 // ReSharper disable InconsistentNaming
@@ -118,7 +121,7 @@ namespace Gemstone.IO.Collections
             #region [ Members ]
 
             // Fields
-            private readonly Crc32 m_checksum = new Crc32();
+            private readonly Crc32 m_checksum = new();
 
             #endregion
 
@@ -170,8 +173,8 @@ namespace Gemstone.IO.Collections
         {
             public bool Equals(TKey x, TKey y)
             {
-                using MemoryStream xStream = new MemoryStream();
-                using MemoryStream yStream = new MemoryStream();
+                using MemoryStream xStream = new();
+                using MemoryStream yStream = new();
 
                 s_writeKeyAction(xStream, x);
                 s_writeKeyAction(yStream, y);
@@ -193,14 +196,14 @@ namespace Gemstone.IO.Collections
 
             public int GetHashCode(TKey obj)
             {
-                using CRCStream crcStream = new CRCStream();
+                using CRCStream crcStream = new();
 
                 s_writeKeyAction(crcStream, obj);
 
                 return unchecked((int)crcStream.Value);
             }
 
-            public static DefaultKeyComparer Default { get; } = new DefaultKeyComparer();
+            public static DefaultKeyComparer Default { get; } = new();
         }
 
         private class KeysEnumerable : IEnumerable<TKey>
@@ -460,7 +463,7 @@ namespace Gemstone.IO.Collections
                     Find(key, out lookupPointer, out itemPointer);
                 }
 
-                ItemNode itemNode = new ItemNode();
+                ItemNode itemNode = new();
                 itemNode.LookupPointer = lookupPointer;
                 itemNode.HashCode = m_keyComparer.GetHashCode(key);
                 itemNode.Key = key;
@@ -681,7 +684,7 @@ namespace Gemstone.IO.Collections
                 Find(key, out lookupPointer, out _);
             }
 
-            ItemNode itemNode = new ItemNode
+            ItemNode itemNode = new()
             {
                 LookupPointer = lookupPointer, 
                 HashCode = m_keyComparer.GetHashCode(key), 
@@ -720,7 +723,7 @@ namespace Gemstone.IO.Collections
                 Find(key, out lookupPointer, out _);
             }
 
-            ItemNode itemNode = new ItemNode
+            ItemNode itemNode = new()
             {
                 LookupPointer = lookupPointer, 
                 HashCode = m_keyComparer.GetHashCode(key), 
@@ -801,7 +804,7 @@ namespace Gemstone.IO.Collections
             FailIfReadOnly();
 
             long lookupPointer = HeaderNode.FixedSize + JournalNode.FixedSize;
-            LookupNode lookupNode = new LookupNode();
+            LookupNode lookupNode = new();
 
             for (int i = 0; i < m_headerNode.Capacity; i++)
             {
@@ -857,7 +860,7 @@ namespace Gemstone.IO.Collections
             FailIfReadOnly();
 
             long lookupPointer = HeaderNode.FixedSize + JournalNode.FixedSize;
-            LookupNode lookupNode = new LookupNode();
+            LookupNode lookupNode = new();
 
             for (int i = 0; i < m_headerNode.Capacity; i++)
             {
@@ -992,7 +995,7 @@ namespace Gemstone.IO.Collections
             if (m_fileStream == null)
                 OpenImplicit();
 
-            ItemNode itemNode = new ItemNode();
+            ItemNode itemNode = new();
             long lookupPointer = HeaderNode.FixedSize + JournalNode.FixedSize;
             long count = 0L;
 
@@ -1179,7 +1182,7 @@ namespace Gemstone.IO.Collections
 
         private void Grow()
         {
-            ItemNode itemNode = new ItemNode();
+            ItemNode itemNode = new();
 
             long newCapacity = 2 * m_headerNode.Capacity;
             long lookupTableSize = newCapacity * LookupNodeSize;
@@ -1415,7 +1418,7 @@ namespace Gemstone.IO.Collections
             }
 
             // Perform the grow operation
-            LookupNode emptyNode = new LookupNode();
+            LookupNode emptyNode = new();
             FileStream.Seek(HeaderNode.FixedSize + JournalNode.FixedSize, SeekOrigin.Begin);
 
             for (int i = 0; i < capacity; i++)
@@ -1500,7 +1503,7 @@ namespace Gemstone.IO.Collections
 
         private void Write(JournalNode node)
         {
-            Crc32 checksum = new Crc32();
+            Crc32 checksum = new();
 
             checksum.Update(node.Operation);
             checksum.Update((int)(node.LookupPointer >> sizeof(int)));
@@ -1572,7 +1575,7 @@ namespace Gemstone.IO.Collections
 
         private void Read(JournalNode node)
         {
-            Crc32 checksum = new Crc32();
+            Crc32 checksum = new();
 
             node.Operation = FileReader.ReadInt32();
             node.LookupPointer = FileReader.ReadInt64();
@@ -1704,14 +1707,14 @@ namespace Gemstone.IO.Collections
 
             if ((writeKeyAction == null || readKeyFunc == null) && typeof(TKey).IsSerializable)
             {
-                BinaryFormatter formatter = new BinaryFormatter();
+                BinaryFormatter formatter = new();
                 writeKeyAction = (stream, key) => formatter.Serialize(stream, key);
                 readKeyFunc = stream => (TKey)formatter.Deserialize(stream);
             }
 
             if ((writeValueAction == null || readValueFunc == null) && typeof(TValue).IsSerializable)
             {
-                BinaryFormatter formatter = new BinaryFormatter();
+                BinaryFormatter formatter = new();
                 writeValueAction = (stream, value) => formatter.Serialize(stream, value);
                 readValueFunc = stream => (TValue)formatter.Deserialize(stream);
             }
