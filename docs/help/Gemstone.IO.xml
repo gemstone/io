@@ -8,6 +8,38 @@
       <summary>
             Represents a file stream that caches recently used blocks in memory.
             </summary>
+      <remarks>
+        <para>
+            This class was developed as a wrapper around <see cref="T:System.IO.FileStream" /> with the same
+            basic functionality. This stream treats the file as a collection of contiguous blocks which can
+            be loaded into an in-memory lookup table to greatly improve seek times. This class generally
+            performs significantly better than the standard FileStream class when maintaining multiple
+            file pointers and frequently seeking back and forth between them. For an example of a good
+            use-case, consider copying a list of serialized objects from one location in the file to another
+            without loading the whole list into memory.
+            </para>
+        <para>
+            This class likely will not perform significantly better or worse than the standard FileStream
+            when performing strictly sequential reads or writes. For an example of a bad use-case, consider
+            reading a list of objects into memory or simply appending new data to the end of the file. In
+            both of these cases, it may be better to use the standard FileStream for less memory overhead
+            and more predictable flush behavior.
+            </para>
+        <para>
+            Blocks are loaded into memory as they are used (for read/write operations) and will be kept in
+            memory for as long as possible. Blocks can only be flushed from the cache by decreasing the
+            cache size or by accessing a non-cached block when the cache is already full. In these cases,
+            a least recently used algorithm is executed to determine which blocks should be removed from
+            the cache either to decrease the size of the cache or to make room for a new block.
+            </para>
+        <para>
+            Write operations are also cached such that they will not be committed to the file until the
+            block is removed from the cache or a call to <see cref="M:Gemstone.IO.CachedFileStream.Flush" /> has been made. This can
+            have some additional implications as compared to the standard FileStream. For instance,
+            write operations may not be committed to the file in the order in which they were executed.
+            Users of this class will need to be judicious about when and how often they call Flush.
+            </para>
+      </remarks>
     </member>
     <member name="M:Gemstone.IO.CachedFileStream.#ctor(System.String,System.IO.FileMode)">
       <summary>
@@ -293,6 +325,10 @@
       <summary>
             Represents a serialized data cache that can be saved or read from multiple applications using inter-process synchronization.
             </summary>
+      <remarks>
+            Note that all file data in this class gets serialized to and from memory, as such, the design intention for this class is for
+            use with smaller data sets such as serialized lists or dictionaries that need inter-process synchronized loading and saving.
+            </remarks>
     </member>
     <member name="M:Gemstone.IO.InterprocessCache.#ctor">
       <summary>
@@ -335,6 +371,9 @@
       <summary>
             Gets or sets file data for the cache to be saved or that has been loaded.
             </summary>
+      <remarks>
+            Setting value to <c>null</c> will create a zero-length file.
+            </remarks>
     </member>
     <member name="P:Gemstone.IO.InterprocessCache.FileName">
       <summary>
@@ -350,6 +389,9 @@
       <summary>
             Initiates inter-process synchronized cache file load.
             </summary>
+      <remarks>
+            Subclasses should always call <see cref="M:Gemstone.IO.InterprocessCache.WaitForLoad" /> before calling this method.
+            </remarks>
     </member>
     <member name="M:Gemstone.IO.InterprocessCache.LoadFileData(System.IO.FileStream)">
       <summary>
@@ -358,6 +400,9 @@
       <param name="fileStream">
         <see cref="T:System.IO.FileStream" /> used to deserialize data.</param>
       <returns>Deserialized file data.</returns>
+      <remarks>
+            Consumers overriding this method should not directly call <see cref="P:Gemstone.IO.InterprocessCache.FileData" /> property to avoid potential dead-locks.
+            </remarks>
     </member>
     <member name="P:Gemstone.IO.InterprocessCache.MaximumConcurrentLocks">
       <summary>
@@ -373,6 +418,11 @@
       <summary>
             Gets or sets flag that enables system to monitor for changes in <see cref="P:Gemstone.IO.InterprocessCache.FileName" /> and automatically reload <see cref="P:Gemstone.IO.InterprocessCache.FileData" />.
             </summary>
+      <remarks>
+            Use extreme caution when enabling this property - it will be critical to dispose of this class when this property is set to true
+            since it will create a file watcher that attaches to an event referenced by this class using pinned memory, as a result, this class
+            will not get garbage collected until this class is disposed thus detaching the associated event.
+            </remarks>
     </member>
     <member name="P:Gemstone.IO.InterprocessCache.RetryDelayInterval">
       <summary>
@@ -383,6 +433,9 @@
       <summary>
             Initiates inter-process synchronized cache file save.
             </summary>
+      <remarks>
+            Subclasses should always call <see cref="M:Gemstone.IO.InterprocessCache.WaitForLoad" /> before calling this method.
+            </remarks>
     </member>
     <member name="M:Gemstone.IO.InterprocessCache.SaveFileData(System.IO.FileStream,System.Byte[])">
       <summary>
@@ -391,6 +444,9 @@
       <param name="fileStream">
         <see cref="T:System.IO.FileStream" /> used to serialize data.</param>
       <param name="fileData">File data to be serialized.</param>
+      <remarks>
+            Consumers overriding this method should not directly call <see cref="P:Gemstone.IO.InterprocessCache.FileData" /> property to avoid potential dead-locks.
+            </remarks>
     </member>
     <member name="M:Gemstone.IO.InterprocessCache.WaitForLoad">
       <summary>
@@ -419,6 +475,26 @@
             Represents a wrapper around the native .NET <see cref="T:System.IO.FileSystemWatcher" /> that avoids problems with
             dangling references when using a file watcher instance as a class member that never gets disposed.
             </summary>
+      <remarks>
+        <para>
+            The design goal of the SafeFileWatcher is to avoid accidental memory leaks caused by use of .NET's native
+            file system watcher when used as a member of a class that consumers fail to properly dispose. If a class
+            has a reference to a file watcher as a member variable and attaches to the file watcher's events, the
+            file watcher will maintain a reference the parent class so it can call its event handler. If the parent
+            class is not disposed properly, the file watcher will thusly not be disposed and will maintain the
+            reference to the parent class - the garbage collector will never collect the parent because it has a
+            valid reference and no collection means the parent finalizer will never get called and the file system
+            watcher will never get disposed. Creating multiple instances of parent class and not disposing of them
+            will cause a memory leak even with a properly designed disposable pattern. Using the SafeFileWatcher
+            instead of directly using the FileSystemWatcher will resolve this potential issue.
+            </para>
+        <para>
+            Note that component model implementation is not fully replicated - if you are using a file system watcher
+            on a design surface, this safety wrapper will usually not be needed. This class has benefit when a class
+            will dynamically use a file watcher and needs to make sure any unmanaged resources get properly released
+            even if a consumer neglects to call the dispose function.
+            </para>
+      </remarks>
     </member>
     <member name="M:Gemstone.IO.SafeFileWatcher.#ctor">
       <summary>
@@ -651,6 +727,11 @@
       <summary>
             Generates a byte-wise 16-bit CRC calculation.
             </summary>
+      <remarks>
+        <para>2-byte (16-bit) CRC: The generating polynomial is</para>
+        <para>        16   15   2    1</para>
+        <para>G(X) = X  + X  + X  + X</para>
+      </remarks>
     </member>
     <member name="M:Gemstone.IO.Checksums.Crc16.#ctor">
       <summary>
@@ -756,6 +837,10 @@
     </member>
     <member name="T:Gemstone.IO.Checksums.CrcCCITT">
       <summary>Generates a 16-bit CRC-CCITT checksum.</summary>
+      <remarks>
+            This is a table based 16-bit CRC popular for modem protocols defined for use by the
+            Consultative Committee on International Telegraphy and Telephony (CCITT) 
+            </remarks>
     </member>
     <member name="M:Gemstone.IO.Checksums.CrcCCITT.#ctor">
       <summary>
@@ -1015,6 +1100,10 @@
       <param name="length">Total number of bytes from <paramref name="startIndex">startIndex</paramref> to
             perform check-sum over.</param>
       <returns>Computed CRC-CCITT checksum over the specified portion of the buffer.</returns>
+      <remarks>
+            The CRC-CCITT is a table based 16-bit CRC popular for modem protocols defined for use by the
+            Consultative Committee on International Telegraphy and Telephony (CCITT) 
+            </remarks>
     </member>
     <member name="M:Gemstone.IO.Checksums.ChecksumExtensions.ChecksumExtensions.ModBusCrcChecksum(System.Byte[],System.Int32,System.Int32)">
       <summary>Calculates the CRC-ModBus check-sum on specified portion of a buffer.</summary>
@@ -1067,6 +1156,16 @@
       <summary>
             Creates a new instance of the <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" /> class.
             </summary>
+      <remarks>
+            This constructor uses the default equality comparer for file backed lookup tables,
+            which is not the same as the default equality comparer for <typeparamref name="TKey" />
+            objects. This is because the default implementation of <see cref="M:System.Object.GetHashCode" />
+            does not provide guarantees about consistency across platforms, or even implementations
+            of the CLR. Instead, the default equality comparer uses a byte-for-byte comparison to
+            determine equality between keys and a CRC-32 for its hash code implementation. This
+            means the performance of the hashing function is dependent on the performance of the
+            serialization function.
+            </remarks>
       <exception cref="T:System.InvalidOperationException">Either <typeparamref name="TKey" /> or <typeparamref name="TValue" /> cannot be serialized.</exception>
     </member>
     <member name="M:Gemstone.IO.Collections.FileBackedDictionary`2.#ctor(System.Collections.Generic.IDictionary{`0,`1})">
@@ -1074,6 +1173,16 @@
             Creates a new instance of the <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" /> class.
             </summary>
       <param name="dictionary">The dictionary whose elements are copied to this dictionary.</param>
+      <remarks>
+            This constructor uses the default equality comparer for file backed lookup tables,
+            which is not the same as the default equality comparer for <typeparamref name="TKey" />
+            objects. This is because the default implementation of <see cref="M:System.Object.GetHashCode" />
+            does not provide guarantees about consistency across platforms, or even implementations
+            of the CLR. Instead, the default equality comparer uses a byte-for-byte comparison to
+            determine equality between keys and a CRC-32 for its hash code implementation. This
+            means the performance of the hashing function is dependent on the performance of the
+            serialization function.
+            </remarks>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="dictionary" /> is null.</exception>
       <exception cref="T:System.InvalidOperationException">Either <typeparamref name="TKey" /> or <typeparamref name="TValue" /> cannot be serialized.</exception>
@@ -1100,6 +1209,16 @@
             Creates a new instance of the <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" /> class.
             </summary>
       <param name="filePath">The path to the file used to store the lookup table.</param>
+      <remarks>
+            This constructor uses the default equality comparer for file backed lookup tables,
+            which is not the same as the default equality comparer for <typeparamref name="TKey" />
+            objects. This is because the default implementation of <see cref="M:System.Object.GetHashCode" />
+            does not provide guarantees about consistency across platforms, or even implementations
+            of the CLR. Instead, the default equality comparer uses a byte-for-byte comparison to
+            determine equality between keys and a CRC-32 for its hash code implementation. This
+            means the performance of the hashing function is dependent on the performance of the
+            serialization function.
+            </remarks>
       <exception cref="T:System.ArgumentException">
         <paramref name="filePath" /> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="M:System.IO.Path.GetInvalidPathChars" />.</exception>
       <exception cref="T:System.ArgumentNullException">
@@ -1112,6 +1231,16 @@
             </summary>
       <param name="filePath">The path to the file used to store the lookup table.</param>
       <param name="dictionary">The dictionary whose elements are copied to this dictionary.</param>
+      <remarks>
+            This constructor uses the default equality comparer for file backed lookup tables,
+            which is not the same as the default equality comparer for <typeparamref name="TKey" />
+            objects. This is because the default implementation of <see cref="M:System.Object.GetHashCode" />
+            does not provide guarantees about consistency across platforms, or even implementations
+            of the CLR. Instead, the default equality comparer uses a byte-for-byte comparison to
+            determine equality between keys and a CRC-32 for its hash code implementation. This
+            means the performance of the hashing function is dependent on the performance of the
+            serialization function.
+            </remarks>
       <exception cref="T:System.ArgumentException">
         <paramref name="filePath" /> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="M:System.IO.Path.GetInvalidPathChars" />.</exception>
       <exception cref="T:System.ArgumentNullException">
@@ -1239,6 +1368,10 @@
       <summary>
             Gets or sets the path to the file backing this dictionary.
             </summary>
+      <remarks>
+            Changes to this property will cause the file to close if the file is already opened.
+            Data will not be automatically written from the old file to the new file.
+            </remarks>
       <exception cref="T:System.ArgumentException">FilePath is set and is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="M:System.IO.Path.GetInvalidPathChars" />.</exception>
     </member>
     <member name="P:Gemstone.IO.Collections.FileBackedDictionary`2.FragmentationCount">
@@ -1247,6 +1380,11 @@
             lookup table that have occurred since the last
             time the lookup table was compacted.
             </summary>
+      <remarks>
+            This value is not stored in the file and may therefore
+            be inaccurate if the lookup table has not been compacted
+            since the last time it was opened.
+            </remarks>
     </member>
     <member name="M:Gemstone.IO.Collections.FileBackedDictionary`2.GetEnumerator">
       <summary>
@@ -1372,6 +1510,16 @@
       <summary>
             Creates a new instance of the <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" /> class.
             </summary>
+      <remarks>
+            This constructor uses the default equality comparer for file backed lookup tables,
+            which is not the same as the default equality comparer for <typeparamref name="T" />
+            objects. This is because the default implementation of <see cref="M:System.Object.GetHashCode" />
+            does not provide guarantees about consistency across platforms, or even implementations
+            of the CLR. Instead, the default equality comparer uses a byte-for-byte comparison to
+            determine equality between keys and a CRC-32 for its hash code implementation. This
+            means the performance of the hashing function is dependent on the performance of the
+            serialization function.
+            </remarks>
       <exception cref="T:System.InvalidOperationException">
         <typeparamref name="T" /> cannot be serialized.</exception>
     </member>
@@ -1380,6 +1528,16 @@
             Creates a new instance of the <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" /> class.
             </summary>
       <param name="enumerable">The enumerable whose elements are copied to this hash set.</param>
+      <remarks>
+            This constructor uses the default equality comparer for file backed lookup tables,
+            which is not the same as the default equality comparer for <typeparamref name="T" />
+            objects. This is because the default implementation of <see cref="M:System.Object.GetHashCode" />
+            does not provide guarantees about consistency across platforms, or even implementations
+            of the CLR. Instead, the default equality comparer uses a byte-for-byte comparison to
+            determine equality between keys and a CRC-32 for its hash code implementation. This
+            means the performance of the hashing function is dependent on the performance of the
+            serialization function.
+            </remarks>
       <exception cref="T:System.ArgumentNullException">
         <paramref name="enumerable" /> is null.</exception>
       <exception cref="T:System.InvalidOperationException">
@@ -1409,6 +1567,16 @@
             Creates a new instance of the <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" /> class.
             </summary>
       <param name="filePath">The path to the file used to store the lookup table.</param>
+      <remarks>
+            This constructor uses the default equality comparer for file backed lookup tables,
+            which is not the same as the default equality comparer for <typeparamref name="T" />
+            objects. This is because the default implementation of <see cref="M:System.Object.GetHashCode" />
+            does not provide guarantees about consistency across platforms, or even implementations
+            of the CLR. Instead, the default equality comparer uses a byte-for-byte comparison to
+            determine equality between keys and a CRC-32 for its hash code implementation. This
+            means the performance of the hashing function is dependent on the performance of the
+            serialization function.
+            </remarks>
       <exception cref="T:System.ArgumentException">
         <paramref name="filePath" /> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="M:System.IO.Path.GetInvalidPathChars" />.</exception>
       <exception cref="T:System.ArgumentNullException">
@@ -1422,6 +1590,16 @@
             </summary>
       <param name="filePath">The path to the file used to store the lookup table.</param>
       <param name="enumerable">The enumerable whose elements are copied to this hash set.</param>
+      <remarks>
+            This constructor uses the default equality comparer for file backed lookup tables,
+            which is not the same as the default equality comparer for <typeparamref name="T" />
+            objects. This is because the default implementation of <see cref="M:System.Object.GetHashCode" />
+            does not provide guarantees about consistency across platforms, or even implementations
+            of the CLR. Instead, the default equality comparer uses a byte-for-byte comparison to
+            determine equality between keys and a CRC-32 for its hash code implementation. This
+            means the performance of the hashing function is dependent on the performance of the
+            serialization function.
+            </remarks>
       <exception cref="T:System.ArgumentException">
         <paramref name="filePath" /> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="M:System.IO.Path.GetInvalidPathChars" />.</exception>
       <exception cref="T:System.ArgumentNullException">
@@ -1541,6 +1719,10 @@
       <summary>
             Gets or sets the path to the file backing this hash set.
             </summary>
+      <remarks>
+            Changes to this property will cause the file to close if the file is already opened.
+            Data will not be automatically written from the old file to the new file.
+            </remarks>
       <exception cref="T:System.ArgumentException">FilePath is set and is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="M:System.IO.Path.GetInvalidPathChars" />.</exception>
     </member>
     <member name="P:Gemstone.IO.Collections.FileBackedHashSet`1.FragmentationCount">
@@ -1549,6 +1731,11 @@
             lookup table that have occurred since the last
             time the lookup table was compacted.
             </summary>
+      <remarks>
+            This value is not stored in the file and may therefore
+            be inaccurate if the lookup table has not been compacted
+            since the last time it was opened.
+            </remarks>
     </member>
     <member name="M:Gemstone.IO.Collections.FileBackedHashSet`1.GetEnumerator">
       <summary>
@@ -1824,6 +2011,21 @@
             Represents the base class for a common binary image header implementation.
             </summary>
       <typeparam name="TTypeIdentifier">Type of identifier used to distinguish output types.</typeparam>
+      <remarks>
+            Here is an example of a possible derived class constructor that has an integer TypeID as the
+            first 4 bytes in the image:
+            <code>
+            public CommonHeader(object state, byte[] binaryImage, int startIndex, int length)
+            {
+                if (length &gt; 3)
+                {
+                    TypeID = LittleEndian.ToInt32(binaryImage, startIndex);
+                    State = state;
+                }
+                else
+                    throw new InvalidOperationException("Malformed image");
+            }
+            </code></remarks>
     </member>
     <member name="M:Gemstone.IO.Parsing.CommonHeaderBase`1.#ctor">
       <summary>
@@ -1851,6 +2053,21 @@
             </summary>
       <typeparam name="TTypeIdentifier">Type of identifier used to distinguish output types.</typeparam>
       <typeparam name="TOutputType">Type of the interface or class used to represent outputs.</typeparam>
+      <remarks>
+        <para>
+            This parser is designed as a write-only stream such that data can come from any source.
+            </para>
+        <para>
+            This class is more specific than the <see cref="T:Gemstone.IO.Parsing.BinaryImageParserBase" /> in that it can automate the parsing of
+            a particular protocol that is formatted as a series of frames that have a common method of identification.
+            Automation of type creation occurs by loading implementations of common types that implement the
+            <see cref="T:Gemstone.IO.Parsing.ISupportFrameImage`1" /> interface. The common method of identification is handled by
+            creating a class derived from the <see cref="T:Gemstone.IO.Parsing.ICommonHeader`1" /> which primarily includes a
+            TypeID property, but also should include any state information needed to parse a particular frame if
+            necessary. Derived classes simply override the <see cref="M:Gemstone.IO.Parsing.FrameImageParserBase`2.ParseCommonHeader(System.Byte[],System.Int32,System.Int32)" /> function in order to parse
+            the <see cref="T:Gemstone.IO.Parsing.ICommonHeader`1" /> from a provided binary image.
+            </para>
+      </remarks>
     </member>
     <member name="M:Gemstone.IO.Parsing.FrameImageParserBase`2.#ctor">
       <summary>
@@ -1862,6 +2079,9 @@
             Occurs when a data image is deserialized successfully to one of the output types that the data
             image represents.
             </summary>
+      <remarks>
+        <see cref="F:Gemstone.EventArgs`1.Argument" /> is the object that was deserialized from the binary image.
+            </remarks>
     </member>
     <member name="M:Gemstone.IO.Parsing.FrameImageParserBase`2.Dispose(System.Boolean)">
       <summary>
@@ -1873,6 +2093,9 @@
       <summary>
             Occurs when more than one type has been defined that can deserialize the specified output type.
             </summary>
+      <remarks>
+        <see cref="F:Gemstone.EventArgs`2.Argument1" /> is the <see cref="T:System.Type" /> that defines a type ID that has already been defined.<br /><see cref="F:Gemstone.EventArgs`2.Argument2" /> is the ID of the output type that was defined more than once.
+            </remarks>
     </member>
     <member name="P:Gemstone.IO.Parsing.FrameImageParserBase`2.Enabled">
       <summary>
@@ -1902,6 +2125,9 @@
       <summary>
             Occurs when matching an output type for deserializing the data image could not be found.
             </summary>
+      <remarks>
+        <see cref="F:Gemstone.EventArgs`1.Argument" /> is the ID of the output type that could not be found.
+            </remarks>
     </member>
     <member name="M:Gemstone.IO.Parsing.FrameImageParserBase`2.ParseCommonHeader(System.Byte[],System.Int32,System.Int32)">
       <summary>
@@ -1912,6 +2138,19 @@
       <param name="offset">Offset index into buffer that represents where to start parsing.</param>
       <param name="length">Maximum length of valid data from offset.</param>
       <returns>The <see cref="T:Gemstone.IO.Parsing.ICommonHeader`1" /> which includes a type ID for the <see cref="T:System.Type" /> to be parsed.</returns>
+      <remarks>
+        <para>
+            Derived classes need to provide a common header instance (i.e., class that implements <see cref="T:Gemstone.IO.Parsing.ICommonHeader`1" />)
+            for the output types; this will primarily include an ID of the <see cref="T:System.Type" /> that the data image represents.  This parsing is
+            only for common header information, actual parsing will be handled by output type via its <see cref="M:Gemstone.IO.Parsing.ISupportBinaryImage.ParseBinaryImage(System.Byte[],System.Int32,System.Int32)" />
+            method. This header image should also be used to add needed complex state information about the output type being parsed if needed.
+            </para>
+        <para>
+            If there is not enough buffer available to parse common header (as determined by <paramref name="length" />), return null.  Also, if
+            the protocol allows frame length to be determined at the time common header is being parsed and there is not enough buffer to parse
+            the entire frame, it will be optimal to prevent further parsing by returning null.
+            </para>
+      </remarks>
     </member>
     <member name="M:Gemstone.IO.Parsing.FrameImageParserBase`2.ParseFrame(System.Byte[],System.Int32,System.Int32)">
       <summary>
@@ -1937,6 +2176,9 @@
       <summary>
             Start the data parser.
             </summary>
+      <remarks>
+            This overload loads public types from assemblies in the application binaries directory that implement the parser's output type.
+            </remarks>
     </member>
     <member name="M:Gemstone.IO.Parsing.FrameImageParserBase`2.Start(System.Collections.Generic.IEnumerable{System.Type})">
       <summary>
@@ -1954,6 +2196,9 @@
             Defines the common header of a frame image for a set of parsed types, consisting at least of a type ID.
             </summary>
       <typeparam name="TTypeIdentifier">Type of identifier used to distinguish output types.</typeparam>
+      <remarks>
+            Header implementations can extend this interface as necessary to accommodate protocol specific header images.
+            </remarks>
     </member>
     <member name="P:Gemstone.IO.Parsing.ICommonHeader`1.State">
       <summary>
@@ -1978,32 +2223,58 @@
             Occurs when a data image is deserialized successfully to one of the output types that the data
             image represents.
             </summary>
+      <remarks>
+        <see cref="F:Gemstone.EventArgs`1.Argument" /> is the object that was deserialized from the binary image.
+            </remarks>
     </member>
     <member name="E:Gemstone.IO.Parsing.IFrameImageParser`2.OutputTypeNotFound">
       <summary>
             Occurs when matching a output type for deserializing the data image could not be found.
             </summary>
+      <remarks>
+        <see cref="F:Gemstone.EventArgs`1.Argument" /> is the ID of the output type that could not be found.
+            </remarks>
     </member>
     <member name="T:Gemstone.IO.Parsing.ISupportFrameImage`1">
       <summary>
             Specifies that this <see cref="T:System.Type" /> can produce or consume a frame of data represented as a binary image.
             </summary>
       <typeparam name="TTypeIdentifier">Type of the frame identifier.</typeparam>
+      <remarks>
+            Related types of protocol data that occur as frames in a stream can implement this interface for automated parsing
+            via the <see cref="T:Gemstone.IO.Parsing.FrameImageParserBase`2" /> class.
+            </remarks>
     </member>
     <member name="P:Gemstone.IO.Parsing.ISupportFrameImage`1.AllowQueuedPublication">
       <summary>
             Gets flag that determines if frame image can queued for publication or should be processed immediately.
             </summary>
+      <remarks>
+            Some frames, e.g., a configuration or key frame, may be critical to processing of other frames. In this
+            case, these types of frames should be published immediately so that subsequent frame parsing can have
+            access to needed critical information.
+            </remarks>
     </member>
     <member name="P:Gemstone.IO.Parsing.ISupportFrameImage`1.CommonHeader">
       <summary>
             Gets or sets current <see cref="T:Gemstone.IO.Parsing.ICommonHeader`1" />.
             </summary>
+      <remarks>
+            If used, this will need to be set before call to <see cref="M:Gemstone.IO.Parsing.ISupportBinaryImage.ParseBinaryImage(System.Byte[],System.Int32,System.Int32)" />.
+            </remarks>
     </member>
     <member name="P:Gemstone.IO.Parsing.ISupportFrameImage`1.TypeID">
       <summary>
             Gets the identifier that can be used for identifying the <see cref="T:System.Type" />.
             </summary>
+      <remarks>
+        <para>
+          <see cref="P:Gemstone.IO.Parsing.ISupportFrameImage`1.TypeID" /> must be unique across all siblings implementing a common <see cref="T:System.Type" /> or interface.
+            </para>
+        <para>
+            Output types implement this class so they have a consistently addressable identification property.
+            </para>
+      </remarks>
     </member>
     <member name="T:Gemstone.IO.Parsing.ISupportSourceIdentifiableFrameImage`2">
       <summary>
@@ -2012,6 +2283,10 @@
             </summary>
       <typeparam name="TSourceIdentifier">Type of identifier for the data source.</typeparam>
       <typeparam name="TTypeIdentifier">Type of the frame identifier.</typeparam>
+      <remarks>
+            Related types of protocol data that occur as frames in a stream can implement this interface for automated parsing
+            via the <see cref="T:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3" /> class.
+            </remarks>
     </member>
     <member name="P:Gemstone.IO.Parsing.ISupportSourceIdentifiableFrameImage`2.Source">
       <summary>
@@ -2026,6 +2301,21 @@
       <typeparam name="TSourceIdentifier">Type of identifier for the data source.</typeparam>
       <typeparam name="TTypeIdentifier">Type of identifier used to distinguish output types.</typeparam>
       <typeparam name="TOutputType">Type of the interface or class used to represent outputs.</typeparam>
+      <remarks>
+        <para>
+            This parser is designed as a write-only stream such that data can come from any source.
+            </para>
+        <para>
+            This class is more specific than the <see cref="T:Gemstone.IO.Parsing.BinaryImageParserBase" /> in that it can automate the parsing of a
+            particular protocol that is formatted as a series of frames that have a common method of identification.
+            Automation of type creation occurs by loading implementations of common types that implement the
+            <see cref="T:Gemstone.IO.Parsing.ISupportSourceIdentifiableFrameImage`2" /> interface. The common method of
+            identification is handled by creating a class derived from the <see cref="T:Gemstone.IO.Parsing.ICommonHeader`1" /> which primarily
+            includes a TypeID property, but also should include any state information needed to parse a particular frame if necessary.
+            Derived classes override the <see cref="M:Gemstone.IO.Parsing.FrameImageParserBase`2.ParseCommonHeader(System.Byte[],System.Int32,System.Int32)" />
+            method in order to parse the <see cref="T:Gemstone.IO.Parsing.ICommonHeader`1" /> from a provided binary image.
+            </para>
+      </remarks>
     </member>
     <member name="M:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.#ctor">
       <summary>
@@ -2064,6 +2354,9 @@
             </summary>
       <param name="source">Identifier of the data source.</param>
       <param name="image">Object to be parsed that implements the <see cref="T:Gemstone.IO.Parsing.ISupportBinaryImage" /> interface.</param>
+      <remarks>
+            This method takes the binary image from <see cref="T:Gemstone.IO.Parsing.ISupportBinaryImage" /> and writes the buffer to the <see cref="T:Gemstone.IO.Parsing.BinaryImageParserBase" /> stream for parsing.
+            </remarks>
     </member>
     <member name="M:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.Parse(`0,System.Byte[])">
       <summary>
@@ -2080,12 +2373,18 @@
       <param name="buffer">An array of bytes. This method copies count bytes from buffer to the queue.</param>
       <param name="offset">The zero-based byte offset in buffer at which to begin copying bytes to the current stream.</param>
       <param name="count">The number of bytes to be written to the current stream.</param>
+      <remarks>
+            This method associates a buffer with its data source identifier.
+            </remarks>
     </member>
     <member name="M:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.PurgeBuffer(`0)">
       <summary>
             Clears the internal buffer of unparsed data received from the specified <paramref name="source" />.
             </summary>
       <param name="source">Identifier of the data source.</param>
+      <remarks>
+            This method can be used to ensure that partial data received from the <paramref name="source" /> is not kept in memory indefinitely.
+            </remarks>
     </member>
     <member name="P:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.QueuedBuffers">
       <summary>
@@ -2096,6 +2395,9 @@
       <summary>
             Occurs when a data image is deserialized successfully to one or more of the output types that the data image represents.
             </summary>
+      <remarks>
+        <see cref="F:Gemstone.EventArgs`2.Argument1" /> is the ID of the source for the data image.<br /><see cref="F:Gemstone.EventArgs`2.Argument2" /> is a list of objects deserialized from the data image.
+            </remarks>
     </member>
     <member name="M:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.Start">
       <summary>
@@ -2121,6 +2423,10 @@
       <summary>
             Represents a source identifiable buffer.
             </summary>
+      <remarks>
+            This class implements <see cref="T:Gemstone.ISupportLifecycle" /> such that it will support
+            automatic object pool handling, e.g., returning object to pool when disposed.
+            </remarks>
     </member>
     <member name="M:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.SourceIdentifiableBuffer.#ctor">
       <summary>
@@ -2140,6 +2446,9 @@
       <summary>
             Gets or sets valid number of bytes within the <see cref="F:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.SourceIdentifiableBuffer.Buffer" />.
             </summary>
+      <remarks>   
+            This property will automatically initialize buffer. Set to zero to release buffer. 
+            </remarks>
     </member>
     <member name="P:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.SourceIdentifiableBuffer.Enabled">
       <summary>
@@ -2155,6 +2464,21 @@
       <summary>
             Represents a template based token substitution parser that supports binary and advanced expressions.
             </summary>
+      <remarks>
+        <para>
+            As an example, this parser can use a templated expression of the form:
+            <code language="cs">
+            {CompanyAcronym}_{DeviceAcronym}[?{SignalType.Source}=Phasor[-{SignalType.Suffix}{SignalIndex}]]:{Signal.Acronymn}
+            </code>
+            then replace the tokens with actual values and properly evaluate the expressions.
+            Example results could look like: GPA_SHELBY-PA1:IPHA and GPA_SHELBY:FREQ
+            </para>
+        <para>
+            Parser also supports more complex C# style expressions using the "eval{}" function, e.g.:
+            <code>
+            eval{'{CompanyAcronym}'.Substring(0,3)}_{DeviceAcronym}eval{'[?{SignalType.Source}=Phasor[-{SignalType.Suffix}]]'.Length}
+            </code></para>
+      </remarks>
     </member>
     <member name="M:Gemstone.IO.Parsing.TemplatedExpressionParser.#ctor">
       <summary>
@@ -2193,11 +2517,47 @@
       <param name="evaluateExpressions">Determines if expressions should be evaluated. Defaults to <c>true</c>.</param>
       <param name="escapeSubstitutionValues">Determines if reserved symbols in substitution values should be automatically escaped. Defaults to <c>true</c>.</param>
       <returns>A string that was based on <see cref="P:Gemstone.IO.Parsing.TemplatedExpressionParser.TemplatedExpression" /> with tokens replaced and expressions evaluated.</returns>
+      <remarks>
+        <para>
+            The default token start and end delimiters are { and } but can be overridden in <see cref="T:Gemstone.IO.Parsing.TemplatedExpressionParser" /> constructor.
+            All substitution tokens surrounded by <see cref="P:Gemstone.IO.Parsing.TemplatedExpressionParser.StartTokenDelimiter" /> and <see cref="P:Gemstone.IO.Parsing.TemplatedExpressionParser.EndTokenDelimiter" /> (e.g., {token})
+            will be immediately replaced with their string equivalents before further expression evaluation. As a result of the expression
+            syntax &lt;, &gt;, =, and ! are reserved expressions symbols; <see cref="P:Gemstone.IO.Parsing.TemplatedExpressionParser.StartTokenDelimiter" />, <see cref="P:Gemstone.IO.Parsing.TemplatedExpressionParser.EndTokenDelimiter" />,
+            <see cref="P:Gemstone.IO.Parsing.TemplatedExpressionParser.StartExpressionDelimiter" /> and <see cref="P:Gemstone.IO.Parsing.TemplatedExpressionParser.EndExpressionDelimiter" /> are reserved delimiter symbols. To embed any reserved
+            symbol into the <see cref="P:Gemstone.IO.Parsing.TemplatedExpressionParser.TemplatedExpression" /> so that it appears in the evaluated result, escape the symbol by prefixing it
+            with a backslash, e.g., \{.
+            </para>
+        <para>
+            The default expression start and end delimiters are [ and ] but can be overridden in <see cref="T:Gemstone.IO.Parsing.TemplatedExpressionParser" /> constructor.
+            Expressions are represented in the form of [?expression[result]] and can be nested, e.g. ([?expression1[?expression2[result]]]).
+            Expressions should not contain extraneous white space for proper evaluation. Only simple boolean comparison operations are allowed
+            in expressions, e.g., A=B (or A==B), A!=B (or A&lt;&gt;B), A&gt;B, A&gt;=B, A&lt;B and A&lt;=B - nothing more. Any expression that
+            fails to evaluate will be evaluated as FALSE. Note that if both left (A) and right (B) operands can be parsed as a numeric value then
+            the expression will be numerically evaluated otherwise expression will be a culture-invariant string comparison. Nested expressions
+            are evaluated as cumulative AND operators. There is no defined nesting limit.
+            </para>
+        <para>
+            Advanced expressions can be parsed using the eval function, e.g., eval{1 + 2}. Eval function expression is delimited by the currently
+            defined token delimiters, { and } by default. The evaluation engine deals with numbers and strings. The typing of numeric literals
+            follow C# standards, suffixes such as d, f and m may be used to explicitly specify the numeric type. If no numeric suffix is provided,
+            the default type of a numeric literal is assumed to be <see cref="T:System.Int32" />. String literals should be specified using single quotes
+            instead of double quotes, this includes substitution parameters, e.g., <c>eval{'{DeviceAcronym}'.Length + 1}</c>. Advanced evaluation
+            expressions using the eval function are always parsed after common expressions. Eval functions cannot be nested.
+            </para>
+        <para>
+            When <paramref name="evaluateExpressions" /> is <c>true</c> and values in <paramref name="substitutions" /> intentionally contain
+            expressions to be evaluated, then <paramref name="escapeSubstitutionValues" /> should be set to <c>false</c> so that the reserved
+            symbols in the values are not automatically escaped.
+            </para>
+      </remarks>
     </member>
     <member name="P:Gemstone.IO.Parsing.TemplatedExpressionParser.ReservedSymbols">
       <summary>
             Gets the reserved symbols - this includes all delimiters and expression operators.
             </summary>
+      <remarks>
+            The default reserved symbol list is: <c>'\', '&lt;', '&gt;', '=', '!', '{', '}', '[', ']'</c>.
+            </remarks>
     </member>
     <member name="P:Gemstone.IO.Parsing.TemplatedExpressionParser.StartExpressionDelimiter">
       <summary>
