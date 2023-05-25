@@ -33,7 +33,6 @@ using Gemstone.GuidExtensions;
 using Gemstone.IO.Checksums;
 
 // BinaryFormatter is considered obsolete
-#pragma warning disable SYSLIB0011
 
 // ReSharper disable StaticFieldInGenericType
 // ReSharper disable UnusedMember.Local
@@ -1721,13 +1720,13 @@ namespace Gemstone.IO.Collections
 
             if (writeKeyAction is null || readKeyFunc is null)
             {
-                writeKeyAction = (_, __) => throw new InvalidOperationException($"Type of TKey ({typeof(TKey).FullName}) is not serializable.");
+                writeKeyAction = (_, _) => throw new InvalidOperationException($"Type of TKey ({typeof(TKey).FullName}) is not serializable.");
                 readKeyFunc = _ => throw new InvalidOperationException($"Type of TKey ({typeof(TKey).FullName}) is not serializable.");
             }
 
             if (writeValueAction is null || readValueFunc is null)
             {
-                writeValueAction = (_, __) => throw new InvalidOperationException($"Type of TValue ({typeof(TKey).FullName}) is not serializable.");
+                writeValueAction = (_, _) => throw new InvalidOperationException($"Type of TValue ({typeof(TKey).FullName}) is not serializable.");
                 readValueFunc = _ => throw new InvalidOperationException($"Type of TValue ({typeof(TKey).FullName}) is not serializable.");
             }
 

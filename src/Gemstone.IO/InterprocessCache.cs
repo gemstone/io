@@ -23,7 +23,6 @@
 
 using System;
 using System.Collections;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
 using System.Timers;
@@ -32,8 +31,6 @@ using Gemstone.IO.StreamExtensions;
 using Gemstone.Threading;
 using Gemstone.Threading.SynchronizedOperations;
 using Timer = System.Timers.Timer;
-
-#pragma warning disable CA1031 // Do not catch general exception types
 
 namespace Gemstone.IO
 {
@@ -148,7 +145,6 @@ namespace Gemstone.IO
         /// <remarks>
         /// Setting value to <c>null</c> will create a zero-length file.
         /// </remarks>
-        [SuppressMessage("Performance", "CA1819:Properties should not return arrays", Justification = "Necessary property for use case, represents data for file cache")]
         public byte[] FileData
         {
             get

@@ -35,7 +35,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using Gemstone.ArrayExtensions;
 using Gemstone.EventHandlerExtensions;
 using Gemstone.Threading.Collections;
@@ -66,8 +65,7 @@ namespace Gemstone.IO.Parsing
     /// <typeparam name="TSourceIdentifier">Type of identifier for the data source.</typeparam>
     /// <typeparam name="TTypeIdentifier">Type of identifier used to distinguish output types.</typeparam>
     /// <typeparam name="TOutputType">Type of the interface or class used to represent outputs.</typeparam>
-    [SuppressMessage("Microsoft.Design", "CA1005:AvoidExcessiveParametersOnGenericTypes")]
-    public abstract class MultiSourceFrameImageParserBase<TSourceIdentifier, TTypeIdentifier, TOutputType> : FrameImageParserBase<TTypeIdentifier, TOutputType> where TOutputType : ISupportSourceIdentifiableFrameImage<TSourceIdentifier, TTypeIdentifier>
+    public abstract class MultiSourceFrameImageParserBase<TSourceIdentifier, TTypeIdentifier, TOutputType> : FrameImageParserBase<TTypeIdentifier, TOutputType> where TOutputType : ISupportSourceIdentifiableFrameImage<TSourceIdentifier, TTypeIdentifier> where TSourceIdentifier : notnull
     {
         #region [ Members ]
 
@@ -80,7 +78,6 @@ namespace Gemstone.IO.Parsing
         /// This class implements <see cref="ISupportLifecycle"/> such that it will support
         /// automatic object pool handling, e.g., returning object to pool when disposed.
         /// </remarks>
-        [SuppressMessage("Microsoft.Design", "CA1034:NestedTypesShouldNotBeVisible")]
         public class SourceIdentifiableBuffer
         {
             #region [ Members ]
@@ -232,22 +229,20 @@ namespace Gemstone.IO.Parsing
         /// </remarks>
         public virtual void Parse(TSourceIdentifier source, byte[] buffer, int offset, int count)
         {
-            SourceIdentifiableBuffer identifiableBuffer;
-
             buffer.ValidateParameters(offset, count);
 
             if (count <= 0)
                 return;
 
             // Get an identifiable buffer object
-            identifiableBuffer = new SourceIdentifiableBuffer
+            SourceIdentifiableBuffer identifiableBuffer = new()
             {
                 Source = source,
                 Count = count
             };
 
             // Copy buffer data for processing
-            Buffer.BlockCopy(buffer, offset, identifiableBuffer.Buffer, 0, count);
+            Buffer.BlockCopy(buffer, offset, identifiableBuffer.Buffer!, 0, count);
 
             // Add buffer to the queue for parsing. Note that buffer is queued for parsing instead 
             // of handling parse on this thread - this has become necessary to reduce UDP data loss
@@ -357,7 +352,7 @@ namespace Gemstone.IO.Parsing
                 return;
 
             // If user has attached to SourceDataParsed event, track parsed data per source
-            List<TOutputType> sourceData = m_parsedSourceData.GetOrAdd(output.Source, id => new List<TOutputType>());
+            List<TOutputType> sourceData = m_parsedSourceData.GetOrAdd(output.Source, _ => new List<TOutputType>());
             sourceData.Add(output);
         }
 

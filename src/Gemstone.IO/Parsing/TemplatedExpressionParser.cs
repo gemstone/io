@@ -27,7 +27,6 @@ using System;
 using System.CodeDom;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -313,7 +312,6 @@ namespace Gemstone.IO.Parsing
 
         // Parses expressions of the form "[?expression[result]]". Expressions can be nested, e.g., "[?expression1[?expression2[result]]]".
         // Returns list of complete expressions (used as base replacement text), cumulative boolean expression evaluations and expression results
-        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         private List<ParsedExpression> ParseExpressions(string fieldReplacedTemplatedExpression, bool ignoreCase)
         {
             List<ParsedExpression> parsedExpressions = new();

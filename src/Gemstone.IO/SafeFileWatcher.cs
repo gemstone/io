@@ -23,7 +23,6 @@
 
 using System;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Security;
 using Gemstone.EventHandlerExtensions;
@@ -149,11 +148,11 @@ namespace Gemstone.IO
         {
             WeakReference<SafeFileWatcher> reference = new(this);
 
-            m_fileSystemWatcher.Changed += (sender, e) => OnChanged(reference, e);
-            m_fileSystemWatcher.Created += (sender, e) => OnCreated(reference, e);
-            m_fileSystemWatcher.Deleted += (sender, e) => OnDeleted(reference, e);
-            m_fileSystemWatcher.Renamed += (sender, e) => OnRenamed(reference, e);
-            m_fileSystemWatcher.Error += (sender, e) => OnError(reference, e);
+            m_fileSystemWatcher.Changed += (_, e) => OnChanged(reference, e);
+            m_fileSystemWatcher.Created += (_, e) => OnCreated(reference, e);
+            m_fileSystemWatcher.Deleted += (_, e) => OnDeleted(reference, e);
+            m_fileSystemWatcher.Renamed += (_, e) => OnRenamed(reference, e);
+            m_fileSystemWatcher.Error += (_, e) => OnError(reference, e);
         }
 
         /// <summary>
@@ -340,7 +339,6 @@ namespace Gemstone.IO
         /// Releases the unmanaged resources used by the <see cref="SafeFileWatcher"/> object and optionally releases the managed resources.
         /// </summary>
         /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
-        [SuppressMessage("Microsoft.Usage", "CA2213:DisposableFieldsShouldBeDisposed", MessageId = "m_fileSystemWatcher")]
         protected virtual void Dispose(bool disposing)
         {
             if (m_disposed)

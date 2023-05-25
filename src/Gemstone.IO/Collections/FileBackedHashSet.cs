@@ -471,12 +471,10 @@ namespace Gemstone.IO.Collections
         /// <exception cref="NotSupportedException">The <see cref="FileBackedHashSet{T}"/> is read-only.</exception>
         public bool IsProperSubsetOf(IEnumerable<T> other)
         {
-            bool canBeProperSubset;
-
             if (other is null)
                 throw new ArgumentNullException(nameof(other));
             
-            canBeProperSubset = false;
+            bool canBeProperSubset = false;
             m_lookupTable.UnmarkAll();
 
             foreach (T item in other)
