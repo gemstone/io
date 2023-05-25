@@ -119,7 +119,7 @@ namespace Gemstone.IO.UnitTests.Collections
                 rollingWindow.Add(i);
 
             for (int i = -5; i < 10; i++)
-                Assert.AreEqual(i >= 0 && i < 5, rollingWindow.Contains(i));
+                Assert.AreEqual(i is >= 0 and < 5, rollingWindow.Contains(i));
         }
 
         [TestMethod]

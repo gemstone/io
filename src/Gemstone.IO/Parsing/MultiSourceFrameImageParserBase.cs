@@ -320,7 +320,7 @@ namespace Gemstone.IO.Parsing
                     UnparsedBuffer = m_unparsedBuffers.GetOrAdd(m_source, (byte[]?)null);
 
                     // Start parsing sequence for this buffer - this will begin publication of new parsed outputs
-                    if (buffer.Buffer != null && buffer.Count > 0)
+                    if (buffer is { Buffer: not null, Count: > 0 })
                         base.Write(buffer.Buffer, 0, buffer.Count);
 
                     // Track last unparsed buffer for this data source
