@@ -168,8 +168,7 @@ namespace Gemstone.IO
                 bool dataChanged = false;
 
                 // If value is null, assume user means zero-length file
-                if (value == null)
-                    value = Array.Empty<byte>();
+                value ??= Array.Empty<byte>();
 
                 byte[] fileData = Interlocked.Exchange(ref m_fileData, value);
 
