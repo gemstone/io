@@ -346,7 +346,7 @@ namespace Gemstone.IO.Parsing
                         CodeBinaryOperatorExpression? expression = ParseBinaryOperatorExpression(capture.Value.Substring(2), out TypeCode expressionType);
 
                         // Evaluate binary expression
-                        if (expression != null)
+                        if (expression is not null)
                         {
                             IComparer comparer;
 

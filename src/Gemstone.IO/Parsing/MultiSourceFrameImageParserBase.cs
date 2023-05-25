@@ -214,7 +214,7 @@ namespace Gemstone.IO.Parsing
         /// <param name="buffer">An array of bytes to queue for parsing</param>
         public virtual void Parse(TSourceIdentifier source, byte[] buffer)
         {
-            if (buffer == null)
+            if (buffer is null)
                 throw new ArgumentNullException(nameof(buffer));
 
             Parse(source, buffer, 0, buffer.Length);
@@ -313,7 +313,7 @@ namespace Gemstone.IO.Parsing
                     m_source = buffer.Source;
 
                     // Check to see if this data source has been initialized
-                    if (m_sourceInitialized != null)
+                    if (m_sourceInitialized is not null)
                         StreamInitialized = m_sourceInitialized.GetOrAdd(m_source, true);
 
                     // Restore any unparsed buffers for this data source, if any
@@ -330,7 +330,7 @@ namespace Gemstone.IO.Parsing
             finally
             {
                 // If user has attached to SourceDataParsed event, expose list of parsed data per source
-                if (SourceDataParsed != null)
+                if (SourceDataParsed is not null)
                 {
                     foreach (KeyValuePair<TSourceIdentifier, List<TOutputType>> parsedData in m_parsedSourceData)
                         OnSourceDataParsed(parsedData.Key, parsedData.Value);
@@ -353,7 +353,7 @@ namespace Gemstone.IO.Parsing
 
             base.OnDataParsed(output);
 
-            if (SourceDataParsed == null)
+            if (SourceDataParsed is null)
                 return;
 
             // If user has attached to SourceDataParsed event, track parsed data per source
@@ -375,7 +375,7 @@ namespace Gemstone.IO.Parsing
         protected override void OnDataDiscarded(byte[] buffer)
         {
             // If an error occurs during parsing from a data source, we reset its initialization state
-            if (m_sourceInitialized != null)
+            if (m_sourceInitialized is not null)
                 m_sourceInitialized[m_source] = false;
 
             base.OnDataDiscarded(buffer);

@@ -88,7 +88,7 @@ namespace Gemstone.IO.Checksums
         /// <param name="buffer">buffer an array of bytes</param>
         public void Update(byte[] buffer)
         {
-            if (buffer == null)
+            if (buffer is null)
                 throw new ArgumentNullException(nameof(buffer));
 
             Update(buffer, 0, buffer.Length);
@@ -102,7 +102,7 @@ namespace Gemstone.IO.Checksums
         /// <param name = "count">The number of data bytes to update the CRC with.</param>
         public void Update(byte[] buffer, int offset, int count)
         {
-            if (buffer == null)
+            if (buffer is null)
                 throw new ArgumentNullException(nameof(buffer));
 
             if (count < 0)

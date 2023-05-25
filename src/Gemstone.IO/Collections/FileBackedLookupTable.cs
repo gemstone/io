@@ -293,13 +293,13 @@ namespace Gemstone.IO.Collections
         /// <exception cref="InvalidOperationException">Either <typeparamref name="TKey"/> or <typeparamref name="TValue"/> cannot be serialized.</exception>
         public FileBackedLookupTable(LookupTableType lookupTableType, string filePath, IEqualityComparer<TKey>? keyComparer)
         {
-            if (s_writeKeyAction == null || s_readKeyFunc == null)
+            if (s_writeKeyAction is null || s_readKeyFunc is null)
                 throw new InvalidOperationException("Unable to create FileBackedLookupTable with keys that are not serializable");
 
-            if (lookupTableType == LookupTableType.Dictionary && (s_writeValueAction == null || s_readValueFunc == null))
+            if (lookupTableType == LookupTableType.Dictionary && (s_writeValueAction is null || s_readValueFunc is null))
                 throw new InvalidOperationException("Unable to create FileBackedLookupTable with values that are not serializable");
 
-            if (filePath == null)
+            if (filePath is null)
                 throw new ArgumentNullException(nameof(filePath));
 
             if (string.IsNullOrWhiteSpace(filePath))
@@ -361,7 +361,7 @@ namespace Gemstone.IO.Collections
         {
             get
             {
-                if (m_fileStream == null)
+                if (m_fileStream is null)
                     OpenImplicit();
 
                 return (int)m_headerNode.Count;
@@ -378,10 +378,10 @@ namespace Gemstone.IO.Collections
         {
             get
             {
-                if (m_fileStream == null)
+                if (m_fileStream is null)
                     OpenImplicit();
 
-                return m_fileWriter == null;
+                return m_fileWriter is null;
             }
         }
 
@@ -395,7 +395,7 @@ namespace Gemstone.IO.Collections
         {
             get
             {
-                if (m_fileStream == null)
+                if (m_fileStream is null)
                     OpenImplicit();
 
                 byte[] signature = new byte[HeaderNode.SignatureSize];
@@ -405,7 +405,7 @@ namespace Gemstone.IO.Collections
             }
             set
             {
-                if (value == null)
+                if (value is null)
                     throw new ArgumentNullException(nameof(value));
 
                 if (value.Length > HeaderNode.SignatureSize)
@@ -433,7 +433,7 @@ namespace Gemstone.IO.Collections
         {
             get
             {
-                if (key == null)
+                if (key is null)
                     throw new ArgumentNullException(nameof(key));
 
                 if (!TryGetValue(key, out TValue value))
@@ -445,7 +445,7 @@ namespace Gemstone.IO.Collections
             {
                 long count;
 
-                if (key == null)
+                if (key is null)
                     throw new ArgumentNullException(nameof(key));
 
                 FailIfReadOnly();
@@ -486,14 +486,14 @@ namespace Gemstone.IO.Collections
         {
             get
             {
-                if (m_fileStream == null)
+                if (m_fileStream is null)
                     OpenImplicit();
 
                 return FileStream.CacheSize;
             }
             set
             {
-                if (m_fileStream == null)
+                if (m_fileStream is null)
                     OpenImplicit();
 
                 FileStream.CacheSize = value;
@@ -542,7 +542,7 @@ namespace Gemstone.IO.Collections
         /// <exception cref="InvalidOperationException">File is already open.</exception>
         public void Open()
         {
-            if (m_fileStream != null)
+            if (m_fileStream is not null)
                 throw new InvalidOperationException($"File is already open: {m_filePath}");
 
             m_headerNode = new HeaderNode(m_lookupTableType);
@@ -620,7 +620,7 @@ namespace Gemstone.IO.Collections
         {
             void internalOpenRead()
             {
-                if (m_fileStream != null)
+                if (m_fileStream is not null)
                     throw new InvalidOperationException($"File is already open: {m_filePath}");
 
                 m_fileStream = new CachedFileStream(m_filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
@@ -668,7 +668,7 @@ namespace Gemstone.IO.Collections
         /// <exception cref="NotSupportedException">The <see cref="FileBackedLookupTable{TKey, TValue}"/> is read-only.</exception>
         public void Add(TKey key, TValue value)
         {
-            if (key == null)
+            if (key is null)
                 throw new ArgumentNullException(nameof(key));
 
             FailIfReadOnly();
@@ -709,7 +709,7 @@ namespace Gemstone.IO.Collections
         /// <exception cref="NotSupportedException">The <see cref="FileBackedLookupTable{TKey, TValue}"/> is read-only.</exception>
         public bool TryAdd(TKey key, TValue value)
         {
-            if (key == null || IsReadOnly)
+            if (key is null || IsReadOnly)
                 return false;
 
             Find(key, out long lookupPointer, out long itemPointer);
@@ -751,7 +751,7 @@ namespace Gemstone.IO.Collections
         /// <exception cref="NotSupportedException">The <see cref="FileBackedLookupTable{TKey, TValue}"/> is read-only.</exception>
         public bool Remove(TKey key)
         {
-            if (key == null)
+            if (key is null)
                 throw new ArgumentNullException(nameof(key));
 
             FailIfReadOnly();
@@ -908,10 +908,10 @@ namespace Gemstone.IO.Collections
         /// <exception cref="ArgumentNullException"><paramref name="key"/> is null.</exception>
         public bool ContainsKey(TKey key)
         {
-            if (key == null)
+            if (key is null)
                 throw new ArgumentNullException(nameof(key));
 
-            if (m_fileStream == null)
+            if (m_fileStream is null)
                 OpenImplicit();
 
             Find(key, out long _, out long itemPointer);
@@ -930,10 +930,10 @@ namespace Gemstone.IO.Collections
         /// <exception cref="ArgumentNullException"><paramref name="key"/> is null.</exception>
         public bool TryGetValue(TKey key, out TValue value)
         {
-            if (key == null)
+            if (key is null)
                 throw new ArgumentNullException(nameof(key));
 
-            if (m_fileStream == null)
+            if (m_fileStream is null)
                 OpenImplicit();
 
             Find(key, out _, out long itemPointer);
@@ -992,7 +992,7 @@ namespace Gemstone.IO.Collections
         /// <filterpriority>1</filterpriority>
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            if (m_fileStream == null)
+            if (m_fileStream is null)
                 OpenImplicit();
 
             ItemNode itemNode = new();
@@ -1077,7 +1077,7 @@ namespace Gemstone.IO.Collections
                         int length2 = (int)(item3 - item2);
 
                         // Allocate enough memory to move item2
-                        if (bytes == null || bytes.Length < length2)
+                        if (bytes is null || bytes.Length < length2)
                             bytes = new byte[length2];
 
                         // Read item2 into memory
@@ -1648,7 +1648,7 @@ namespace Gemstone.IO.Collections
 
         private IEnumerator<TKey> GetKeysEnumerator()
         {
-            if (m_fileStream == null)
+            if (m_fileStream is null)
                 OpenImplicit();
 
             long lookupPointer = HeaderNode.FixedSize + JournalNode.FixedSize;
@@ -1705,27 +1705,27 @@ namespace Gemstone.IO.Collections
             Func<Stream, TKey>? readKeyFunc = GetReadMethod<TKey>();
             Func<Stream, TValue>? readValueFunc = GetReadMethod<TValue>();
 
-            if ((writeKeyAction == null || readKeyFunc == null) && typeof(TKey).IsSerializable)
+            if ((writeKeyAction is null || readKeyFunc is null) && typeof(TKey).IsSerializable)
             {
                 BinaryFormatter formatter = new();
                 writeKeyAction = (stream, key) => formatter.Serialize(stream, key);
                 readKeyFunc = stream => (TKey)formatter.Deserialize(stream);
             }
 
-            if ((writeValueAction == null || readValueFunc == null) && typeof(TValue).IsSerializable)
+            if ((writeValueAction is null || readValueFunc is null) && typeof(TValue).IsSerializable)
             {
                 BinaryFormatter formatter = new();
                 writeValueAction = (stream, value) => formatter.Serialize(stream, value);
                 readValueFunc = stream => (TValue)formatter.Deserialize(stream);
             }
 
-            if (writeKeyAction == null || readKeyFunc == null)
+            if (writeKeyAction is null || readKeyFunc is null)
             {
                 writeKeyAction = (_, __) => throw new InvalidOperationException($"Type of TKey ({typeof(TKey).FullName}) is not serializable.");
                 readKeyFunc = _ => throw new InvalidOperationException($"Type of TKey ({typeof(TKey).FullName}) is not serializable.");
             }
 
-            if (writeValueAction == null || readValueFunc == null)
+            if (writeValueAction is null || readValueFunc is null)
             {
                 writeValueAction = (_, __) => throw new InvalidOperationException($"Type of TValue ({typeof(TKey).FullName}) is not serializable.");
                 readValueFunc = _ => throw new InvalidOperationException($"Type of TValue ({typeof(TKey).FullName}) is not serializable.");
@@ -1744,7 +1744,7 @@ namespace Gemstone.IO.Collections
             Type type = typeof(T);
             MethodInfo method = type.GetMethod("WriteTo", Flags, null, s_types, null);
 
-            if (method == null)
+            if (method is null)
                 return null;
 
             Action<T, Stream> action = (Action<T, Stream>)Delegate.CreateDelegate(typeof(Action<T, Stream>), method);
@@ -1757,16 +1757,16 @@ namespace Gemstone.IO.Collections
             Type type = typeof(T);
             ConstructorInfo constructor = type.GetConstructor(Flags, null, s_types, null);
 
-            if (constructor == null)
+            if (constructor is null)
             {
                 constructor = type.GetConstructor(Flags, null, Type.EmptyTypes, null);
 
-                if (constructor == null)
+                if (constructor is null)
                     return null;
 
                 MethodInfo method = type.GetMethod("ReadFrom", Flags, null, s_types, null);
 
-                if (method == null)
+                if (method is null)
                     return null;
 
                 return stream =>

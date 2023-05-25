@@ -495,7 +495,7 @@ namespace Gemstone.IO
             if (!CanRead)
                 throw new NotSupportedException("Stream does not support reading.");
 
-            if (buffer == null)
+            if (buffer is null)
                 throw new ArgumentNullException(nameof(buffer));
 
             if (offset + count > buffer.Length)
@@ -550,7 +550,7 @@ namespace Gemstone.IO
             if (!CanWrite)
                 throw new NotSupportedException("Stream does not support writing.");
 
-            if (buffer == null)
+            if (buffer is null)
                 throw new ArgumentNullException(nameof(buffer));
 
             if (offset + count > buffer.Length)

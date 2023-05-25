@@ -83,7 +83,7 @@ namespace Gemstone.IO.Parsing
                 RuntimeType = runtimeType;
 
                 // If class implementation supports life cycle, automatically dispose of objects when we are done with them
-                SupportsLifecycle = runtimeType.GetInterface("Gemstone.ISupportLifecycle") != null;
+                SupportsLifecycle = runtimeType.GetInterface("Gemstone.ISupportLifecycle") is not null;
             }
 
             public TOutputType CreateNew() => (TOutputType)Activator.CreateInstance(RuntimeType);
@@ -236,10 +236,10 @@ namespace Gemstone.IO.Parsing
                 // Since user can call this overload with any list of types, we double check the type criteria.
                 // If output type is a class, see if current type derives from it, else if output type is an
                 // interface, see if current type implements it.
-                if (typeCtor != null && !type.IsAbstract &&
+                if (typeCtor is not null && !type.IsAbstract &&
                 (
                    typeof(TOutputType).IsClass && type.IsSubclassOf(typeof(TOutputType)) ||
-                   typeof(TOutputType).IsInterface && (object)type.GetInterface(typeof(TOutputType).Name) != null)
+                   typeof(TOutputType).IsInterface && (object)type.GetInterface(typeof(TOutputType).Name) is not null)
                 )
                 {
                     // The type meets the following criteria:
@@ -289,7 +289,7 @@ namespace Gemstone.IO.Parsing
             ICommonHeader<TTypeIdentifier> commonHeader = ParseCommonHeader(buffer, offset, length);
 
             // See if there was enough buffer to parse common header, if not exit and wait for more data
-            if (commonHeader == null)
+            if (commonHeader is null)
                 return 0;
 
             // Lookup TypeID to see if it is a known type
@@ -358,7 +358,7 @@ namespace Gemstone.IO.Parsing
         /// <param name="output">The object that was deserialized from binary image.</param>
         protected virtual void OnDataParsed(TOutputType output)
         {
-            if (DataParsed == null)
+            if (DataParsed is null)
                 return;
 
             EventArgs<TOutputType> outputArgs = new(output);

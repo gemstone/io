@@ -300,7 +300,7 @@ namespace Gemstone.IO.Collections
         /// <exception cref="NotSupportedException">The <see cref="FileBackedHashSet{T}"/> is read-only.</exception>
         public int RemoveWhere(Predicate<T> match)
         {
-            if (match == null)
+            if (match is null)
                 throw new ArgumentNullException(nameof(match));
 
             int removedCount = 0;
@@ -337,7 +337,7 @@ namespace Gemstone.IO.Collections
         /// <exception cref="NotSupportedException">The <see cref="FileBackedHashSet{T}"/> is read-only.</exception>
         public void UnionWith(IEnumerable<T> other)
         {
-            if (other == null)
+            if (other is null)
                 throw new ArgumentNullException(nameof(other));
 
             foreach (T item in other)
@@ -352,7 +352,7 @@ namespace Gemstone.IO.Collections
         /// <exception cref="NotSupportedException">The <see cref="FileBackedHashSet{T}"/> is read-only.</exception>
         public void IntersectWith(IEnumerable<T> other)
         {
-            if (other == null)
+            if (other is null)
                 throw new ArgumentNullException(nameof(other));
 
             m_lookupTable.UnmarkAll();
@@ -371,7 +371,7 @@ namespace Gemstone.IO.Collections
         /// <exception cref="NotSupportedException">The <see cref="FileBackedHashSet{T}"/> is read-only.</exception>
         public void ExceptWith(IEnumerable<T> other)
         {
-            if (other == null)
+            if (other is null)
                 throw new ArgumentNullException(nameof(other));
 
             foreach (T item in other)
@@ -387,7 +387,7 @@ namespace Gemstone.IO.Collections
         /// <exception cref="NotSupportedException">The <see cref="FileBackedHashSet{T}"/> is read-only.</exception>
         public void SymmetricExceptWith(IEnumerable<T> other)
         {
-            if (other == null)
+            if (other is null)
                 throw new ArgumentNullException(nameof(other));
 
             m_lookupTable.UnmarkAll();
@@ -411,7 +411,7 @@ namespace Gemstone.IO.Collections
         /// <exception cref="NotSupportedException">The <see cref="FileBackedHashSet{T}"/> is read-only.</exception>
         public bool IsSubsetOf(IEnumerable<T> other)
         {
-            if (other == null)
+            if (other is null)
                 throw new ArgumentNullException(nameof(other));
 
             m_lookupTable.UnmarkAll();
@@ -432,7 +432,7 @@ namespace Gemstone.IO.Collections
         /// <exception cref="ArgumentNullException"><paramref name="other"/> is null.</exception>
         public bool IsSupersetOf(IEnumerable<T> other)
         {
-            if (other == null)
+            if (other is null)
                 throw new ArgumentNullException(nameof(other));
 
             return other.All(Contains);
@@ -449,7 +449,7 @@ namespace Gemstone.IO.Collections
         /// <exception cref="NotSupportedException">The <see cref="FileBackedHashSet{T}"/> is read-only.</exception>
         public bool IsProperSupersetOf(IEnumerable<T> other)
         {
-            if (other == null)
+            if (other is null)
                 throw new ArgumentNullException(nameof(other));
 
             m_lookupTable.UnmarkAll();
@@ -473,7 +473,7 @@ namespace Gemstone.IO.Collections
         {
             bool canBeProperSubset;
 
-            if (other == null)
+            if (other is null)
                 throw new ArgumentNullException(nameof(other));
             
             canBeProperSubset = false;
@@ -498,7 +498,7 @@ namespace Gemstone.IO.Collections
         /// <exception cref="ArgumentNullException"><paramref name="other"/> is null.</exception>
         public bool Overlaps(IEnumerable<T> other)
         {
-            if (other == null)
+            if (other is null)
                 throw new ArgumentNullException(nameof(other));
 
             return other.Any(Contains);
@@ -515,7 +515,7 @@ namespace Gemstone.IO.Collections
         /// <exception cref="NotSupportedException">The <see cref="FileBackedHashSet{T}"/> is read-only.</exception>
         public bool SetEquals(IEnumerable<T> other)
         {
-            if (other == null)
+            if (other is null)
                 throw new ArgumentNullException(nameof(other));
 
             m_lookupTable.UnmarkAll();
@@ -539,7 +539,7 @@ namespace Gemstone.IO.Collections
         /// <exception cref="ArgumentException">The number of elements in the source <see cref="FileBackedHashSet{T}"/> is greater than the available space from <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.</exception>
         public void CopyTo(T[] array, int arrayIndex)
         {
-            if (array == null)
+            if (array is null)
                 throw new ArgumentNullException(nameof(array));
 
             if (arrayIndex < 0)

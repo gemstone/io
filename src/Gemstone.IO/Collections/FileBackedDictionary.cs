@@ -391,7 +391,7 @@ namespace Gemstone.IO.Collections
         /// <exception cref="ArgumentException">The number of elements in the source <see cref="FileBackedDictionary{TKey, TValue}"/> is greater than the available space from <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.</exception>
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
-            if (array == null)
+            if (array is null)
                 throw new ArgumentNullException(nameof(array));
 
             if (arrayIndex < 0)

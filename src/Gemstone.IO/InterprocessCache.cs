@@ -129,7 +129,7 @@ namespace Gemstone.IO
             }
             set
             {
-                if (value == null)
+                if (value is null)
                     throw new NullReferenceException("FileName cannot be null");
 
                 m_fileName = FilePath.GetAbsolutePath(value);
@@ -162,7 +162,7 @@ namespace Gemstone.IO
             }
             set
             {
-                if (m_fileName == null)
+                if (m_fileName is null)
                     throw new NullReferenceException("FileName property must be defined before setting FileData");
 
                 bool dataChanged = false;
@@ -201,13 +201,13 @@ namespace Gemstone.IO
         {
             get
             {
-                return m_fileWatcher != null;
+                return m_fileWatcher is not null;
             }
             set
             {
-                if (value && m_fileWatcher == null)
+                if (value && m_fileWatcher is null)
                 {
-                    if (m_fileName == null)
+                    if (m_fileName is null)
                         throw new NullReferenceException("FileName property must be defined before enabling ReloadOnChange");
 
                     // Setup file watcher to monitor for external updates
@@ -220,7 +220,7 @@ namespace Gemstone.IO
                     
                     m_fileWatcher.Changed += m_fileWatcher_Changed;
                 }
-                else if (!value && m_fileWatcher != null)
+                else if (!value && m_fileWatcher is not null)
                 {
                     // Disable file watcher
                     m_fileWatcher.Changed -= m_fileWatcher_Changed;
@@ -276,14 +276,14 @@ namespace Gemstone.IO
                 if (!disposing)
                     return;
 
-                if (m_fileWatcher != null)
+                if (m_fileWatcher is not null)
                 {
                     m_fileWatcher.Changed -= m_fileWatcher_Changed;
                     m_fileWatcher.Dispose();
                     m_fileWatcher = null;
                 }
 
-                if (m_retryTimer != null)
+                if (m_retryTimer is not null)
                 {
                     m_retryTimer.Elapsed -= m_retryTimer_Elapsed;
                     m_retryTimer.Dispose();
@@ -292,7 +292,7 @@ namespace Gemstone.IO
                 m_loadIsReady?.Dispose();
                 m_saveIsReady?.Dispose();
 
-                if (m_fileLock != null)
+                if (m_fileLock is not null)
                 {
                     m_fileLock.Dispose();
                     m_fileLock = null;
@@ -317,10 +317,10 @@ namespace Gemstone.IO
             if (m_disposed)
                 throw new ObjectDisposedException(nameof(InterprocessCache));
 
-            if (m_fileName == null)
+            if (m_fileName is null)
                 throw new NullReferenceException("FileName is null, cannot initiate save");
 
-            if (m_fileData == null)
+            if (m_fileData is null)
                 throw new NullReferenceException("FileData is null, cannot initiate save");
 
             m_saveIsReady.Reset();
@@ -338,7 +338,7 @@ namespace Gemstone.IO
             if (m_disposed)
                 throw new ObjectDisposedException(nameof(InterprocessCache));
 
-            if (m_fileName == null)
+            if (m_fileName is null)
                 throw new NullReferenceException("FileName is null, cannot initiate load");
 
             m_loadIsReady.Reset();
@@ -424,7 +424,7 @@ namespace Gemstone.IO
                         try
                         {
                             // Disable file watch notification before update
-                            if (m_fileWatcher != null)
+                            if (m_fileWatcher is not null)
                                 m_fileWatcher.EnableRaisingEvents = false;
 
                             byte[] fileData = Interlocked.CompareExchange(ref m_fileData, default!, default!);
@@ -436,7 +436,7 @@ namespace Gemstone.IO
                         finally
                         {
                             // Re-enable file watch notification
-                            if (m_fileWatcher != null)
+                            if (m_fileWatcher is not null)
                                 m_fileWatcher.EnableRaisingEvents = true;
                         }
                     }
