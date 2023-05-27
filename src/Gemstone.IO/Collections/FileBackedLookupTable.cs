@@ -33,10 +33,13 @@ using Gemstone.GuidExtensions;
 using Gemstone.IO.Checksums;
 
 // BinaryFormatter is considered obsolete
-
 // ReSharper disable StaticFieldInGenericType
 // ReSharper disable UnusedMember.Local
 // ReSharper disable InconsistentNaming
+
+// TODO: Replace BinaryFormatter with a custom serializer
+#pragma warning disable SYSLIB0011
+
 namespace Gemstone.IO.Collections
 {
     internal enum LookupTableType
@@ -52,7 +55,7 @@ namespace Gemstone.IO.Collections
         HashSet
     }
 
-    internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>, IDisposable
+    internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>, IDisposable where TKey : notnull
     {
         #region [ Members ]
 
@@ -170,7 +173,7 @@ namespace Gemstone.IO.Collections
         // uses CRC-32 for its hashing function to provide that guarantee.
         private class DefaultKeyComparer : IEqualityComparer<TKey>
         {
-            public bool Equals(TKey x, TKey y)
+            public bool Equals(TKey? x, TKey? y)
             {
                 using MemoryStream xStream = new();
                 using MemoryStream yStream = new();
@@ -341,7 +344,7 @@ namespace Gemstone.IO.Collections
                 {
                     char[] invalidPathChars = Path.GetInvalidPathChars();
 
-                    if (value.Any(invalidPathChars.Contains!))
+                    if (value.Any(invalidPathChars.Contains))
                         throw new ArgumentException($"Path contains one or more invalid characters: {value}", nameof(value));
                 }
 
@@ -462,11 +465,13 @@ namespace Gemstone.IO.Collections
                     Find(key, out lookupPointer, out itemPointer);
                 }
 
-                ItemNode itemNode = new();
-                itemNode.LookupPointer = lookupPointer;
-                itemNode.HashCode = m_keyComparer.GetHashCode(key);
-                itemNode.Key = key;
-                itemNode.Value = value;
+                ItemNode itemNode = new()
+                {
+                    LookupPointer = lookupPointer, 
+                    HashCode = m_keyComparer.GetHashCode(key), 
+                    Key = key,
+                    Value = value
+                };
 
                 FileStream.Seek(m_headerNode.EndOfFilePointer, SeekOrigin.Begin);
                 Write(itemNode);
@@ -550,7 +555,7 @@ namespace Gemstone.IO.Collections
             if (string.IsNullOrWhiteSpace(m_filePath))
                 m_filePath = Path.GetTempFileName();
 
-            string directory = Path.GetDirectoryName(m_filePath);
+            string? directory = Path.GetDirectoryName(m_filePath);
 
             // Attempt to create the directory if it doesn't already exist
             if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
@@ -706,7 +711,7 @@ namespace Gemstone.IO.Collections
         /// <exception cref="ArgumentNullException"><paramref name="key"/> is null.</exception>
         /// <exception cref="ArgumentException">An element with the same key already exists in the <see cref="FileBackedLookupTable{TKey, TValue}"/>.</exception>
         /// <exception cref="NotSupportedException">The <see cref="FileBackedLookupTable{TKey, TValue}"/> is read-only.</exception>
-        public bool TryAdd(TKey key, TValue value)
+        public bool TryAdd(TKey? key, TValue value)
         {
             if (key is null || IsReadOnly)
                 return false;
@@ -1690,7 +1695,7 @@ namespace Gemstone.IO.Collections
         // Static Fields
         private const BindingFlags Flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
         private static readonly Type[] s_types = { typeof(Stream) };
-        private static readonly Action<Stream, TKey> s_writeKeyAction;
+        private static readonly Action<Stream, TKey?> s_writeKeyAction;
         private static readonly Action<Stream, TValue> s_writeValueAction;
         private static readonly Func<Stream, TKey> s_readKeyFunc;
         private static readonly Func<Stream, TValue> s_readValueFunc;
@@ -1714,7 +1719,7 @@ namespace Gemstone.IO.Collections
             if ((writeValueAction is null || readValueFunc is null) && typeof(TValue).IsSerializable)
             {
                 BinaryFormatter formatter = new();
-                writeValueAction = (stream, value) => formatter.Serialize(stream, value);
+                writeValueAction = (stream, value) => formatter.Serialize(stream, value!);
                 readValueFunc = stream => (TValue)formatter.Deserialize(stream);
             }
 
@@ -1730,7 +1735,7 @@ namespace Gemstone.IO.Collections
                 readValueFunc = _ => throw new InvalidOperationException($"Type of TValue ({typeof(TKey).FullName}) is not serializable.");
             }
 
-            s_writeKeyAction = writeKeyAction;
+            s_writeKeyAction = writeKeyAction!;
             s_writeValueAction = writeValueAction;
             s_readKeyFunc = readKeyFunc;
             s_readValueFunc = readValueFunc;
@@ -1741,7 +1746,7 @@ namespace Gemstone.IO.Collections
         private static Action<Stream, T>? GetWriteMethod<T>()
         {
             Type type = typeof(T);
-            MethodInfo method = type.GetMethod("WriteTo", Flags, null, s_types, null);
+            MethodInfo? method = type.GetMethod("WriteTo", Flags, null, s_types, null);
 
             if (method is null)
                 return null;
@@ -1754,7 +1759,7 @@ namespace Gemstone.IO.Collections
         private static Func<Stream, T>? GetReadMethod<T>()
         {
             Type type = typeof(T);
-            ConstructorInfo constructor = type.GetConstructor(Flags, null, s_types, null);
+            ConstructorInfo? constructor = type.GetConstructor(Flags, null, s_types, null);
 
             if (constructor is null)
             {
@@ -1763,7 +1768,7 @@ namespace Gemstone.IO.Collections
                 if (constructor is null)
                     return null;
 
-                MethodInfo method = type.GetMethod("ReadFrom", Flags, null, s_types, null);
+                MethodInfo? method = type.GetMethod("ReadFrom", Flags, null, s_types, null);
 
                 if (method is null)
                     return null;

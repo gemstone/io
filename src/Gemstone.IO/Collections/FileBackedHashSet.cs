@@ -34,7 +34,7 @@ namespace Gemstone.IO.Collections
     /// Represents a lookup table backed by a file, with very little memory overhead.
     /// </summary>
     /// <typeparam name="T">The type of the items in the lookup table.</typeparam>
-    public sealed class FileBackedHashSet<T> : ISet<T>, IDisposable
+    public sealed class FileBackedHashSet<T> : ISet<T>, IDisposable where T : notnull
     {
         #region [ Members ]
 

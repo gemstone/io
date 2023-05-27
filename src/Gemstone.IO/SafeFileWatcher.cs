@@ -292,7 +292,7 @@ namespace Gemstone.IO
         /// <returns>
         /// The <see cref="ISynchronizeInvoke"/> that represents the object used to marshal the event handler calls issued as a result of a directory change. The default is null.
         /// </returns>
-        public ISynchronizeInvoke SynchronizingObject
+        public ISynchronizeInvoke? SynchronizingObject
         {
             get
             {
@@ -310,7 +310,7 @@ namespace Gemstone.IO
         /// <returns>
         /// An <see cref="ISite"/> for the <see cref="SafeFileWatcher"/>.
         /// </returns>
-        public ISite Site
+        public ISite? Site
         {
             get
             {
@@ -397,31 +397,31 @@ namespace Gemstone.IO
         // Static Methods
         private static void OnChanged(WeakReference<SafeFileWatcher> reference, FileSystemEventArgs e)
         {
-            if (reference.TryGetTarget(out SafeFileWatcher instance))
+            if (reference.TryGetTarget(out SafeFileWatcher? instance))
                 instance.OnChanged(e);
         }
 
         private static void OnCreated(WeakReference<SafeFileWatcher> reference, FileSystemEventArgs e)
         {
-            if (reference.TryGetTarget(out SafeFileWatcher instance))
+            if (reference.TryGetTarget(out SafeFileWatcher? instance))
                 instance.OnCreated(e);
         }
 
         private static void OnDeleted(WeakReference<SafeFileWatcher> reference, FileSystemEventArgs e)
         {
-            if (reference.TryGetTarget(out SafeFileWatcher instance))
+            if (reference.TryGetTarget(out SafeFileWatcher? instance))
                 instance.OnDeleted(e);
         }
 
         private static void OnRenamed(WeakReference<SafeFileWatcher> reference, RenamedEventArgs e)
         {
-            if (reference.TryGetTarget(out SafeFileWatcher instance))
+            if (reference.TryGetTarget(out SafeFileWatcher? instance))
                 instance.OnRenamed(e);
         }
 
         private static void OnError(WeakReference<SafeFileWatcher> reference, ErrorEventArgs e)
         {
-            if (reference.TryGetTarget(out SafeFileWatcher instance))
+            if (reference.TryGetTarget(out SafeFileWatcher? instance))
                 instance.OnError(e);
         }
 

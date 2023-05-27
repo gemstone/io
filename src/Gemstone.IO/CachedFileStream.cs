@@ -261,7 +261,7 @@ namespace Gemstone.IO
             m_length = m_fileStream.Length;
         }
 
-        #if WINDOWSONLY // FileSystemRights is not cross-platform
+        #if WINDOWS // FileSystemRights is not cross-platform
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.IO.FileStream"/> class with the specified path, creation mode, access rights and sharing permission, the buffer size, and additional file options.

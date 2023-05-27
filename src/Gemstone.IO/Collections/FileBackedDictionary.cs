@@ -35,7 +35,7 @@ namespace Gemstone.IO.Collections
     /// </summary>
     /// <typeparam name="TKey">The type of the keys in the lookup table.</typeparam>
     /// <typeparam name="TValue">The type of the values in the lookup table.</typeparam>
-    public sealed class FileBackedDictionary<TKey, TValue> : IDictionary<TKey, TValue>, IDisposable
+    public sealed class FileBackedDictionary<TKey, TValue> : IDictionary<TKey, TValue>, IDisposable where TKey : notnull
     {
         #region [ Members ]
 

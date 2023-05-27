@@ -65,7 +65,7 @@ namespace Gemstone.IO.Parsing
     /// </remarks>
     /// <typeparam name="TTypeIdentifier">Type of identifier used to distinguish output types.</typeparam>
     /// <typeparam name="TOutputType">Type of the interface or class used to represent outputs.</typeparam>
-    public abstract class FrameImageParserBase<TTypeIdentifier, TOutputType> : BinaryImageParserBase, IFrameImageParser<TTypeIdentifier, TOutputType> where TOutputType : ISupportFrameImage<TTypeIdentifier>
+    public abstract class FrameImageParserBase<TTypeIdentifier, TOutputType> : BinaryImageParserBase, IFrameImageParser<TTypeIdentifier, TOutputType> where TTypeIdentifier : notnull where TOutputType : ISupportFrameImage<TTypeIdentifier>
     {
         #region [ Members ]
 
@@ -86,7 +86,7 @@ namespace Gemstone.IO.Parsing
                 SupportsLifecycle = runtimeType.GetInterface("Gemstone.ISupportLifecycle") is not null;
             }
 
-            public TOutputType CreateNew() => (TOutputType)Activator.CreateInstance(RuntimeType);
+            public TOutputType CreateNew() => (TOutputType)Activator.CreateInstance(RuntimeType)!;
         }
 
         // Events
@@ -147,7 +147,7 @@ namespace Gemstone.IO.Parsing
         /// <summary>
         /// Gets the total number of parsed outputs that are currently queued for publication, if any.
         /// </summary>
-        public virtual int QueuedOutputs => m_outputQueue?.Count ?? 0;
+        public virtual int QueuedOutputs => m_outputQueue.Count;
 
         /// <summary>
         /// Gets or sets a boolean value that indicates whether the frame image parser is currently enabled.
@@ -231,7 +231,7 @@ namespace Gemstone.IO.Parsing
             foreach (Type type in implementations)
             {
                 // See if a parameterless constructor is available for this type
-                ConstructorInfo typeCtor = type.GetConstructor(Type.EmptyTypes);
+                ConstructorInfo? typeCtor = type.GetConstructor(Type.EmptyTypes);
 
                 // Since user can call this overload with any list of types, we double check the type criteria.
                 // If output type is a class, see if current type derives from it, else if output type is an
@@ -239,7 +239,7 @@ namespace Gemstone.IO.Parsing
                 if (typeCtor is not null && !type.IsAbstract &&
                 (
                    typeof(TOutputType).IsClass && type.IsSubclassOf(typeof(TOutputType)) ||
-                   typeof(TOutputType).IsInterface && (object)type.GetInterface(typeof(TOutputType).Name) is not null)
+                   typeof(TOutputType).IsInterface && type.GetInterface(typeof(TOutputType).Name) is not null)
                 )
                 {
                     // The type meets the following criteria:
@@ -286,14 +286,14 @@ namespace Gemstone.IO.Parsing
             // For any protocol data that is represented as frames of data in a stream, there will
             // be some set of common identification properties in the frame image, usually at the
             // top, that is common for all frame types.
-            ICommonHeader<TTypeIdentifier> commonHeader = ParseCommonHeader(buffer, offset, length);
+            ICommonHeader<TTypeIdentifier>? commonHeader = ParseCommonHeader(buffer, offset, length);
 
             // See if there was enough buffer to parse common header, if not exit and wait for more data
             if (commonHeader is null)
                 return 0;
 
             // Lookup TypeID to see if it is a known type
-            if (m_outputTypes.TryGetValue(commonHeader.TypeID, out TypeInfo outputType))
+            if (m_outputTypes.TryGetValue(commonHeader.TypeID, out TypeInfo? outputType))
             {
                 TOutputType instance = outputType.CreateNew();
                 instance.CommonHeader = commonHeader;
@@ -350,7 +350,7 @@ namespace Gemstone.IO.Parsing
         /// the entire frame, it will be optimal to prevent further parsing by returning null.
         /// </para>
         /// </remarks>
-        protected abstract ICommonHeader<TTypeIdentifier> ParseCommonHeader(byte[] buffer, int offset, int length);
+        protected abstract ICommonHeader<TTypeIdentifier>? ParseCommonHeader(byte[] buffer, int offset, int length);
 
         /// <summary>
         /// Raises the <see cref="DataParsed"/> event.
