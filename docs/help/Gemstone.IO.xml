@@ -2467,7 +2467,7 @@
       <remarks>
         <para>
             As an example, this parser can use a templated expression of the form:
-            <code language="cs">
+            <code>
             {CompanyAcronym}_{DeviceAcronym}[?{SignalType.Source}=Phasor[-{SignalType.Suffix}{SignalIndex}]]:{Signal.Acronymn}
             </code>
             then replace the tokens with actual values and properly evaluate the expressions.
