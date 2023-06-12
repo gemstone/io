@@ -12,6 +12,14 @@ The Gemstone IO Library organizes all Gemstone functionality related to input an
 
 This library includes helpful io classes like the following:
 
+* [SafeFileWatcher](https://gemstone.github.io/io/help/html/T_Gemstone_IO_SafeFileWatcher.htm):
+  * Represents a wrapper around the native .NET [FileSystemWatcher](https://docs.microsoft.com/dotnet/api/system.io.filesystemwatcher) that avoids problems with dangling references when using a file watcher instance as a class member that never gets disposed.
+* [ChecksumExtensions](https://gemstone.github.io/io/help/html/T_Gemstone_IO_Checksums_ChecksumExtensions_ChecksumExtensions.htm):
+  * Defines extension functions related to computing various types of standard checksums.
+* [FileBackedDictionary](https://gemstone.github.io/io/help/html/T_Gemstone_IO_Collections_FileBackedDictionary_2.htm):
+  * Represents a lookup table of key/value pairs backed by a file, with very little memory overhead.
+* [FrameImageParserBase](https://gemstone.github.io/io/help/html/T_Gemstone_IO_Parsing_FrameImageParserBase_2.htm):
+  * Defines a base class for basic parsing functionality suitable for automating the parsing of a binary data stream represented as frames with common headers and returning the parsed data via an event.
 
 Among others.
 
