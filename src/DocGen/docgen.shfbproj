@@ -87,8 +87,9 @@
               </formattedProvider>
               <!-- Add Gemstone root namespace last because it has the widest match criteria -->
               <!-- Pattern excludes target namespace so local memmbers are not redirected to common -->
+              <!-- This is a special case since some Gemstone.IO namespace items exist in common -->
               <formattedProvider title="Gemstone Common URL Provider">
-                <targetMatcher pattern=".:Gemstone\.(?!IO\.)..+" fullyQualifiedMemberName="false" />
+                <targetMatcher pattern=".:Gemstone\.(?:(?:IO\.(?:Block|FilePath|Parsing\.I?Binary|Parsing\.Boolean|Parsing\.ISupportBinary|Parsing\.StringParser))|(?!IO\.)).+" fullyQualifiedMemberName="false" />
                 <targetFormatter>
                   <steps>
                     <replace pattern=":|\.|`" with="_" />
