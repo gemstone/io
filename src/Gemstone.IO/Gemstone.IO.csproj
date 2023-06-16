@@ -11,7 +11,7 @@
     <Product>Gemstone</Product>
     <PackageDescription>GPA Gemstone IO Library</PackageDescription>
     <Description>GPA Gemstone IO Library</Description>
-    <Copyright>Copyright © 2022</Copyright>
+    <Copyright>Copyright © 2023</Copyright>
     <PackageProjectUrl>https://github.com/gemstone</PackageProjectUrl>
     <PackageIcon>gemstone-square-128.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -19,7 +19,7 @@
     <RepositoryType>git</RepositoryType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageTags>GPA;Gemstone;library;io</PackageTags>
+    <PackageTags>GPA;Gemstone;library;IO;Input-Output</PackageTags>
     <LangVersion>latest</LangVersion>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <Nullable>enable</Nullable>

@@ -37,7 +37,7 @@
     <KeepLogFile>True</KeepLogFile>
     <DisableCodeBlockComponent>False</DisableCodeBlockComponent>
     <IndentHtml>False</IndentHtml>
-    <BuildAssemblerVerbosity>OnlyWarningsAndErrors</BuildAssemblerVerbosity>
+    <BuildAssemblerVerbosity>AllMessages</BuildAssemblerVerbosity>
     <SaveComponentCacheCapacity>100</SaveComponentCacheCapacity>
     <VisibleItems>Attributes, InheritedMembers, InheritedFrameworkMembers, Protected, ProtectedInternalAsProtected, EditorBrowsableNever, NonBrowsable</VisibleItems>
     <ComponentConfigurations>
@@ -53,6 +53,68 @@
       <ComponentConfig id="API Token Resolution" enabled="True">
         <component id="API Token Resolution">{@TokenFiles}
 <replace elements="/*//token" item="string(.)" /></component>
+      </ComponentConfig>
+      <ComponentConfig id="Resolve ThirdParty Reference Links" enabled="True">
+        <component id="Resolve ThirdParty Reference Links">
+          <configuration>
+            <urlProviders>
+              <formattedProvider title="Gemstone.Threading URL Provider">
+                <targetMatcher pattern=".:Gemstone\.Threading\..+" fullyQualifiedMemberName="false" />
+                <targetFormatter>
+                  <steps>
+                    <replace pattern="T:" with="T_" />
+                    <replace pattern="E:" with="E_" />
+                    <replace pattern="M:" with="M_" />
+                    <replace pattern="P:" with="P_" />
+                    <replace pattern="\." with="_" />
+                  </steps>
+                </targetFormatter>
+                <urlFormatter format="https://gemstone.github.io/threading/help/html/{target}.htm" target="_self" />
+              </formattedProvider>
+              <formattedProvider title="Gemstone.Expressions URL Provider">
+                <targetMatcher pattern=".:Gemstone\.Expressions\..+" fullyQualifiedMemberName="false" />
+                <targetFormatter>
+                  <steps>
+                    <replace pattern="T:" with="T_" />
+                    <replace pattern="E:" with="E_" />
+                    <replace pattern="M:" with="M_" />
+                    <replace pattern="P:" with="P_" />
+                    <replace pattern="\." with="_" />
+                  </steps>
+                </targetFormatter>
+                <urlFormatter format="https://gemstone.github.io/expressions/help/html/{target}.htm" target="_self" />
+              </formattedProvider>
+              <formattedProvider title="Gemstone.Numeric URL Provider">
+                <targetMatcher pattern=".:Gemstone\.Numeric\..+" fullyQualifiedMemberName="false" />
+                <targetFormatter>
+                  <steps>
+                    <replace pattern="T:" with="T_" />
+                    <replace pattern="E:" with="E_" />
+                    <replace pattern="M:" with="M_" />
+                    <replace pattern="P:" with="P_" />
+                    <replace pattern="\." with="_" />
+                  </steps>
+                </targetFormatter>
+                <urlFormatter format="https://gemstone.github.io/numeric/help/html/{target}.htm" target="_self" />
+              </formattedProvider>
+              <!-- Add Gemstone root namespace last because it has the widest match criteria -->
+              <!-- Pattern excludes target namespace so local memmbers are not redirected to common -->
+              <formattedProvider title="Gemstone Common URL Provider">
+                <targetMatcher pattern=".:Gemstone\.(?!IO\.)..+" fullyQualifiedMemberName="false" />
+                <targetFormatter>
+                  <steps>
+                    <replace pattern="T:" with="T_" />
+                    <replace pattern="E:" with="E_" />
+                    <replace pattern="M:" with="M_" />
+                    <replace pattern="P:" with="P_" />
+                    <replace pattern="\." with="_" />
+                  </steps>
+                </targetFormatter>
+                <urlFormatter format="https://gemstone.github.io/common/help/html/{target}.htm" target="_self" />
+              </formattedProvider>
+            </urlProviders>
+          </configuration>
+        </component>
       </ComponentConfig>
       <ComponentConfig id="IntelliSense Component" enabled="True">
         <component id="IntelliSense Component">
