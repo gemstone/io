@@ -59,7 +59,7 @@
           <configuration>
             <urlProviders>
               <formattedProvider title="Gemstone.Threading URL Provider">
-                <targetMatcher pattern=".:Gemstone\.Threading\..+" fullyQualifiedMemberName="false" />
+                <targetMatcher pattern=".:Gemstone\.Threading(\.|$).*" fullyQualifiedMemberName="false" />
                 <targetFormatter>
                   <steps>
                     <replace pattern=":|\.|`" with="_" />
@@ -69,7 +69,7 @@
                 <urlFormatter format="https://gemstone.github.io/threading/help/html/{target}.htm" target="_self" />
               </formattedProvider>
               <formattedProvider title="Gemstone.Expressions URL Provider">
-                <targetMatcher pattern=".:Gemstone\.Expressions\..+" fullyQualifiedMemberName="false" />
+                <targetMatcher pattern=".:Gemstone\.Expressions(\.|$).*" fullyQualifiedMemberName="false" />
                 <targetFormatter>
                   <steps>
                     <replace pattern=":|\.|`" with="_" />
@@ -79,7 +79,7 @@
                 <urlFormatter format="https://gemstone.github.io/expressions/help/html/{target}.htm" target="_self" />
               </formattedProvider>
               <formattedProvider title="Gemstone.Numeric URL Provider">
-                <targetMatcher pattern=".:Gemstone\.Numeric\..+" fullyQualifiedMemberName="false" />
+                <targetMatcher pattern=".:Gemstone\.Numeric(\.|$).*" fullyQualifiedMemberName="false" />
                 <targetFormatter>
                   <steps>
                     <replace pattern=":|\.|`" with="_" />
@@ -92,7 +92,7 @@
               <!-- Pattern excludes target namespace so local memmbers are not redirected to common -->
               <!-- This is a special case since some Gemstone.IO namespace items exist in common -->
               <formattedProvider title="Gemstone Common URL Provider">
-                <targetMatcher pattern=".:Gemstone\.(?:(?:IO\.(?:Block|FilePath|Parsing\.I?Binary|Parsing\.Boolean|Parsing\.ISupportBinary|Parsing\.StringParser))|(?!IO\.)).+" fullyQualifiedMemberName="false" />
+                <targetMatcher pattern=".:Gemstone\.((IO\.(Block|FilePath|Parsing\.I?Binary|Parsing\.Boolean|Parsing\.ISupportBinary|Parsing\.StringParser))|(?!IO\.)).+" fullyQualifiedMemberName="false" />
                 <targetFormatter>
                   <steps>
                     <replace pattern=":|\.|`" with="_" />
