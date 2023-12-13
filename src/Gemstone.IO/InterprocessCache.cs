@@ -24,7 +24,6 @@
 using System;
 using System.Collections;
 using System.IO;
-using System.Runtime.Versioning;
 using System.Threading;
 using System.Timers;
 using Gemstone.Collections.CollectionExtensions;
@@ -39,12 +38,21 @@ namespace Gemstone.IO
     /// Represents a serialized data cache that can be saved or read from multiple applications using inter-process synchronization.
     /// </summary>
     /// <remarks>
+    /// <para>
     /// Note that all file data in this class gets serialized to and from memory, as such, the design intention for this class is for
     /// use with smaller data sets such as serialized lists or dictionaries that need inter-process synchronized loading and saving.
+    /// </para>
+    /// <para>
+    /// The <see cref="InterprocessCache"/> uses a <see cref="NamedSemaphore"/> to synchronize access to cache as an inter-process shared resource.
+    /// On POSIX systems, the <see cref="NamedSemaphore"/> exhibits kernel persistence, meaning instances will remain active beyond the lifespan of
+    /// the creating process. The named semaphore must be explicitly removed by invoking <see cref="ReleaseInterprocessResources"/> when the last
+    /// interprocess cache instance is no longer needed. Kernel persistence necessitates careful design consideration regarding process
+    /// responsibility for invoking the <see cref="ReleaseInterprocessResources"/> method. Since the common use case for named semaphores is across
+    /// multiple applications, it is advisable for the last exiting process to handle the cleanup. In cases where an application may crash before
+    /// calling the <see cref="ReleaseInterprocessResources"/> method, the semaphore persists in the system, potentially leading to resource leakage.
+    /// Implementations should include strategies to address and mitigate this risk.
+    /// </para>
     /// </remarks>
-#if NET
-    [SupportedOSPlatform("Windows")]
-#endif
     public class InterprocessCache : IDisposable
     {
         #region [ Members ]
@@ -85,7 +93,10 @@ namespace Gemstone.IO
         /// <summary>
         /// Creates a new instance of the <see cref="InterprocessCache"/>.
         /// </summary>
-        public InterprocessCache() : this(InterprocessReaderWriterLock.DefaultMaximumConcurrentLocks) { }
+        public InterprocessCache() :
+            this(InterprocessReaderWriterLock.DefaultMaximumConcurrentLocks)
+        {
+        }
 
         /// <summary>
         /// Creates a new instance of the <see cref="InterprocessCache"/> with the specified number of <paramref name="maximumConcurrentLocks"/>.
@@ -128,16 +139,16 @@ namespace Gemstone.IO
             {
                 return m_fileName ?? string.Empty;
             }
-            set
+            // Disallowing set accessor for this property as enabling would require re-initialization
+            // of inter-process lock when file name was changed. This would also require a call to
+            // "ReleaseInterprocessResources" on the old file name and would make responsibility for
+            // inter-process lock management related to "ReleaseInterprocessResources" ambiguous.
+            init
             {
                 if (value is null)
                     throw new NullReferenceException("FileName cannot be null");
 
                 m_fileName = FilePath.GetAbsolutePath(value);
-
-                // Initialize reader/writer lock for given file name
-                m_fileLock?.Dispose();
-
                 m_fileLock = new InterprocessReaderWriterLock(m_fileName, MaximumConcurrentLocks);
             }
         }
@@ -192,11 +203,6 @@ namespace Gemstone.IO
         /// <summary>
         /// Gets or sets flag that enables system to monitor for changes in <see cref="FileName"/> and automatically reload <see cref="FileData"/>.
         /// </summary>
-        /// <remarks>
-        /// Use extreme caution when enabling this property - it will be critical to dispose of this class when this property is set to true
-        /// since it will create a file watcher that attaches to an event referenced by this class using pinned memory, as a result, this class
-        /// will not get garbage collected until this class is disposed thus detaching the associated event.
-        /// </remarks>
         public bool ReloadOnChange
         {
             get
@@ -205,27 +211,30 @@ namespace Gemstone.IO
             }
             set
             {
-                if (value && m_fileWatcher is null)
+                switch (value)
                 {
-                    if (m_fileName is null)
-                        throw new NullReferenceException("FileName property must be defined before enabling ReloadOnChange");
-
-                    // Setup file watcher to monitor for external updates
-                    m_fileWatcher = new SafeFileWatcher
+                    case true when m_fileWatcher is null:
                     {
-                        Path = FilePath.GetDirectoryName(m_fileName), 
-                        Filter = FilePath.GetFileName(m_fileName), 
-                        EnableRaisingEvents = true
-                    };
+                        if (m_fileName is null)
+                            throw new NullReferenceException("FileName property must be defined before enabling ReloadOnChange");
+
+                        // Setup file watcher to monitor for external updates
+                        m_fileWatcher = new SafeFileWatcher
+                        {
+                            Path = FilePath.GetDirectoryName(m_fileName), 
+                            Filter = FilePath.GetFileName(m_fileName), 
+                            EnableRaisingEvents = true
+                        };
                     
-                    m_fileWatcher.Changed += m_fileWatcher_Changed;
-                }
-                else if (!value && m_fileWatcher is not null)
-                {
-                    // Disable file watcher
-                    m_fileWatcher.Changed -= m_fileWatcher_Changed;
-                    m_fileWatcher.Dispose();
-                    m_fileWatcher = null;
+                        m_fileWatcher.Changed += m_fileWatcher_Changed;
+                        break;
+                    }
+                    case false when m_fileWatcher is not null:
+                        // Disable file watcher
+                        m_fileWatcher.Changed -= m_fileWatcher_Changed;
+                        m_fileWatcher.Dispose();
+                        m_fileWatcher = null;
+                        break;
                 }
             }
         }
@@ -301,6 +310,19 @@ namespace Gemstone.IO
             {
                 m_disposed = true;  // Prevent duplicate dispose.
             }
+        }
+
+        /// <summary>
+        /// Releases the inter-process resources used by the <see cref="InterprocessCache"/>.
+        /// </summary>
+        /// <remarks>
+        /// On POSIX systems, calling this method removes the named semaphore used by the inter-process cache.
+        /// The semaphore name is removed immediately and is destroyed once all other processes that have the
+        /// semaphore open close it. Calling this method on Windows systems does nothing.
+        /// </remarks>
+        public void ReleaseInterprocessResources()
+        {
+            m_fileLock?.ReleaseInterprocessResources();
         }
 
         /// <summary>
