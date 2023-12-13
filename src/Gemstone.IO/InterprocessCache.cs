@@ -143,16 +143,23 @@ namespace Gemstone.IO
             // of inter-process lock when file name was changed. This would also require a call to
             // "ReleaseInterprocessResources" on the old file name and would make responsibility for
             // inter-process lock management related to "ReleaseInterprocessResources" ambiguous.
+        #if NET
             init
+        #else
+            set
+        #endif
             {
                 if (value is null)
                     throw new NullReferenceException("FileName cannot be null");
 
+                if (m_fileLock is not null)
+                    throw new InvalidOperationException("FileName cannot be changed after inter-process lock has been initialized");
+
                 m_fileName = FilePath.GetAbsolutePath(value);
+
                 m_fileLock = new InterprocessReaderWriterLock(m_fileName, MaximumConcurrentLocks);
             }
         }
-
 
         /// <summary>
         /// Gets or sets file data for the cache to be saved or that has been loaded.
