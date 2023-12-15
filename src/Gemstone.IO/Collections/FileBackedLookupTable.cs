@@ -28,17 +28,13 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 using Gemstone.GuidExtensions;
 using Gemstone.IO.Checksums;
 
-// BinaryFormatter is considered obsolete
 // ReSharper disable StaticFieldInGenericType
 // ReSharper disable UnusedMember.Local
 // ReSharper disable InconsistentNaming
-
-// TODO: Replace BinaryFormatter with a custom serializer
-#pragma warning disable SYSLIB0011
 
 namespace Gemstone.IO.Collections
 {
@@ -1709,20 +1705,6 @@ namespace Gemstone.IO.Collections
             Func<Stream, TKey>? readKeyFunc = GetReadMethod<TKey>();
             Func<Stream, TValue>? readValueFunc = GetReadMethod<TValue>();
 
-            if ((writeKeyAction is null || readKeyFunc is null) && typeof(TKey).IsSerializable)
-            {
-                BinaryFormatter formatter = new();
-                writeKeyAction = (stream, key) => formatter.Serialize(stream, key);
-                readKeyFunc = stream => (TKey)formatter.Deserialize(stream);
-            }
-
-            if ((writeValueAction is null || readValueFunc is null) && typeof(TValue).IsSerializable)
-            {
-                BinaryFormatter formatter = new();
-                writeValueAction = (stream, value) => formatter.Serialize(stream, value!);
-                readValueFunc = stream => (TValue)formatter.Deserialize(stream);
-            }
-
             if (writeKeyAction is null || readKeyFunc is null)
             {
                 writeKeyAction = (_, _) => throw new InvalidOperationException($"Type of TKey ({typeof(TKey).FullName}) is not serializable.");
@@ -1748,12 +1730,22 @@ namespace Gemstone.IO.Collections
             Type type = typeof(T);
             MethodInfo? method = type.GetMethod("WriteTo", Flags, null, s_types, null);
 
-            if (method is null)
+            if (method is not null)
+            {
+                Action<T, Stream> action = (Action<T, Stream>)Delegate.CreateDelegate(typeof(Action<T, Stream>), method);
+                return (stream, obj) => action(obj, stream);
+            }
+
+            Action<BinaryWriter, T>? binaryWriterAction = GetBinaryWriterMethod<T>();
+
+            if (binaryWriterAction is null)
                 return null;
 
-            Action<T, Stream> action = (Action<T, Stream>)Delegate.CreateDelegate(typeof(Action<T, Stream>), method);
-
-            return (stream, obj) => action(obj, stream);
+            return (stream, obj) =>
+            {
+                using BinaryWriter writer = new BinaryWriter(stream, Encoding.UTF8, true);
+                binaryWriterAction(writer, obj);
+            };
         }
 
         private static Func<Stream, T>? GetReadMethod<T>()
@@ -1761,32 +1753,106 @@ namespace Gemstone.IO.Collections
             Type type = typeof(T);
             ConstructorInfo? constructor = type.GetConstructor(Flags, null, s_types, null);
 
-            if (constructor is null)
+            if (constructor is not null)
             {
-                constructor = type.GetConstructor(Flags, null, Type.EmptyTypes, null);
+                List<ParameterExpression> parameterExpressions = s_types.Select(Expression.Parameter).ToList();
+                NewExpression newExpression = Expression.New(constructor, parameterExpressions);
+                LambdaExpression lambdaExpression = Expression.Lambda(typeof(Func<Stream, T>), newExpression, parameterExpressions);
+                return (Func<Stream, T>)lambdaExpression.Compile();
+            }
 
-                if (constructor is null)
-                    return null;
+            constructor = type.GetConstructor(Flags, null, Type.EmptyTypes, null);
 
+            if (constructor is not null)
+            {
                 MethodInfo? method = type.GetMethod("ReadFrom", Flags, null, s_types, null);
 
-                if (method is null)
-                    return null;
+                if (method is not null)
+                {
+                    return stream =>
+                    {
+                        T obj = Activator.CreateInstance<T>();
+                        method.Invoke(obj, new object[] { stream });
+                        return obj;
+                    };
+                }
+            }
 
+            Func<BinaryReader, T>? binaryReaderFunc = GetBinaryReaderMethod<T>();
+
+            if (binaryReaderFunc is not null)
+            {
                 return stream =>
                 {
-                    T obj = Activator.CreateInstance<T>();
-                    method.Invoke(obj, new object[] { stream });
-
-                    return obj;
+                    using BinaryReader reader = new BinaryReader(stream, Encoding.UTF8, true);
+                    return binaryReaderFunc(reader);
                 };
             }
 
-            List<ParameterExpression> parameterExpressions = s_types.Select(Expression.Parameter).ToList();
-            NewExpression newExpression = Expression.New(constructor, parameterExpressions);
-            LambdaExpression lambdaExpression = Expression.Lambda(typeof(Func<Stream, T>), newExpression, parameterExpressions);
+            return null;
+        }
 
-            return (Func<Stream, T>)lambdaExpression.Compile();
+        private static Action<BinaryWriter, T>? GetBinaryWriterMethod<T>()
+        {
+            void WriteDateTime(BinaryWriter writer, DateTime dt)
+            {
+                writer.Write(dt.Ticks);
+                writer.Write((byte)dt.Kind);
+            }
+
+            TypeCode typeCode = Type.GetTypeCode(typeof(T));
+
+            return typeCode switch
+            {
+                TypeCode.Boolean => (writer, obj) => writer.Write(Convert.ToBoolean(obj)),
+                TypeCode.Byte => (writer, obj) => writer.Write(Convert.ToByte(obj)),
+                TypeCode.Char => (writer, obj) => writer.Write(Convert.ToChar(obj)),
+                TypeCode.DateTime => (writer, obj) => WriteDateTime(writer, Convert.ToDateTime(obj)),
+                TypeCode.Decimal => (writer, obj) => writer.Write(Convert.ToDecimal(obj)),
+                TypeCode.Double => (writer, obj) => writer.Write(Convert.ToDouble(obj)),
+                TypeCode.Int16 => (writer, obj) => writer.Write(Convert.ToInt16(obj)),
+                TypeCode.Int32 => (writer, obj) => writer.Write(Convert.ToInt32(obj)),
+                TypeCode.Int64 => (writer, obj) => writer.Write(Convert.ToInt64(obj)),
+                TypeCode.SByte => (writer, obj) => writer.Write(Convert.ToSByte(obj)),
+                TypeCode.Single => (writer, obj) => writer.Write(Convert.ToSingle(obj)),
+                TypeCode.String => (writer, obj) => writer.Write(Convert.ToString(obj)),
+                TypeCode.UInt16 => (writer, obj) => writer.Write(Convert.ToUInt16(obj)),
+                TypeCode.UInt32 => (writer, obj) => writer.Write(Convert.ToUInt32(obj)),
+                TypeCode.UInt64 => (writer, obj) => writer.Write(Convert.ToUInt64(obj)),
+                _ => null
+            };
+        }
+
+        private static Func<BinaryReader, T>? GetBinaryReaderMethod<T>()
+        {
+            static DateTime ReadDateTime(BinaryReader reader)
+            {
+                long ticks = reader.ReadInt64();
+                DateTimeKind kind = (DateTimeKind)reader.ReadByte();
+                return new DateTime(ticks, kind);
+            }
+
+            TypeCode typeCode = Type.GetTypeCode(typeof(T));
+
+            return typeCode switch
+            {
+                TypeCode.Boolean => reader => (T)(object)reader.ReadBoolean(),
+                TypeCode.Byte => reader => (T)(object)reader.ReadByte(),
+                TypeCode.Char => reader => (T)(object)reader.ReadChar(),
+                TypeCode.DateTime => reader => (T)(object)ReadDateTime(reader),
+                TypeCode.Decimal => reader => (T)(object)reader.ReadDecimal(),
+                TypeCode.Double => reader => (T)(object)reader.ReadDouble(),
+                TypeCode.Int16 => reader => (T)(object)reader.ReadInt16(),
+                TypeCode.Int32 => reader => (T)(object)reader.ReadInt32(),
+                TypeCode.Int64 => reader => (T)(object)reader.ReadInt64(),
+                TypeCode.SByte => reader => (T)(object)reader.ReadSByte(),
+                TypeCode.Single => reader => (T)(object)reader.ReadSingle(),
+                TypeCode.String => reader => (T)(object)reader.ReadString(),
+                TypeCode.UInt16 => reader => (T)(object)reader.ReadUInt16(),
+                TypeCode.UInt32 => reader => (T)(object)reader.ReadUInt32(),
+                TypeCode.UInt64 => reader => (T)(object)reader.ReadUInt64(),
+                _ => null
+            };
         }
 
         private static long GetFirstHash(int hashCode)
