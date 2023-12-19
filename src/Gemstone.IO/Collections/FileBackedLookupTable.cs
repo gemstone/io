@@ -1796,8 +1796,8 @@ namespace Gemstone.IO.Collections
         {
             void WriteDateTime(BinaryWriter writer, DateTime dt)
             {
-                writer.Write(dt.Ticks);
                 writer.Write((byte)dt.Kind);
+                writer.Write(dt.Ticks);
             }
 
             TypeCode typeCode = Type.GetTypeCode(typeof(T));
@@ -1827,9 +1827,8 @@ namespace Gemstone.IO.Collections
         {
             static DateTime ReadDateTime(BinaryReader reader)
             {
-                long ticks = reader.ReadInt64();
                 DateTimeKind kind = (DateTimeKind)reader.ReadByte();
-                return new DateTime(ticks, kind);
+                return new DateTime(reader.ReadInt64(), kind);
             }
 
             TypeCode typeCode = Type.GetTypeCode(typeof(T));
