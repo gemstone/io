@@ -1800,6 +1800,14 @@ namespace Gemstone.IO.Collections
                 writer.Write(dt.Ticks);
             }
 
+            void WriteString(BinaryWriter writer, string? str)
+            {
+                writer.Write(str ?? string.Empty);
+
+                if (string.IsNullOrEmpty(str))
+                    writer.Write(str is null);
+            }
+
             TypeCode typeCode = Type.GetTypeCode(typeof(T));
 
             return typeCode switch
@@ -1815,7 +1823,7 @@ namespace Gemstone.IO.Collections
                 TypeCode.Int64 => (writer, obj) => writer.Write(Convert.ToInt64(obj)),
                 TypeCode.SByte => (writer, obj) => writer.Write(Convert.ToSByte(obj)),
                 TypeCode.Single => (writer, obj) => writer.Write(Convert.ToSingle(obj)),
-                TypeCode.String => (writer, obj) => writer.Write(Convert.ToString(obj)),
+                TypeCode.String => (writer, obj) => WriteString(writer, Convert.ToString(obj)),
                 TypeCode.UInt16 => (writer, obj) => writer.Write(Convert.ToUInt16(obj)),
                 TypeCode.UInt32 => (writer, obj) => writer.Write(Convert.ToUInt32(obj)),
                 TypeCode.UInt64 => (writer, obj) => writer.Write(Convert.ToUInt64(obj)),
@@ -1829,6 +1837,13 @@ namespace Gemstone.IO.Collections
             {
                 DateTimeKind kind = (DateTimeKind)reader.ReadByte();
                 return new DateTime(reader.ReadInt64(), kind);
+            }
+
+            static string? ReadString(BinaryReader reader)
+            {
+                string str = reader.ReadString();
+                bool isNull = str == string.Empty && reader.ReadBoolean();
+                return !isNull ? str : null;
             }
 
             TypeCode typeCode = Type.GetTypeCode(typeof(T));
@@ -1846,7 +1861,7 @@ namespace Gemstone.IO.Collections
                 TypeCode.Int64 => reader => (T)(object)reader.ReadInt64(),
                 TypeCode.SByte => reader => (T)(object)reader.ReadSByte(),
                 TypeCode.Single => reader => (T)(object)reader.ReadSingle(),
-                TypeCode.String => reader => (T)(object)reader.ReadString(),
+                TypeCode.String => reader => (T)(object)ReadString(reader)!,
                 TypeCode.UInt16 => reader => (T)(object)reader.ReadUInt16(),
                 TypeCode.UInt32 => reader => (T)(object)reader.ReadUInt32(),
                 TypeCode.UInt64 => reader => (T)(object)reader.ReadUInt64(),
