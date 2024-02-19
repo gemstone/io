@@ -326,9 +326,21 @@
             Represents a serialized data cache that can be saved or read from multiple applications using inter-process synchronization.
             </summary>
       <remarks>
+        <para>
             Note that all file data in this class gets serialized to and from memory, as such, the design intention for this class is for
             use with smaller data sets such as serialized lists or dictionaries that need inter-process synchronized loading and saving.
-            </remarks>
+            </para>
+        <para>
+            The <see cref="T:Gemstone.IO.InterprocessCache" /> uses a <see cref="T:Gemstone.Threading.NamedSemaphore" /> to synchronize access to cache as an inter-process shared resource.
+            On POSIX systems, the <see cref="T:Gemstone.Threading.NamedSemaphore" /> exhibits kernel persistence, meaning instances will remain active beyond the lifespan of
+            the creating process. The named semaphore must be explicitly removed by invoking <see cref="M:Gemstone.IO.InterprocessCache.ReleaseInterprocessResources" /> when the last
+            interprocess cache instance is no longer needed. Kernel persistence necessitates careful design consideration regarding process
+            responsibility for invoking the <see cref="M:Gemstone.IO.InterprocessCache.ReleaseInterprocessResources" /> method. Since the common use case for named semaphores is across
+            multiple applications, it is advisable for the last exiting process to handle the cleanup. In cases where an application may crash before
+            calling the <see cref="M:Gemstone.IO.InterprocessCache.ReleaseInterprocessResources" /> method, the semaphore persists in the system, potentially leading to resource leakage.
+            Implementations should include strategies to address and mitigate this risk.
+            </para>
+      </remarks>
     </member>
     <member name="M:Gemstone.IO.InterprocessCache.#ctor">
       <summary>
@@ -414,15 +426,20 @@
             Maximum retry attempts allowed for loading or saving cache file data.
             </summary>
     </member>
+    <member name="M:Gemstone.IO.InterprocessCache.ReleaseInterprocessResources">
+      <summary>
+            Releases the inter-process resources used by the <see cref="T:Gemstone.IO.InterprocessCache" />.
+            </summary>
+      <remarks>
+            On POSIX systems, calling this method removes the named semaphore used by the inter-process cache.
+            The semaphore name is removed immediately and is destroyed once all other processes that have the
+            semaphore open close it. Calling this method on Windows systems does nothing.
+            </remarks>
+    </member>
     <member name="P:Gemstone.IO.InterprocessCache.ReloadOnChange">
       <summary>
             Gets or sets flag that enables system to monitor for changes in <see cref="P:Gemstone.IO.InterprocessCache.FileName" /> and automatically reload <see cref="P:Gemstone.IO.InterprocessCache.FileData" />.
             </summary>
-      <remarks>
-            Use extreme caution when enabling this property - it will be critical to dispose of this class when this property is set to true
-            since it will create a file watcher that attaches to an event referenced by this class using pinned memory, as a result, this class
-            will not get garbage collected until this class is disposed thus detaching the associated event.
-            </remarks>
     </member>
     <member name="P:Gemstone.IO.InterprocessCache.RetryDelayInterval">
       <summary>
@@ -2467,13 +2484,17 @@
       <remarks>
         <para>
             As an example, this parser can use a templated expression of the form:
-            <codeSnippetGroup><code language="cs" codeLanguage="CSharp" style="cs">{CompanyAcronym}_{DeviceAcronym}[?{SignalType.Source}=Phasor[-{SignalType.Suffix}{SignalIndex}]]:{Signal.Acronymn}</code></codeSnippetGroup>
+            <code>
+            {CompanyAcronym}_{DeviceAcronym}[?{SignalType.Source}=Phasor[-{SignalType.Suffix}{SignalIndex}]]:{Signal.Acronymn}
+            </code>
             then replace the tokens with actual values and properly evaluate the expressions.
             Example results could look like: GPA_SHELBY-PA1:IPHA and GPA_SHELBY:FREQ
             </para>
         <para>
             Parser also supports more complex C# style expressions using the "eval{}" function, e.g.:
-            <codeSnippetGroup><code language="cs" codeLanguage="CSharp" style="cs">eval{'{CompanyAcronym}'.Substring(0,3)}_{DeviceAcronym}eval{'[?{SignalType.Source}=Phasor[-{SignalType.Suffix}]]'.Length}</code></codeSnippetGroup></para>
+            <code>
+            eval{'{CompanyAcronym}'.Substring(0,3)}_{DeviceAcronym}eval{'[?{SignalType.Source}=Phasor[-{SignalType.Suffix}]]'.Length}
+            </code></para>
       </remarks>
     </member>
     <member name="M:Gemstone.IO.Parsing.TemplatedExpressionParser.#ctor">
