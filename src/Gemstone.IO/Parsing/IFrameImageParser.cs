@@ -28,31 +28,30 @@
 using System;
 
 // ReSharper disable UnusedMemberInSuper.Global
-namespace Gemstone.IO.Parsing
+namespace Gemstone.IO.Parsing;
+
+/// <summary>
+/// This interface represents a basic implementation of parsing functionality suitable for automating the parsing of
+/// a binary data stream represented as frames with common headers and returning the parsed data via an event.
+/// </summary>
+/// <typeparam name="TTypeIdentifier">Type of identifier used to distinguish output types.</typeparam>
+/// <typeparam name="TOutputType">Type of the interface or class used to represent outputs.</typeparam>
+public interface IFrameImageParser<TTypeIdentifier, TOutputType> : IBinaryImageParser where TOutputType : ISupportFrameImage<TTypeIdentifier>
 {
     /// <summary>
-    /// This interface represents a basic implementation of parsing functionality suitable for automating the parsing of
-    /// a binary data stream represented as frames with common headers and returning the parsed data via an event.
+    /// Occurs when a data image is deserialized successfully to one of the output types that the data
+    /// image represents.
     /// </summary>
-    /// <typeparam name="TTypeIdentifier">Type of identifier used to distinguish output types.</typeparam>
-    /// <typeparam name="TOutputType">Type of the interface or class used to represent outputs.</typeparam>
-    public interface IFrameImageParser<TTypeIdentifier, TOutputType> : IBinaryImageParser where TOutputType : ISupportFrameImage<TTypeIdentifier>
-    {
-        /// <summary>
-        /// Occurs when a data image is deserialized successfully to one of the output types that the data
-        /// image represents.
-        /// </summary>
-        /// <remarks>
-        /// <see cref="EventArgs{T}.Argument"/> is the object that was deserialized from the binary image.
-        /// </remarks>
-        event EventHandler<EventArgs<TOutputType>>? DataParsed;
+    /// <remarks>
+    /// <see cref="EventArgs{T}.Argument"/> is the object that was deserialized from the binary image.
+    /// </remarks>
+    event EventHandler<EventArgs<TOutputType>>? DataParsed;
 
-        /// <summary>
-        /// Occurs when matching a output type for deserializing the data image could not be found.
-        /// </summary>
-        /// <remarks>
-        /// <see cref="EventArgs{T}.Argument"/> is the ID of the output type that could not be found.
-        /// </remarks>
-        event EventHandler<EventArgs<TTypeIdentifier>>? OutputTypeNotFound;
-    }
+    /// <summary>
+    /// Occurs when matching a output type for deserializing the data image could not be found.
+    /// </summary>
+    /// <remarks>
+    /// <see cref="EventArgs{T}.Argument"/> is the ID of the output type that could not be found.
+    /// </remarks>
+    event EventHandler<EventArgs<TTypeIdentifier>>? OutputTypeNotFound;
 }

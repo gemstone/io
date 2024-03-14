@@ -27,25 +27,24 @@
 
 using System;
 
-namespace Gemstone.IO.Parsing
+namespace Gemstone.IO.Parsing;
+
+/// <summary>
+/// Defines the common header of a frame image for a set of parsed types, consisting at least of a type ID.
+/// </summary>
+/// <remarks>
+/// Header implementations can extend this interface as necessary to accommodate protocol specific header images.
+/// </remarks>
+/// <typeparam name="TTypeIdentifier">Type of identifier used to distinguish output types.</typeparam>
+public interface ICommonHeader<out TTypeIdentifier>
 {
     /// <summary>
-    /// Defines the common header of a frame image for a set of parsed types, consisting at least of a type ID.
+    /// Gets or sets the identifier used for identifying the <see cref="Type"/> to be parsed.
     /// </summary>
-    /// <remarks>
-    /// Header implementations can extend this interface as necessary to accommodate protocol specific header images.
-    /// </remarks>
-    /// <typeparam name="TTypeIdentifier">Type of identifier used to distinguish output types.</typeparam>
-    public interface ICommonHeader<out TTypeIdentifier>
-    {
-        /// <summary>
-        /// Gets or sets the identifier used for identifying the <see cref="Type"/> to be parsed.
-        /// </summary>
-        TTypeIdentifier TypeID { get; }
+    TTypeIdentifier TypeID { get; }
 
-        /// <summary>
-        /// Gets or sets any additional state information that might be needed for parsing.
-        /// </summary>
-        object? State { get; set; }
-    }
+    /// <summary>
+    /// Gets or sets any additional state information that might be needed for parsing.
+    /// </summary>
+    object? State { get; set; }
 }

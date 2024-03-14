@@ -29,90 +29,89 @@
 
 using System;
 
-namespace Gemstone.IO.Checksums
+namespace Gemstone.IO.Checksums;
+
+/// <summary>Calculates quad-word length (64-bit) XOR-based check-sum on specified portion of a buffer.</summary>
+public sealed class Xor64
 {
-    /// <summary>Calculates quad-word length (64-bit) XOR-based check-sum on specified portion of a buffer.</summary>
-    public sealed class Xor64
+    #region [ Constructors ]
+
+    /// <summary>
+    /// Creates a new instance of the Xor64Bit class.
+    /// The checksum starts off with a value of 0.
+    /// </summary>
+    public Xor64() => Reset();
+
+    #endregion
+
+    #region [ Properties ]
+
+    /// <summary>
+    /// Returns the Xor 64-bit checksum computed so far.
+    /// </summary>
+    public ulong Value { get; private set; }
+
+    #endregion
+
+    #region [ Methods ]
+
+    /// <summary>
+    /// Resets the checksum to the initial value.
+    /// </summary>
+    public void Reset() => Value = 0UL;
+
+    /// <summary>
+    /// Updates the checksum with a ulong value.
+    /// </summary>
+    /// <param name="value">The <see cref="ulong"/> value to use for the update.</param>
+    public void Update(ulong value) => Value ^= value;
+
+    /// <summary>
+    /// Updates the checksum with an array of bytes.
+    /// </summary>
+    /// <param name="buffer">
+    /// The source of the data to update with.
+    /// </param>
+    public void Update(byte[] buffer)
     {
-        #region [ Constructors ]
+        if (buffer is null)
+            throw new ArgumentNullException(nameof(buffer));
 
-        /// <summary>
-        /// Creates a new instance of the Xor64Bit class.
-        /// The checksum starts off with a value of 0.
-        /// </summary>
-        public Xor64() => Reset();
-
-        #endregion
-
-        #region [ Properties ]
-
-        /// <summary>
-        /// Returns the Xor 64-bit checksum computed so far.
-        /// </summary>
-        public ulong Value { get; private set; }
-
-        #endregion
-
-        #region [ Methods ]
-
-        /// <summary>
-        /// Resets the checksum to the initial value.
-        /// </summary>
-        public void Reset() => Value = 0UL;
-
-        /// <summary>
-        /// Updates the checksum with a ulong value.
-        /// </summary>
-        /// <param name="value">The <see cref="ulong"/> value to use for the update.</param>
-        public void Update(ulong value) => Value ^= value;
-
-        /// <summary>
-        /// Updates the checksum with an array of bytes.
-        /// </summary>
-        /// <param name="buffer">
-        /// The source of the data to update with.
-        /// </param>
-        public void Update(byte[] buffer)
-        {
-            if (buffer is null)
-                throw new ArgumentNullException(nameof(buffer));
-
-            Update(buffer, 0, buffer.Length);
-        }
-
-        /// <summary>
-        /// Updates the checksum with the bytes taken from the array.
-        /// </summary>
-        /// <param name="buffer">
-        /// an array of bytes
-        /// </param>
-        /// <param name="offset">
-        /// the start of the data used for this update
-        /// </param>
-        /// <param name="count">
-        /// the number of bytes to use for this update
-        /// </param>
-        public void Update(byte[] buffer, int offset, int count)
-        {
-            if (buffer is null)
-                throw new ArgumentNullException(nameof(buffer));
-
-            if (offset < 0)
-                throw new ArgumentOutOfRangeException(nameof(offset), "cannot be negative");
-
-            if (count < 0)
-                throw new ArgumentOutOfRangeException(nameof(count), "cannot be negative");
-
-            if (offset >= buffer.Length)
-                throw new ArgumentOutOfRangeException(nameof(offset), "not a valid index into buffer");
-
-            if (offset + count > buffer.Length)
-                throw new ArgumentOutOfRangeException(nameof(count), "exceeds buffer size");
-
-            for (int x = 0; x < count; x += 8)
-                Value ^= BitConverter.ToUInt64(buffer, offset + x);
-        }
-
-        #endregion
+        Update(buffer, 0, buffer.Length);
     }
+
+    /// <summary>
+    /// Updates the checksum with the bytes taken from the array.
+    /// </summary>
+    /// <param name="buffer">
+    /// an array of bytes
+    /// </param>
+    /// <param name="offset">
+    /// the start of the data used for this update
+    /// </param>
+    /// <param name="count">
+    /// the number of bytes to use for this update
+    /// </param>
+    public void Update(byte[] buffer, int offset, int count)
+    {
+        if (buffer is null)
+            throw new ArgumentNullException(nameof(buffer));
+
+        if (offset < 0)
+            throw new ArgumentOutOfRangeException(nameof(offset), "cannot be negative");
+
+        if (count < 0)
+            throw new ArgumentOutOfRangeException(nameof(count), "cannot be negative");
+
+        if (offset >= buffer.Length)
+            throw new ArgumentOutOfRangeException(nameof(offset), "not a valid index into buffer");
+
+        if (offset + count > buffer.Length)
+            throw new ArgumentOutOfRangeException(nameof(count), "exceeds buffer size");
+
+        for (int x = 0; x < count; x += 8)
+            Value ^= BitConverter.ToUInt64(buffer, offset + x);
+    }
+
+    #endregion
 }

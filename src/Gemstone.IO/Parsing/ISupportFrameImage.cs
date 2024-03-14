@@ -33,47 +33,46 @@
 
 using System;
 
-namespace Gemstone.IO.Parsing
+namespace Gemstone.IO.Parsing;
+
+/// <summary>
+/// Specifies that this <see cref="System.Type"/> can produce or consume a frame of data represented as a binary image.
+/// </summary>
+/// <remarks>
+/// Related types of protocol data that occur as frames in a stream can implement this interface for automated parsing
+/// via the <see cref="FrameImageParserBase{TTypeIdentifier,TOutputType}"/> class.
+/// </remarks>
+/// <typeparam name="TTypeIdentifier">Type of the frame identifier.</typeparam>
+public interface ISupportFrameImage<TTypeIdentifier> : ISupportBinaryImage
 {
     /// <summary>
-    /// Specifies that this <see cref="System.Type"/> can produce or consume a frame of data represented as a binary image.
+    /// Gets or sets current <see cref="ICommonHeader{TTypeIdentifier}"/>.
     /// </summary>
     /// <remarks>
-    /// Related types of protocol data that occur as frames in a stream can implement this interface for automated parsing
-    /// via the <see cref="FrameImageParserBase{TTypeIdentifier,TOutputType}"/> class.
+    /// If used, this will need to be set before call to <see cref="ISupportBinaryImage.ParseBinaryImage"/>.
     /// </remarks>
-    /// <typeparam name="TTypeIdentifier">Type of the frame identifier.</typeparam>
-    public interface ISupportFrameImage<TTypeIdentifier> : ISupportBinaryImage
-    {
-        /// <summary>
-        /// Gets or sets current <see cref="ICommonHeader{TTypeIdentifier}"/>.
-        /// </summary>
-        /// <remarks>
-        /// If used, this will need to be set before call to <see cref="ISupportBinaryImage.ParseBinaryImage"/>.
-        /// </remarks>
-        ICommonHeader<TTypeIdentifier> CommonHeader { get; set; }
+    ICommonHeader<TTypeIdentifier> CommonHeader { get; set; }
 
-        /// <summary>
-        /// Gets the identifier that can be used for identifying the <see cref="Type"/>.
-        /// </summary>
-        /// <remarks>
-        /// <para>
-        /// <see cref="TypeID"/> must be unique across all siblings implementing a common <see cref="Type"/> or interface.
-        /// </para>
-        /// <para>
-        /// Output types implement this class so they have a consistently addressable identification property.
-        /// </para>
-        /// </remarks>
-        TTypeIdentifier TypeID { get; }
+    /// <summary>
+    /// Gets the identifier that can be used for identifying the <see cref="Type"/>.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// <see cref="TypeID"/> must be unique across all siblings implementing a common <see cref="Type"/> or interface.
+    /// </para>
+    /// <para>
+    /// Output types implement this class so they have a consistently addressable identification property.
+    /// </para>
+    /// </remarks>
+    TTypeIdentifier TypeID { get; }
 
-        /// <summary>
-        /// Gets flag that determines if frame image can queued for publication or should be processed immediately.
-        /// </summary>
-        /// <remarks>
-        /// Some frames, e.g., a configuration or key frame, may be critical to processing of other frames. In this
-        /// case, these types of frames should be published immediately so that subsequent frame parsing can have
-        /// access to needed critical information.
-        /// </remarks>
-        bool AllowQueuedPublication { get; }
-    }
+    /// <summary>
+    /// Gets flag that determines if frame image can queued for publication or should be processed immediately.
+    /// </summary>
+    /// <remarks>
+    /// Some frames, e.g., a configuration or key frame, may be critical to processing of other frames. In this
+    /// case, these types of frames should be published immediately so that subsequent frame parsing can have
+    /// access to needed critical information.
+    /// </remarks>
+    bool AllowQueuedPublication { get; }
 }

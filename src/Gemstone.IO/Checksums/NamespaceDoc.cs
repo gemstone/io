@@ -25,13 +25,12 @@
 
 using System.Runtime.CompilerServices;
 
-namespace Gemstone.IO.Checksums
+namespace Gemstone.IO.Checksums;
+
+/// <summary>
+/// Contains classes and extension functions used to calculate standard checksums and CRC’s.
+/// </summary>
+[CompilerGenerated]
+internal class NamespaceDoc
 {
-    /// <summary>
-    /// Contains classes and extension functions used to calculate standard checksums and CRC’s.
-    /// </summary>
-    [CompilerGenerated]
-    internal class NamespaceDoc
-    {
-    }
 }

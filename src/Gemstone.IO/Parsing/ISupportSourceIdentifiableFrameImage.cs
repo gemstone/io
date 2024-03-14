@@ -23,23 +23,22 @@
 //
 //******************************************************************************************************
 
-namespace Gemstone.IO.Parsing
+namespace Gemstone.IO.Parsing;
+
+/// <summary>
+/// Specifies that this <see cref="System.Type"/> can produce or consume a frame of data represented as a binary image
+/// that can be identified by its data source.
+/// </summary>
+/// <remarks>
+/// Related types of protocol data that occur as frames in a stream can implement this interface for automated parsing
+/// via the <see cref="MultiSourceFrameImageParserBase{TSourceIdentifier, TTypeIdentifier, TOutputType}"/> class.
+/// </remarks>
+/// <typeparam name="TSourceIdentifier">Type of identifier for the data source.</typeparam>
+/// <typeparam name="TTypeIdentifier">Type of the frame identifier.</typeparam>
+public interface ISupportSourceIdentifiableFrameImage<TSourceIdentifier, TTypeIdentifier> : ISupportFrameImage<TTypeIdentifier>
 {
     /// <summary>
-    /// Specifies that this <see cref="System.Type"/> can produce or consume a frame of data represented as a binary image
-    /// that can be identified by its data source.
+    /// Gets or sets the data source identifier of the frame image.
     /// </summary>
-    /// <remarks>
-    /// Related types of protocol data that occur as frames in a stream can implement this interface for automated parsing
-    /// via the <see cref="MultiSourceFrameImageParserBase{TSourceIdentifier, TTypeIdentifier, TOutputType}"/> class.
-    /// </remarks>
-    /// <typeparam name="TSourceIdentifier">Type of identifier for the data source.</typeparam>
-    /// <typeparam name="TTypeIdentifier">Type of the frame identifier.</typeparam>
-    public interface ISupportSourceIdentifiableFrameImage<TSourceIdentifier, TTypeIdentifier> : ISupportFrameImage<TTypeIdentifier>
-    {
-        /// <summary>
-        /// Gets or sets the data source identifier of the frame image.
-        /// </summary>
-        TSourceIdentifier Source { get; set; }
-    }
+    TSourceIdentifier Source { get; set; }
 }

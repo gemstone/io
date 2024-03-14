@@ -25,127 +25,126 @@
 
 using System;
 
-namespace Gemstone.IO.Checksums
+namespace Gemstone.IO.Checksums;
+
+/// <summary>
+/// Generates an Adler-32 checksum calculation.
+/// </summary>
+public sealed class Adler32
 {
+    #region [ Members ]
+
+    // Constants
+    private const uint AdlerMod = 65521u;
+    private const int MaxLoops = 5552;
+
+    // Fields
+    private uint m_a;
+    private uint m_b;
+    private int m_loopCount;
+
+    #endregion
+
+    #region [ Constructors ]
+
     /// <summary>
-    /// Generates an Adler-32 checksum calculation.
+    /// Creates a new instance of the <see cref="Adler32"/> class.
     /// </summary>
-    public sealed class Adler32
+    public Adler32() => Reset();
+
+    #endregion
+
+    #region [ Properties ]
+
+    /// <summary>
+    /// Returns the Adler-32 data checksum computed so far.
+    /// </summary>
+    public uint Value
     {
-        #region [ Members ]
-
-        // Constants
-        private const uint AdlerMod = 65521u;
-        private const int MaxLoops = 5552;
-
-        // Fields
-        private uint m_a;
-        private uint m_b;
-        private int m_loopCount;
-
-        #endregion
-
-        #region [ Constructors ]
-
-        /// <summary>
-        /// Creates a new instance of the <see cref="Adler32"/> class.
-        /// </summary>
-        public Adler32() => Reset();
-
-        #endregion
-
-        #region [ Properties ]
-
-        /// <summary>
-        /// Returns the Adler-32 data checksum computed so far.
-        /// </summary>
-        public uint Value
+        get
         {
-            get
-            {
-                ApplyMod();
-                return m_a | (m_b << 16);
-            }
-            set
-            {
-                m_a = value & 0xFFFF;
-                m_b = value >> 16;
-                ApplyMod();
-            }
+            ApplyMod();
+            return m_a | (m_b << 16);
         }
-
-        #endregion
-
-        #region [ Methods ]
-
-        /// <summary>
-        /// Resets the Adler-32 data checksum as if no update was ever called.
-        /// </summary>
-        public void Reset()
+        set
         {
-            m_a = 1;
-            m_b = 0;
-            m_loopCount = 0;
+            m_a = value & 0xFFFF;
+            m_b = value >> 16;
+            ApplyMod();
         }
+    }
 
-        /// <summary>
-        /// Updates the checksum with the byte value.
-        /// </summary>
-        /// <param name="value">The <see cref="byte"/> value to use for the update.</param>
-        public void Update(byte value)
+    #endregion
+
+    #region [ Methods ]
+
+    /// <summary>
+    /// Resets the Adler-32 data checksum as if no update was ever called.
+    /// </summary>
+    public void Reset()
+    {
+        m_a = 1;
+        m_b = 0;
+        m_loopCount = 0;
+    }
+
+    /// <summary>
+    /// Updates the checksum with the byte value.
+    /// </summary>
+    /// <param name="value">The <see cref="byte"/> value to use for the update.</param>
+    public void Update(byte value)
+    {
+        if (m_loopCount >= MaxLoops)
+            ApplyMod();
+
+        m_a += value;
+        m_b += m_a;
+        m_loopCount++;
+    }
+
+    /// <summary>
+    /// Updates the checksum with the bytes taken from the array.
+    /// </summary>
+    /// <param name="buffer">buffer an array of bytes</param>
+    public void Update(byte[] buffer) => Update(buffer, 0, buffer.Length);
+
+    /// <summary>
+    /// Adds the byte array to the data checksum.
+    /// </summary>
+    /// <param name="buffer">The buffer which contains the data</param>
+    /// <param name="offset">The offset in the buffer where the data starts</param>
+    /// <param name="count">The number of data bytes to update the checksum with.</param>
+    public void Update(byte[] buffer, int offset, int count)
+    {
+        int i = 0;
+
+        while (i < count)
         {
             if (m_loopCount >= MaxLoops)
                 ApplyMod();
 
-            m_a += value;
-            m_b += m_a;
-            m_loopCount++;
-        }
+            int remainingLoops = MaxLoops - m_loopCount;
+            int numLoops = Math.Min(remainingLoops, count - i);
 
-        /// <summary>
-        /// Updates the checksum with the bytes taken from the array.
-        /// </summary>
-        /// <param name="buffer">buffer an array of bytes</param>
-        public void Update(byte[] buffer) => Update(buffer, 0, buffer.Length);
-
-        /// <summary>
-        /// Adds the byte array to the data checksum.
-        /// </summary>
-        /// <param name="buffer">The buffer which contains the data</param>
-        /// <param name="offset">The offset in the buffer where the data starts</param>
-        /// <param name="count">The number of data bytes to update the checksum with.</param>
-        public void Update(byte[] buffer, int offset, int count)
-        {
-            int i = 0;
-
-            while (i < count)
+            for (int loopCtr = 0; loopCtr < numLoops; loopCtr++)
             {
-                if (m_loopCount >= MaxLoops)
-                    ApplyMod();
-
-                int remainingLoops = MaxLoops - m_loopCount;
-                int numLoops = Math.Min(remainingLoops, count - i);
-
-                for (int loopCtr = 0; loopCtr < numLoops; loopCtr++)
-                {
-                    m_a += buffer[offset + i];
-                    m_b += m_a;
-                    i++;
-                }
-
-                m_loopCount += numLoops;
+                m_a += buffer[offset + i];
+                m_b += m_a;
+                i++;
             }
-        }
 
-        // Applies the modulus operation
-        // to the checksum components.
-        private void ApplyMod()
-        {
-            m_a %= AdlerMod;
-            m_b %= AdlerMod;
-            m_loopCount = 0;
+            m_loopCount += numLoops;
         }
-
-        #endregion
     }
+
+    // Applies the modulus operation
+    // to the checksum components.
+    private void ApplyMod()
+    {
+        m_a %= AdlerMod;
+        m_b %= AdlerMod;
+        m_loopCount = 0;
+    }
+
+    #endregion
 }

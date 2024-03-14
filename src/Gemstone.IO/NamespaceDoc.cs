@@ -23,15 +23,14 @@
 
 using System.Runtime.CompilerServices;
 
-namespace Gemstone.IO
+namespace Gemstone.IO;
+
+/// <summary>
+/// The <see cref="Gemstone.IO"/> namespace organizes all Gemstone library functionality
+/// related to Input and Output (IO). The root namespace also includes common IO related classes,
+/// e.g., <see cref="SafeFileWatcher"/>.
+/// </summary>
+[CompilerGenerated]
+class NamespaceDoc
 {
-    /// <summary>
-    /// The <see cref="Gemstone.IO"/> namespace organizes all Gemstone library functionality
-    /// related to Input and Output (IO). The root namespace also includes common IO related classes,
-    /// e.g., <see cref="SafeFileWatcher"/>.
-    /// </summary>
-    [CompilerGenerated]
-    class NamespaceDoc
-    {
-    }
 }
