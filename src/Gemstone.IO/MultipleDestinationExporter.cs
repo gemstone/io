@@ -28,13 +28,14 @@
 //  09/14/2009 - Stephen C. Wills
 //       Added new header and license agreement.
 //  01/27/2011 - J. Ritchie Carroll
-//       Modified internal operation to minimize risk of file dead lock and/or memory overload.
+//       Modified internal operation to minimize risk of file deadlock and/or memory overload.
 //  09/22/2011 - J. Ritchie Carroll
 //       Added Mono implementation exception regions.
 //  12/14/2012 - Starlynn Danyelle Gilliam
 //       Modified Header.
 //
 //******************************************************************************************************
+// ReSharper disable NullCoalescingConditionIsAlwaysNotNullAccordingToAPIContract
 
 using System;
 using System.Collections.Generic;
@@ -44,7 +45,9 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using Gemstone.ActionExtensions;
+using Gemstone.Configuration;
 using Gemstone.EventHandlerExtensions;
+using Gemstone.Security.Cryptography;
 using Gemstone.StringExtensions;
 using Gemstone.Threading.SynchronizedOperations;
 using Gemstone.Threading.WaitHandleExtensions;
@@ -94,52 +97,49 @@ namespace Gemstone.IO;
 /// <code>
 /// <![CDATA[
 /// [ExportDestinations]
-/// ; Total allowed time for all exports to execute in milliseconds.
+/// ; Total allowed time for each export to execute, in milliseconds. Set to -1 for no specific timeout.
 /// ExportTimeout=-1
+///
+/// ; Maximum number of retries that will be attempted during an export if the export fails. Set to zero to only attempt export once.
+/// MaximumRetryAttempts=4
+///
+/// ; Interval to wait, in milliseconds, before retrying an export if the export fails.
+/// RetryDelayInterval=1000
 /// 
 /// ; Total number of export files to produce.
 /// ExportCount=2
 ///
-/// ; Root path for export destination. Use UNC path (\\server\share) with no trailing slash for network shares.
-/// ExportDestination1=\\server1\share\
+/// ; Root path for export destination, e.g., drive letter or UNC share name. Use UNC path (\\server\share) with no trailing slash for network shares.
+/// ExportDestination1=C:\
 ///
-/// ; Set to True to attempt authentication to network share.
-/// ExportDestination1.ConnectToShare=True
-///
-/// ; Domain used for authentication to network share (computer name for local accounts).
-/// ExportDestination1.Domain=domain
-///
-/// ; User name used for authentication to network share.
-/// ExportDestination1.UserName=user1
-///
-/// ; Encrypted password used for authentication to network share.
-/// ExportDestination1.Password=l2qlAwAPihJjoThH+G53BUxzYsIkTE2yNBHLtd1WA3hysDhwDB82ouJb9n35QtG8
+/// ; Boolean flag that determines whether to attempt network connection to share.
+/// ExportDestination1_ConnectToShare=false
 ///
 /// ; Path and file name of data export (do not include drive letter or UNC share). Prefix with slash when using UNC paths (\path\filename.txt).
-/// ExportDestination1.FileName=exportFile.txt
+/// ExportDestination1_FileName=Path\\FileName.txt
 ///
-/// ; Root path for export destination. Use UNC path (\\server\share) with no trailing slash for network shares.
-/// ExportDestination2=\\server2\share\
+/// ; Root path for export destination, e.g., drive letter or UNC share name. Use UNC path (\\server\share) with no trailing slash for network shares.
+/// ExportDestination2=\\server2\share
 ///
-/// ; Set to True to attempt authentication to network share.
-/// ExportDestination2.ConnectToShare=True
+/// ; Boolean flag that determines whether to attempt network connection to share.
+/// ExportDestination2_ConnectToShare=True
 /// 
 /// ; Domain used for authentication to network share (computer name for local accounts).
-/// ExportDestination2.Domain=domain
+/// ExportDestination2_Domain=domain
 /// 
 /// ; User name used for authentication to network share.
-/// ExportDestination2.UserName=user2
+/// ExportDestination2_UserName=user2
 /// 
-/// ; Encrypted password used for authentication to network share.
-/// ExportDestination2.Password=l2qlAwAPihJjoThH+G53BYT6BXHQr13D6Asdibl0rDmlrgRXvJmCwcP8uvkFRHr9
+/// ; Password used for authentication to network share. Value supports encryption in the format of "KeyName:EncodedValue".
+/// ExportDestination2_Password=config-cipher:l2qlAwAPihJjoThH+G53BYT6BXHQr13D6Asdibl0rDmlrgRXvJmCwcP8uvkFRHr9
 ///
 /// ; Path and file name of data export (do not include drive letter or UNC share). Prefix with slash when using UNC paths (\path\filename.txt).
-/// ExportDestination2.FileName=exportFile.txt
+/// ExportDestination2_FileName=\\Path\FileName.txt
 /// ]]>
 /// </code>
 /// </example>
 /// <seealso cref="ExportDestination"/>
-public class MultipleDestinationExporter : ISupportLifecycle, IProvideStatus
+public class MultipleDestinationExporter : ISupportLifecycle, IProvideStatus, IPersistSettings
 {
     #region [ Members ]
 
@@ -182,17 +182,17 @@ public class MultipleDestinationExporter : ISupportLifecycle, IProvideStatus
         /// <summary>
         /// Gets or sets the source file name for the <see cref="ExportState"/>.
         /// </summary>
-        public string SourceFileName { get; set; } = default!;
+        public string SourceFileName { get; init; } = default!;
 
         /// <summary>
         /// Gets or sets the destination file name for the <see cref="ExportState"/>.
         /// </summary>
-        public string DestinationFileName { get; set; } = default!;
+        public string DestinationFileName { get; init; } = default!;
 
         /// <summary>
         /// Gets or sets the event wait handle for the <see cref="ExportState"/>.
         /// </summary>
-        public ManualResetEventSlim WaitHandle { get; }
+        public ManualResetEventSlim? WaitHandle { get; }
 
         /// <summary>
         /// Gets or sets a flag that is used to determine if export process has timed out.
@@ -306,7 +306,7 @@ public class MultipleDestinationExporter : ISupportLifecycle, IProvideStatus
     /// Initializes a new instance of the <see cref="MultipleDestinationExporter"/> class.
     /// </summary>
     public MultipleDestinationExporter()
-        : this(DefaultSettingsCategory, DefaultExportTimeout)
+        : this(DefaultSettingsCategory)
     {
     }
 
@@ -315,7 +315,7 @@ public class MultipleDestinationExporter : ISupportLifecycle, IProvideStatus
     /// </summary>
     /// <param name="settingsCategory">The config file settings category under which the export destinations are defined.</param>
     /// <param name="exportTimeout">The total allowed time in milliseconds for each export to execute.</param>
-    public MultipleDestinationExporter(string settingsCategory, int exportTimeout)
+    public MultipleDestinationExporter(string settingsCategory, int exportTimeout = DefaultExportTimeout)
     {
         ExportTimeout = exportTimeout;
         Name = settingsCategory;
@@ -432,9 +432,7 @@ public class MultipleDestinationExporter : ISupportLifecycle, IProvideStatus
         get
         {
             lock (m_exportDestinationsLock)
-            {
-                return new ReadOnlyCollection<ExportDestination>(m_exportDestinations);
-            }
+                return m_exportDestinations.AsReadOnly();
         }
     }
 
@@ -536,94 +534,6 @@ public class MultipleDestinationExporter : ISupportLifecycle, IProvideStatus
     }
 
     /// <summary>
-    /// Saves settings for the <see cref="MultipleDestinationExporter"/> object to the config file if the <see cref="PersistSettings"/> 
-    /// property is set to true.
-    /// </summary>
-    public void SaveSettings()
-    {
-        if (PersistSettings)
-        {
-            //// Ensure that settings category is specified.
-            //if (string.IsNullOrEmpty(m_settingsCategory))
-            //    throw new ConfigurationErrorsException("SettingsCategory property has not been set");
-
-            //// Save settings under the specified category.
-            //ConfigurationFile config = ConfigurationFile.Current;
-            //CategorizedSettingsElementCollection settings = config.Settings[m_settingsCategory];
-
-            //settings.Clear();
-            //settings["ExportTimeout", true].Update(m_exportTimeout, "Total allowed time for each export to execute, in milliseconds. Set to -1 for no specific timeout.");
-            //settings["MaximumRetryAttempts", true].Update(m_maximumRetryAttempts, "Maximum number of retries that will be attempted during an export if the export fails. Set to zero to only attempt export once.");
-            //settings["RetryDelayInterval", true].Update(m_retryDelayInterval, "Interval to wait, in milliseconds, before retrying an export if the export fails.");
-
-            //lock (m_exportDestinationsLock)
-            //{
-            //    settings["ExportCount", true].Update(m_exportDestinations.Count, "Total number of export files to produce.");
-            //    for (int x = 0; x < m_exportDestinations.Count; x++)
-            //    {
-            //        settings[$"ExportDestination{x + 1}", true].Update(m_exportDestinations[x].Share, "Root path for export destination. Use UNC path (\\\\server\\share) with no trailing slash for network shares.");
-            //        settings[$"ExportDestination{x + 1}.ConnectToShare", true].Update(m_exportDestinations[x].ConnectToShare, "Set to True to attempt authentication to network share.");
-            //        settings[$"ExportDestination{x + 1}.Domain", true].Update(m_exportDestinations[x].Domain, "Domain used for authentication to network share (computer name for local accounts).");
-            //        settings[$"ExportDestination{x + 1}.UserName", true].Update(m_exportDestinations[x].UserName, "User name used for authentication to network share.");
-            //        settings[$"ExportDestination{x + 1}.Password", true].Update(m_exportDestinations[x].Password, "Encrypted password used for authentication to network share.", true);
-            //        settings[$"ExportDestination{x + 1}.FileName", true].Update(m_exportDestinations[x].FileName, "Path and file name of data export (do not include drive letter or UNC share). Prefix with slash when using UNC paths (\\path\\filename.txt).");
-            //    }
-            //}
-
-            //config.Save();
-        }
-    }
-
-    /// <summary>
-    /// Loads saved settings for the <see cref="MultipleDestinationExporter"/> object from the config file if the <see cref="PersistSettings"/> 
-    /// property is set to true.
-    /// </summary>
-    public void LoadSettings()
-    {
-        if (PersistSettings)
-        {
-            //// Ensure that settings category is specified.
-            //if (string.IsNullOrEmpty(m_settingsCategory))
-            //    throw new ConfigurationErrorsException("SettingsCategory property has not been set");
-
-            //// Load settings from the specified category.
-            //ConfigurationFile config = ConfigurationFile.Current;
-            //CategorizedSettingsElementCollection settings = config.Settings[m_settingsCategory];
-
-            //if (settings.Count == 0)
-            //    return;    // Don't proceed if export destinations don't exist in config file.
-
-            //m_exportTimeout = settings["ExportTimeout", true].ValueAs(m_exportTimeout);
-            //m_maximumRetryAttempts = settings["MaximumRetryAttempts", true].ValueAs(m_maximumRetryAttempts);
-            //m_retryDelayInterval = settings["RetryDelayInterval", true].ValueAs(m_retryDelayInterval);
-            //int count = settings["ExportCount", true].ValueAsInt32();
-
-            //lock (m_exportDestinationsLock)
-            //{
-            //    m_exportDestinations.Clear();
-
-            //    for (int x = 0; x < count; x++)
-            //    {
-            //        string entryRoot = $"ExportDestination{x + 1}";
-
-            //        // Load export destination from configuration entries
-            //        ExportDestination destination = new ExportDestination();
-
-            //        destination.DestinationFile = settings[entryRoot, true].ValueAsString() + settings[$"{entryRoot}.FileName", true].ValueAsString();
-            //        destination.ConnectToShare = settings[$"{entryRoot}.ConnectToShare", true].ValueAsBoolean();
-            //        destination.Domain = settings[$"{entryRoot}.Domain", true].ValueAsString();
-            //        destination.UserName = settings[$"{entryRoot}.UserName", true].ValueAsString();
-            //        destination.Password = settings[$"{entryRoot}.Password", true].ValueAsString();
-
-            //        // Save new export destination if destination file name has been defined and is valid
-            //        if (FilePath.IsValidFileName(destination.DestinationFile))
-            //            m_exportDestinations.Add(destination);
-            //    }
-            //}
-        }
-    }
-
-    /// <summary>
     /// Initializes (or re-initializes) <see cref="MultipleDestinationExporter"/> from configuration settings.
     /// </summary>
     /// <remarks>
@@ -648,14 +558,14 @@ public class MultipleDestinationExporter : ISupportLifecycle, IProvideStatus
     /// </remarks>
     public void Initialize(IEnumerable<ExportDestination> defaultDestinations)
     {
-        // So as to not delay calling thread due to share authentication, we perform initialization on another thread...
+        // To not delay calling thread due to share authentication, we perform initialization on another thread...
         Thread initializeThread = new(InitializeExporter) { IsBackground = true };
         initializeThread.Start(defaultDestinations.ToList());
     }
 
-    private void InitializeExporter(object state)
+    private void InitializeExporter(object? state)
     {
-        // In case we are reinitializing class, we shutdown any prior queue operations and close any existing network connections...
+        // In case we are reinitializing class, we shut down any prior queue operations and close any existing network connections...
         Shutdown();
 
         // Retrieve any specified default export destinations
@@ -687,9 +597,27 @@ public class MultipleDestinationExporter : ISupportLifecycle, IProvideStatus
             if (!destination.ConnectToShare)
                 continue;
 
+            if (destination.Domain is null)
+            {
+                OnProcessException(new InvalidOperationException($"Network share authentication to {destination.Share} failed due to missing domain."));
+                continue;
+            }
+
+            if (destination.UserName is null)
+            {
+                OnProcessException(new InvalidOperationException($"Network share authentication to {destination.Share} failed due to missing username."));
+                continue;
+            }
+
+            if (destination.Password is null)
+            {
+                OnProcessException(new InvalidOperationException($"Network share authentication to {destination.Share} failed due to missing password."));
+                continue;
+            }
+
             if (Common.IsPosixEnvironment)
             {
-                // TODO: Implement network share authentication for POSIX environment
+                // TODO: Implement network share authentication for POSIX environment (use "mount" API call)
                 OnStatusMessage("Network share authentication not currently available under POSIX environment...");
             }
             else
@@ -699,7 +627,7 @@ public class MultipleDestinationExporter : ISupportLifecycle, IProvideStatus
                 {
                     OnStatusMessage("Attempting network share authentication for user {0}\\{1} to {2}...", destination.Domain, destination.UserName, destination.Share);
 
-                    FilePath.ConnectToNetworkShare(destination.Share, destination.UserName, destination.Password, destination.Domain);
+                    FilePath.ConnectToNetworkShare(destination.Share, destination.UserName, destination.Password.ConfigDecrypt(), destination.Domain);
 
                     OnStatusMessage("Network share authentication to {0} succeeded.", destination.Share);
                 }
@@ -717,7 +645,7 @@ public class MultipleDestinationExporter : ISupportLifecycle, IProvideStatus
         OnInitialized();
     }
 
-    // This is all of the needed dispose functionality, but since the class can be re-initialized this is a separate method
+    // This is all the needed dispose functionality, but since the class can be re-initialized this is a separate method
     private void Shutdown()
     {
         Enabled = false;
@@ -850,7 +778,7 @@ public class MultipleDestinationExporter : ISupportLifecycle, IProvideStatus
 
             // Wait for exports to complete - even if user specifies to wait indefinitely spooled copy routines
             // will eventually return since there is a specified maximum retry count
-            if (!exportStates.Select(exportState => exportState.WaitHandle).WaitAll(ExportTimeout))
+            if (!exportStates.Select(exportState => exportState.WaitHandle)!.WaitAll(ExportTimeout))
             {
                 // Exports failed to complete in specified allowed time, set timeout flag for each export state
                 Array.ForEach(exportStates, exportState => exportState.Timeout = true);
@@ -877,7 +805,7 @@ public class MultipleDestinationExporter : ISupportLifecycle, IProvideStatus
         }
     }
 
-    private void CopyFileToDestination(object state)
+    private void CopyFileToDestination(object? state)
     {
         ExportState? exportState = null;
         Exception? exportException = null;
@@ -890,7 +818,7 @@ public class MultipleDestinationExporter : ISupportLifecycle, IProvideStatus
             if (exportState is null)
                 return;
 
-            // File copy may fail if destination is locked, so we setup to retry this operation
+            // File copy may fail if destination is locked, so we set up to retry this operation
             // waiting the specified period between attempts
             for (int attempt = 0; attempt < 1 + m_maximumRetryAttempts; attempt++)
             {
@@ -955,6 +883,112 @@ public class MultipleDestinationExporter : ISupportLifecycle, IProvideStatus
             // Although errors are not expected from deleting the temporary file, we report any that may occur
             OnProcessException(new InvalidOperationException($"Exception encountered while trying to remove temporary file: {ex.Message}", ex));
         }
+    }
+
+    /// <inheritdoc />
+    public void SaveSettings()
+    {
+        if (!PersistSettings)
+            return;
+
+        // Ensure that settings category is specified.
+        if (string.IsNullOrEmpty(SettingsCategory))
+            throw new InvalidOperationException("SettingsCategory property has not been set");
+
+        // Save settings under the specified category.
+        dynamic settings = Settings.Instance[SettingsCategory];
+
+        settings.ExportTimeout = ExportTimeout;
+        settings.MaximumRetryAttempts = MaximumRetryAttempts;
+        settings.RetryDelayInterval = RetryDelayInterval;
+
+        lock (m_exportDestinationsLock)
+        {
+            settings["ExportCount"] = m_exportDestinations.Count;
+            
+            for (int i = 0; i < m_exportDestinations.Count; i++)
+            {
+                settings[$"ExportDestination{i + 1}"] = m_exportDestinations[i].Share;
+                settings[$"ExportDestination{i + 1}_ConnectToShare"] = m_exportDestinations[i].ConnectToShare;
+                settings[$"ExportDestination{i + 1}_Domain"] = m_exportDestinations[i].Domain;
+                settings[$"ExportDestination{i + 1}_UserName"] = m_exportDestinations[i].UserName;
+                settings[$"ExportDestination{i + 1}_Password"] = m_exportDestinations[i].Password;
+                settings[$"ExportDestination{i + 1}_FileName"] = m_exportDestinations[i].FileName;
+            }
+        }
+    }
+
+    /// <inheritdoc />
+    public void LoadSettings()
+    {
+        if (!PersistSettings)
+            return;
+
+        // Ensure that settings category is specified.
+        if (string.IsNullOrEmpty(SettingsCategory))
+            throw new InvalidOperationException("SettingsCategory property has not been set");
+
+        // Load settings from the specified category.
+        dynamic settings = Settings.Instance[SettingsCategory];
+
+        int count = settings.ExportCount;
+
+        if (count == 0)
+            return;
+
+        lock (m_exportDestinationsLock)
+        {
+            m_exportDestinations.Clear();
+
+            for (int i = 0; i < count; i++)
+            {
+                string entryRoot = $"ExportDestination{i + 1}";
+
+                // Load export destination from configuration entries
+                ExportDestination destination = new()
+                {
+                    DestinationFile = $"{settings[entryRoot]}{settings[$"{entryRoot}_FileName"]}",
+                    ConnectToShare = settings[$"{entryRoot}_ConnectToShare"],
+                    Domain = settings[$"{entryRoot}_Domain"],
+                    UserName = settings[$"{entryRoot}_UserName"],
+                    Password = settings[$"{entryRoot}_Password"]
+                };
+
+                // Save new export destination if destination file name has been defined and is valid
+                if (FilePath.IsValidFileName(destination.DestinationFile))
+                    m_exportDestinations.Add(destination);
+            }
+        }
+    }
+
+    #endregion
+
+    #region [ Static ]
+
+    /// <inheritdoc cref="IDefineSettings.DefineSettings" />
+    public static void DefineSettings(Settings settings, string settingsCategory = DefaultSettingsCategory)
+    {
+        dynamic section = settings[settingsCategory];
+
+        section.ExportTimeout = (DefaultExportTimeout, "Total allowed time for each export to execute, in milliseconds. Set to -1 for no specific timeout.");
+        section.MaximumRetryAttempts = (DefaultMaximumRetryAttempts, "Maximum number of retries that will be attempted during an export if the export fails. Set to zero to only attempt export once.");
+        section.RetryDelayInterval = (DefaultRetryDelayInterval, "Interval to wait, in milliseconds, before retrying an export if the export fails.");
+        section.ExportCount = (0, "Total number of export files to produce.");
+
+        // Define example export destination settings
+        section.ExportDestination1 = ("C:\\", "Root path for export destination, e.g., drive letter or UNC share name. Use UNC path (\\server\\share) with no trailing slash for network shares.");
+        section.ExportDestination1_ConnectToShare = (false, "Boolean flag that determines whether to attempt network connection to share.");
+        section.ExportDestination1_Domain = ("", "Domain used for authentication to network share (computer name for local accounts).");
+        section.ExportDestination1_UserName = ("", "User name used for authentication to network share.");
+        section.ExportDestination1_Password = ("", "Password used for authentication to network share. Value supports encryption in the format of \"KeyName:EncodedValue\".");
+        section.ExportDestination1_FileName = ("Path\\FileName.txt", "Path and file name of data export (do not include drive letter or UNC share). Prefix with slash when using UNC paths (\\path\\filename.txt).");
+
+        section.ExportDestination2 = ("\\server\\share", "Root path for export destination, e.g., drive letter or UNC share name. Use UNC path (\\server\\share) with no trailing slash for network shares.");
+        section.ExportDestination2_ConnectToShare = (false, "Boolean flag that determines whether to attempt network connection to share.");
+        section.ExportDestination2_Domain = ("domain", "Domain used for authentication to network share (computer name for local accounts).");
+        section.ExportDestination2_UserName = ("username", "User name used for authentication to network share.");
+        section.ExportDestination2_Password = ("config-cipher:base64-encoded-password", "Password used for authentication to network share. Value supports encryption in the format of \"KeyName:EncodedValue\".");
+        section.ExportDestination2_FileName = ("\\Path\\FileName.txt", "Path and file name of data export (do not include drive letter or UNC share). Prefix with slash when using UNC paths (\\path\\filename.txt).");
     }
 
     #endregion

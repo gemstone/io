@@ -54,9 +54,9 @@ public class ExportDestination
     /// Constructs a new <see cref="ExportDestination"/> given the specified parameters.
     /// </summary>
     /// <param name="destinationFile">Path and file name of export destination.</param>
-    /// <param name="connectToShare">Determines whether or not to attempt network connection to share specified in <paramref name="destinationFile"/>.</param>
+    /// <param name="connectToShare">Determines whether to attempt network connection to share specified in <paramref name="destinationFile"/>.</param>
     /// <param name="domain">Domain used to authenticate network connection if <paramref name="connectToShare"/> is true.</param>
-    /// <param name="userName">User name used to authenticate network connection if <paramref name="connectToShare"/> is true.</param>
+    /// <param name="userName">Username used to authenticate network connection if <paramref name="connectToShare"/> is true.</param>
     /// <param name="password">Password used to authenticate network connection if <paramref name="connectToShare"/> is true.</param>
     public ExportDestination(string destinationFile, bool connectToShare, string domain = "", string userName = "", string password = "")
     {
@@ -74,49 +74,37 @@ public class ExportDestination
     /// <summary>
     /// Path and file name of export destination.
     /// </summary>
-    public string DestinationFile { get; set; } = default!;
+    public string DestinationFile { get; init; } = default!;
 
     /// <summary>
-    /// Determines whether or not to attempt network connection to share specified in <see cref="ExportDestination.DestinationFile"/>.
+    /// Determines whether to attempt network connection to share specified in <see cref="ExportDestination.DestinationFile"/>.
     /// </summary>
-    /// <remarks>
-    /// This option is ignored under Mono deployments.
-    /// </remarks>
-    public bool ConnectToShare { get; set; }
+    public bool ConnectToShare { get; init; }
 
     /// <summary>
     /// Domain used to authenticate network connection if <see cref="ExportDestination.ConnectToShare"/> is true.
     /// </summary>
-    /// <remarks>
-    /// This option is ignored under Mono deployments.
-    /// </remarks>
-    public string Domain { get; set; } = default!;
+    public string? Domain { get; init; }
 
     /// <summary>
-    /// User name used to authenticate network connection if <see cref="ExportDestination.ConnectToShare"/> is true.
+    /// Username used to authenticate network connection if <see cref="ExportDestination.ConnectToShare"/> is true.
     /// </summary>
-    /// <remarks>
-    /// This option is ignored under Mono deployments.
-    /// </remarks>
-    public string UserName { get; set; } = default!;
+    public string? UserName { get; init; }
 
     /// <summary>
     /// Password used to authenticate network connection if <see cref="ExportDestination.ConnectToShare"/> is true.
     /// </summary>
-    /// <remarks>
-    /// This option is ignored under Mono deployments.
-    /// </remarks>
-    public string Password { get; set; } = default!;
+    public string? Password { get; init; }
 
     /// <summary>
     /// Path root of <see cref="ExportDestination.DestinationFile"/> (e.g., E:\ or \\server\share).
     /// </summary>
-    public string Share => Path.GetPathRoot(DestinationFile);
+    public string Share => Path.GetPathRoot(DestinationFile) ?? string.Empty;
 
     /// <summary>
     /// Path and filename of <see cref="ExportDestination.DestinationFile"/> without drive or server share prefix.
     /// </summary>
-    public string FileName => DestinationFile.Substring(Share.Length);
+    public string FileName => DestinationFile[Share.Length..];
 
     #endregion
 
