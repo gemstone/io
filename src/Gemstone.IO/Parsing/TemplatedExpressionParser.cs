@@ -517,7 +517,7 @@ public class TemplatedExpressionParser
         foreach (Match match in matches)
         {
             string source = match.Groups[0].Value;
-            string result = new ExpressionCompiler(match.Groups[1].Value).ExecuteFunction().ToString()!;
+            string result = new ExpressionCompiler(match.Groups[1].Value).ExecuteFunction()?.ToString() ?? string.Empty;
             parsedEvaluations.Add(new ParsedEvaluation(source, result));
         }
 
