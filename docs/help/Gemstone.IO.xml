@@ -321,369 +321,291 @@
       <exception cref="T:System.NotSupportedException">The stream does not support writing.</exception>
       <exception cref="T:System.ObjectDisposedException">Methods were called after the stream was closed.</exception>
     </member>
-    <member name="T:Gemstone.IO.InterprocessCache">
+    <member name="T:Gemstone.IO.ExportDestination">
       <summary>
-            Represents a serialized data cache that can be saved or read from multiple applications using inter-process synchronization.
+            Represents a destination location when exporting data using <see cref="T:Gemstone.IO.MultipleDestinationExporter" />.
             </summary>
+    </member>
+    <member name="M:Gemstone.IO.ExportDestination.#ctor">
+      <summary>
+            Constructs a new <see cref="T:Gemstone.IO.ExportDestination" />.
+            </summary>
+    </member>
+    <member name="M:Gemstone.IO.ExportDestination.#ctor(System.String,System.Boolean,System.String,System.String,System.String)">
+      <summary>
+            Constructs a new <see cref="T:Gemstone.IO.ExportDestination" /> given the specified parameters.
+            </summary>
+      <param name="destinationFile">Path and file name of export destination.</param>
+      <param name="connectToShare">Determines whether to attempt network connection to share specified in <paramref name="destinationFile" />.</param>
+      <param name="domain">Domain used to authenticate network connection if <paramref name="connectToShare" /> is true.</param>
+      <param name="userName">Username used to authenticate network connection if <paramref name="connectToShare" /> is true.</param>
+      <param name="password">Password used to authenticate network connection if <paramref name="connectToShare" /> is true.</param>
+    </member>
+    <member name="P:Gemstone.IO.ExportDestination.ConnectToShare">
+      <summary>
+            Determines whether to attempt network connection to share specified in <see cref="P:Gemstone.IO.ExportDestination.DestinationFile" />.
+            </summary>
+    </member>
+    <member name="P:Gemstone.IO.ExportDestination.DestinationFile">
+      <summary>
+            Path and file name of export destination.
+            </summary>
+    </member>
+    <member name="P:Gemstone.IO.ExportDestination.Domain">
+      <summary>
+            Domain used to authenticate network connection if <see cref="P:Gemstone.IO.ExportDestination.ConnectToShare" /> is true.
+            </summary>
+    </member>
+    <member name="P:Gemstone.IO.ExportDestination.FileName">
+      <summary>
+            Path and filename of <see cref="P:Gemstone.IO.ExportDestination.DestinationFile" /> without drive or server share prefix.
+            </summary>
+    </member>
+    <member name="P:Gemstone.IO.ExportDestination.Password">
+      <summary>
+            Password used to authenticate network connection if <see cref="P:Gemstone.IO.ExportDestination.ConnectToShare" /> is true.
+            </summary>
+    </member>
+    <member name="P:Gemstone.IO.ExportDestination.Share">
+      <summary>
+            Path root of <see cref="P:Gemstone.IO.ExportDestination.DestinationFile" /> (e.g., E:\ or \\server\share).
+            </summary>
+    </member>
+    <member name="M:Gemstone.IO.ExportDestination.ToString">
+      <summary>
+            Returns a <see cref="T:System.String" /> that represents the current <see cref="T:Gemstone.IO.ExportDestination" />.
+            </summary>
+      <returns>A <see cref="T:System.String" /> that represents the current <see cref="T:Gemstone.IO.ExportDestination" />.</returns>
+    </member>
+    <member name="P:Gemstone.IO.ExportDestination.UserName">
+      <summary>
+            Username used to authenticate network connection if <see cref="P:Gemstone.IO.ExportDestination.ConnectToShare" /> is true.
+            </summary>
+    </member>
+    <member name="T:Gemstone.IO.MultipleDestinationExporter">
+      <summary>
+             Handles the exporting of a file to multiple destinations that are defined in the config file.
+             </summary>
       <remarks>
-        <para>
-            Note that all file data in this class gets serialized to and from memory, as such, the design intention for this class is for
-            use with smaller data sets such as serialized lists or dictionaries that need inter-process synchronized loading and saving.
-            </para>
-        <para>
-            The <see cref="T:Gemstone.IO.InterprocessCache" /> uses a <see cref="T:Gemstone.Threading.NamedSemaphore" /> to synchronize access to cache as an inter-process shared resource.
-            On POSIX systems, the <see cref="T:Gemstone.Threading.NamedSemaphore" /> exhibits kernel persistence, meaning instances will remain active beyond the lifespan of
-            the creating process. The named semaphore must be explicitly removed by invoking <see cref="M:Gemstone.IO.InterprocessCache.ReleaseInterprocessResources" /> when the last
-            interprocess cache instance is no longer needed. Kernel persistence necessitates careful design consideration regarding process
-            responsibility for invoking the <see cref="M:Gemstone.IO.InterprocessCache.ReleaseInterprocessResources" /> method. Since the common use case for named semaphores is across
-            multiple applications, it is advisable for the last exiting process to handle the cleanup. In cases where an application may crash before
-            calling the <see cref="M:Gemstone.IO.InterprocessCache.ReleaseInterprocessResources" /> method, the semaphore persists in the system, potentially leading to resource leakage.
-            Implementations should include strategies to address and mitigate this risk.
-            </para>
-      </remarks>
+             This class is useful for updating the same file on multiple servers (e.g., load balanced web server).
+             </remarks>
     </member>
-    <member name="M:Gemstone.IO.InterprocessCache.#ctor">
+    <member name="M:Gemstone.IO.MultipleDestinationExporter.#ctor">
       <summary>
-            Creates a new instance of the <see cref="T:Gemstone.IO.InterprocessCache" />.
+            Initializes a new instance of the <see cref="T:Gemstone.IO.MultipleDestinationExporter" /> class.
             </summary>
     </member>
-    <member name="M:Gemstone.IO.InterprocessCache.#ctor(System.Int32)">
+    <member name="M:Gemstone.IO.MultipleDestinationExporter.#ctor(System.String,System.Int32)">
       <summary>
-            Creates a new instance of the <see cref="T:Gemstone.IO.InterprocessCache" /> with the specified number of <paramref name="maximumConcurrentLocks" />.
+            Initializes a new instance of the <see cref="T:Gemstone.IO.MultipleDestinationExporter" /> class.
             </summary>
-      <param name="maximumConcurrentLocks">Maximum concurrent reader locks to allow.</param>
+      <param name="settingsCategory">The config file settings category under which the export destinations are defined.</param>
+      <param name="exportTimeout">The total allowed time in milliseconds for each export to execute.</param>
     </member>
-    <member name="P:Gemstone.IO.InterprocessCache.AutoSave">
+    <member name="F:Gemstone.IO.MultipleDestinationExporter.DefaultExportTimeout">
       <summary>
-            Gets or sets flag that determines if <see cref="T:Gemstone.IO.InterprocessCache" /> should automatically initiate a save when <see cref="P:Gemstone.IO.InterprocessCache.FileData" /> has been updated.
-            </summary>
-    </member>
-    <member name="F:Gemstone.IO.InterprocessCache.DefaultMaximumRetryAttempts">
-      <summary>
-            Default maximum retry attempts allowed for loading <see cref="T:Gemstone.IO.InterprocessCache" />.
+            Specifies the default value for the <see cref="P:Gemstone.IO.MultipleDestinationExporter.ExportTimeout" /> property.
             </summary>
     </member>
-    <member name="F:Gemstone.IO.InterprocessCache.DefaultRetryDelayInterval">
+    <member name="F:Gemstone.IO.MultipleDestinationExporter.DefaultMaximumRetryAttempts">
       <summary>
-            Default wait interval, in milliseconds, before retrying load of <see cref="T:Gemstone.IO.InterprocessCache" />.
+            Specifies the default value for the <see cref="P:Gemstone.IO.MultipleDestinationExporter.MaximumRetryAttempts" /> property.
             </summary>
     </member>
-    <member name="M:Gemstone.IO.InterprocessCache.Dispose">
+    <member name="F:Gemstone.IO.MultipleDestinationExporter.DefaultPersistSettings">
       <summary>
-            Releases all the resources used by the <see cref="T:Gemstone.IO.InterprocessCache" /> object.
+            Specifies the default value for the <see cref="P:Gemstone.IO.MultipleDestinationExporter.PersistSettings" /> property.
             </summary>
     </member>
-    <member name="M:Gemstone.IO.InterprocessCache.Dispose(System.Boolean)">
+    <member name="F:Gemstone.IO.MultipleDestinationExporter.DefaultRetryDelayInterval">
       <summary>
-            Releases the unmanaged resources used by the <see cref="T:Gemstone.IO.InterprocessCache" /> object and optionally releases the managed resources.
+            Specifies the default value for the <see cref="P:Gemstone.IO.MultipleDestinationExporter.RetryDelayInterval" /> property.
             </summary>
-      <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
     </member>
-    <member name="P:Gemstone.IO.InterprocessCache.FileData">
+    <member name="F:Gemstone.IO.MultipleDestinationExporter.DefaultSettingsCategory">
       <summary>
-            Gets or sets file data for the cache to be saved or that has been loaded.
+            Specifies the default value for the <see cref="P:Gemstone.IO.MultipleDestinationExporter.SettingsCategory" /> property.
             </summary>
+    </member>
+    <member name="M:Gemstone.IO.MultipleDestinationExporter.DefineSettings(Gemstone.Configuration.Settings,System.String)">
+      <summary>
+            Establishes default settings for the config file.
+            </summary>
+      <param name="settings">Settings instance used to hold configuration.</param>
+      <param name="settingsCategory">The config file settings category under which the settings are defined.</param>
+    </member>
+    <member name="M:Gemstone.IO.MultipleDestinationExporter.Dispose">
+      <summary>
+            Releases all the resources used by the <see cref="T:Gemstone.IO.MultipleDestinationExporter.ExportState" /> object.
+            </summary>
+    </member>
+    <member name="E:Gemstone.IO.MultipleDestinationExporter.Disposed">
+      <summary>
+            Raised after the source object has been properly disposed.
+            </summary>
+    </member>
+    <member name="P:Gemstone.IO.MultipleDestinationExporter.Enabled">
+      <summary>
+            Gets or sets a boolean value that indicates whether the <see cref="T:Gemstone.IO.MultipleDestinationExporter" /> object is currently enabled.
+            </summary>
+    </member>
+    <member name="M:Gemstone.IO.MultipleDestinationExporter.ExportData(System.Byte[])">
+      <summary>
+            Start multiple file export.
+            </summary>
+      <param name="fileData">Binary data to export to each destination.</param>
       <remarks>
-            Setting value to <c>null</c> will create a zero-length file.
+            This is assumed to be the full content of the file to export. This class does not queue data since
+            the export is not intended to append to an existing file but rather replace an existing one.
             </remarks>
     </member>
-    <member name="P:Gemstone.IO.InterprocessCache.FileName">
+    <member name="M:Gemstone.IO.MultipleDestinationExporter.ExportData(System.String)">
       <summary>
-            Path and file name for the cache needing inter-process synchronization.
+            Start multiple file export.
             </summary>
-    </member>
-    <member name="M:Gemstone.IO.InterprocessCache.Finalize">
-      <summary>
-            Releases the unmanaged resources before the <see cref="T:Gemstone.IO.InterprocessCache" /> object is reclaimed by <see cref="T:System.GC" />.
-            </summary>
-    </member>
-    <member name="M:Gemstone.IO.InterprocessCache.Load">
-      <summary>
-            Initiates inter-process synchronized cache file load.
-            </summary>
+      <param name="fileData">Text based data to export to each destination.</param>
       <remarks>
-            Subclasses should always call <see cref="M:Gemstone.IO.InterprocessCache.WaitForLoad" /> before calling this method.
+            This is assumed to be the full content of the file to export. This class does not queue data since
+            the export is not intended to append to an existing file but rather replace an existing one.
             </remarks>
     </member>
-    <member name="M:Gemstone.IO.InterprocessCache.LoadFileData(System.IO.FileStream)">
+    <member name="P:Gemstone.IO.MultipleDestinationExporter.ExportDestinations">
       <summary>
-            Handles deserialization of file from disk; virtual method allows customization (e.g., pre-load decryption and/or data merge).
+            Gets a list of currently defined <see cref="T:Gemstone.IO.ExportDestination" />.
             </summary>
-      <param name="fileStream">
-        <see cref="T:System.IO.FileStream" /> used to deserialize data.</param>
-      <returns>Deserialized file data.</returns>
       <remarks>
-            Consumers overriding this method should not directly call <see cref="P:Gemstone.IO.InterprocessCache.FileData" /> property to avoid potential dead-locks.
+            Use the <see cref="M:Gemstone.IO.MultipleDestinationExporter.Initialize(System.Collections.Generic.IEnumerable{Gemstone.IO.ExportDestination})" /> method to change the export destination collection.
             </remarks>
     </member>
-    <member name="P:Gemstone.IO.InterprocessCache.MaximumConcurrentLocks">
+    <member name="P:Gemstone.IO.MultipleDestinationExporter.ExportTimeout">
       <summary>
-            Gets the maximum concurrent reader locks allowed.
-            </summary>
-    </member>
-    <member name="P:Gemstone.IO.InterprocessCache.MaximumRetryAttempts">
-      <summary>
-            Maximum retry attempts allowed for loading or saving cache file data.
-            </summary>
-    </member>
-    <member name="M:Gemstone.IO.InterprocessCache.ReleaseInterprocessResources">
-      <summary>
-            Releases the inter-process resources used by the <see cref="T:Gemstone.IO.InterprocessCache" />.
+            Gets or sets the total allowed time in milliseconds for each export to execute.
             </summary>
       <remarks>
-            On POSIX systems, calling this method removes the named semaphore used by the inter-process cache.
-            The semaphore name is removed immediately and is destroyed once all other processes that have the
-            semaphore open close it. Calling this method on Windows systems does nothing.
+            Set to Timeout.Infinite (-1) for no timeout.
             </remarks>
     </member>
-    <member name="P:Gemstone.IO.InterprocessCache.ReloadOnChange">
+    <member name="M:Gemstone.IO.MultipleDestinationExporter.Initialize">
       <summary>
-            Gets or sets flag that enables system to monitor for changes in <see cref="P:Gemstone.IO.InterprocessCache.FileName" /> and automatically reload <see cref="P:Gemstone.IO.InterprocessCache.FileData" />.
-            </summary>
-    </member>
-    <member name="P:Gemstone.IO.InterprocessCache.RetryDelayInterval">
-      <summary>
-            Wait interval, in milliseconds, before retrying load or save of cache file data.
-            </summary>
-    </member>
-    <member name="M:Gemstone.IO.InterprocessCache.Save">
-      <summary>
-            Initiates inter-process synchronized cache file save.
+            Initializes (or re-initializes) <see cref="T:Gemstone.IO.MultipleDestinationExporter" /> from configuration settings.
             </summary>
       <remarks>
-            Subclasses should always call <see cref="M:Gemstone.IO.InterprocessCache.WaitForLoad" /> before calling this method.
+            If not being used as a component (i.e., user creates their own instance of this class), this method
+            must be called in order to initialize exports.  Event if used as a component this method can be
+            called at anytime to reinitialize the exports with new configuration information.
             </remarks>
     </member>
-    <member name="M:Gemstone.IO.InterprocessCache.SaveFileData(System.IO.FileStream,System.Byte[])">
+    <member name="M:Gemstone.IO.MultipleDestinationExporter.Initialize(System.Collections.Generic.IEnumerable{Gemstone.IO.ExportDestination})">
       <summary>
-            Handles serialization of file to disk; virtual method allows customization (e.g., pre-save encryption and/or data merge).
+            Initializes (or re-initializes) <see cref="T:Gemstone.IO.MultipleDestinationExporter" /> from configuration settings.
             </summary>
-      <param name="fileStream">
-        <see cref="T:System.IO.FileStream" /> used to serialize data.</param>
-      <param name="fileData">File data to be serialized.</param>
+      <param name="defaultDestinations">Provides a default set of export destinations if none exist in configuration settings.</param>
       <remarks>
-            Consumers overriding this method should not directly call <see cref="P:Gemstone.IO.InterprocessCache.FileData" /> property to avoid potential dead-locks.
+            If not being used as a component (i.e., user creates their own instance of this class), this method
+            must be called in order to initialize exports.  Even if used as a component this method can be
+            called at anytime to reinitialize the exports with new configuration information.
             </remarks>
     </member>
-    <member name="M:Gemstone.IO.InterprocessCache.WaitForLoad">
+    <member name="E:Gemstone.IO.MultipleDestinationExporter.Initialized">
       <summary>
-            Blocks current thread and waits for any pending load to complete; wait time is <c><see cref="P:Gemstone.IO.InterprocessCache.RetryDelayInterval" /> * <see cref="P:Gemstone.IO.InterprocessCache.MaximumRetryAttempts" /></c>.
+            Occurs when the <see cref="T:Gemstone.IO.MultipleDestinationExporter" /> object has been initialized.
             </summary>
     </member>
-    <member name="M:Gemstone.IO.InterprocessCache.WaitForLoad(System.Int32)">
+    <member name="P:Gemstone.IO.MultipleDestinationExporter.IsDisposed">
       <summary>
-            Blocks current thread and waits for specified <paramref name="millisecondsTimeout" /> for any pending load to complete.
-            </summary>
-      <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="F:System.Threading.Timeout.Infinite" />(-1) to wait indefinitely.</param>
-    </member>
-    <member name="M:Gemstone.IO.InterprocessCache.WaitForSave">
-      <summary>
-            Blocks current thread and waits for any pending save to complete; wait time is <c><see cref="P:Gemstone.IO.InterprocessCache.RetryDelayInterval" /> * <see cref="P:Gemstone.IO.InterprocessCache.MaximumRetryAttempts" /></c>.
+            Gets a flag that indicates whether the object has been disposed.
             </summary>
     </member>
-    <member name="M:Gemstone.IO.InterprocessCache.WaitForSave(System.Int32)">
+    <member name="M:Gemstone.IO.MultipleDestinationExporter.LoadSettings">
       <summary>
-            Blocks current thread and waits for specified <paramref name="millisecondsTimeout" /> for any pending save to complete.
+            Loads saved settings from the config file.
             </summary>
-      <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="F:System.Threading.Timeout.Infinite" />(-1) to wait indefinitely.</param>
     </member>
-    <member name="T:Gemstone.IO.SafeFileWatcher">
+    <member name="P:Gemstone.IO.MultipleDestinationExporter.MaximumRetryAttempts">
       <summary>
-            Represents a wrapper around the native .NET <see cref="T:System.IO.FileSystemWatcher" /> that avoids problems with
-            dangling references when using a file watcher instance as a class member that never gets disposed.
+            Gets or sets the maximum number of retries that will be attempted during an export if the export fails.
             </summary>
       <remarks>
-        <para>
-            The design goal of the SafeFileWatcher is to avoid accidental memory leaks caused by use of .NET's native
-            file system watcher when used as a member of a class that consumers fail to properly dispose. If a class
-            has a reference to a file watcher as a member variable and attaches to the file watcher's events, the
-            file watcher will maintain a reference the parent class so it can call its event handler. If the parent
-            class is not disposed properly, the file watcher will thusly not be disposed and will maintain the
-            reference to the parent class - the garbage collector will never collect the parent because it has a
-            valid reference and no collection means the parent finalizer will never get called and the file system
-            watcher will never get disposed. Creating multiple instances of parent class and not disposing of them
-            will cause a memory leak even with a properly designed disposable pattern. Using the SafeFileWatcher
-            instead of directly using the FileSystemWatcher will resolve this potential issue.
-            </para>
-        <para>
-            Note that component model implementation is not fully replicated - if you are using a file system watcher
-            on a design surface, this safety wrapper will usually not be needed. This class has benefit when a class
-            will dynamically use a file watcher and needs to make sure any unmanaged resources get properly released
-            even if a consumer neglects to call the dispose function.
-            </para>
-      </remarks>
+            Total file export attempts = 1 + <see cref="P:Gemstone.IO.MultipleDestinationExporter.MaximumRetryAttempts" />. Set to zero to only attempt export once.
+            </remarks>
     </member>
-    <member name="M:Gemstone.IO.SafeFileWatcher.#ctor">
+    <member name="P:Gemstone.IO.MultipleDestinationExporter.Name">
       <summary>
-            Initializes a new instance of the <see cref="T:Gemstone.IO.SafeFileWatcher" /> class.
+            Gets the unique identifier of the <see cref="T:Gemstone.IO.MultipleDestinationExporter" /> object.
             </summary>
     </member>
-    <member name="M:Gemstone.IO.SafeFileWatcher.#ctor(System.String)">
+    <member name="M:Gemstone.IO.MultipleDestinationExporter.OnInitialized">
       <summary>
-            Initializes a new instance of the <see cref="T:Gemstone.IO.SafeFileWatcher" /> class, given the specified directory to monitor.
-            </summary>
-      <param name="path">The directory to monitor, in standard or Universal Naming Convention (UNC) notation.
-            </param>
-      <exception cref="T:System.ArgumentNullException">The <paramref name="path" /> parameter is null.</exception>
-      <exception cref="T:System.ArgumentException">
-            The <paramref name="path" /> parameter is an empty string (""). -or-
-            The path specified through the <paramref name="path" /> parameter does not exist.
-            </exception>
-    </member>
-    <member name="M:Gemstone.IO.SafeFileWatcher.#ctor(System.String,System.String)">
-      <summary>
-            Initializes a new instance of the <see cref="T:Gemstone.IO.SafeFileWatcher" /> class, given the specified directory and type of files to monitor.
-            </summary>
-      <param name="path">The directory to monitor, in standard or Universal Naming Convention (UNC) notation.</param>
-      <param name="filter">The type of files to watch. For example, "*.txt" watches for changes to all text files.</param>
-      <exception cref="T:System.ArgumentNullException">
-            The <paramref name="path" /> parameter is null. -or-
-            The <paramref name="filter" /> parameter is null.
-            </exception>
-      <exception cref="T:System.ArgumentException">
-            The <paramref name="path" /> parameter is an empty string (""). -or-
-            The path specified through the <paramref name="path" /> parameter does not exist.
-            </exception>
-    </member>
-    <member name="M:Gemstone.IO.SafeFileWatcher.BeginInit">
-      <summary>
-            Begins the initialization of a <see cref="T:Gemstone.IO.SafeFileWatcher" /> used on a form or used by another component. The initialization occurs at run time.
+            Raises the <see cref="E:Gemstone.IO.MultipleDestinationExporter.Initialized" /> event.
             </summary>
     </member>
-    <member name="E:Gemstone.IO.SafeFileWatcher.Changed">
+    <member name="M:Gemstone.IO.MultipleDestinationExporter.OnProcessException(System.Exception)">
       <summary>
-            Occurs when a file or directory in the specified <see cref="P:Gemstone.IO.SafeFileWatcher.Path" /> is changed.
+            Raises <see cref="E:Gemstone.IO.MultipleDestinationExporter.ProcessException" /> event.
+            </summary>
+      <param name="ex">Processing <see cref="T:System.Exception" />.</param>
+    </member>
+    <member name="M:Gemstone.IO.MultipleDestinationExporter.OnStatusMessage(System.String,System.Object[])">
+      <summary>
+            Raises the <see cref="E:Gemstone.IO.MultipleDestinationExporter.StatusMessage" /> event.
+            </summary>
+      <param name="status">Status message to report.</param>
+      <param name="args">
+        <see cref="M:System.String.Format(System.String,System.Object[])" /> parameters used for status message.</param>
+    </member>
+    <member name="P:Gemstone.IO.MultipleDestinationExporter.PersistSettings">
+      <summary>
+            Gets or sets a boolean value that indicates whether the settings of <see cref="T:Gemstone.IO.MultipleDestinationExporter" /> object are 
+            to be saved to the config file.
             </summary>
     </member>
-    <member name="E:Gemstone.IO.SafeFileWatcher.Created">
+    <member name="E:Gemstone.IO.MultipleDestinationExporter.ProcessException">
       <summary>
-            Occurs when a file or directory in the specified <see cref="P:Gemstone.IO.SafeFileWatcher.Path" /> is created.
+            Event is raised when there is an exception encountered while processing.
+            </summary>
+      <remarks>
+        <see cref="F:Gemstone.EventArgs`1.Argument" /> is the exception that was thrown.
+            </remarks>
+    </member>
+    <member name="P:Gemstone.IO.MultipleDestinationExporter.RetryDelayInterval">
+      <summary>
+            Gets or sets the interval to wait, in milliseconds, before retrying an export if the export fails.
             </summary>
     </member>
-    <member name="E:Gemstone.IO.SafeFileWatcher.Deleted">
+    <member name="M:Gemstone.IO.MultipleDestinationExporter.SaveSettings">
       <summary>
-            Occurs when a file or directory in the specified <see cref="P:Gemstone.IO.SafeFileWatcher.Path" /> is deleted.
+            Saves settings to the config file.
             </summary>
     </member>
-    <member name="M:Gemstone.IO.SafeFileWatcher.Dispose">
+    <member name="P:Gemstone.IO.MultipleDestinationExporter.SettingsCategory">
       <summary>
-            Releases all the resources used by the <see cref="T:Gemstone.IO.SafeFileWatcher" /> object.
+            Gets or sets the category under which the settings of <see cref="T:Gemstone.IO.MultipleDestinationExporter" /> object are to be saved
+            to the config file if the <see cref="P:Gemstone.IO.MultipleDestinationExporter.PersistSettings" /> property is set to true.
+            </summary>
+      <exception cref="T:System.ArgumentNullException">The value being assigned is null or empty string.</exception>
+    </member>
+    <member name="P:Gemstone.IO.MultipleDestinationExporter.Status">
+      <summary>
+            Gets the descriptive status of the <see cref="T:Gemstone.IO.MultipleDestinationExporter" /> object.
             </summary>
     </member>
-    <member name="M:Gemstone.IO.SafeFileWatcher.Dispose(System.Boolean)">
+    <member name="E:Gemstone.IO.MultipleDestinationExporter.StatusMessage">
       <summary>
-            Releases the unmanaged resources used by the <see cref="T:Gemstone.IO.SafeFileWatcher" /> object and optionally releases the managed resources.
+            Occurs when status information for the <see cref="T:Gemstone.IO.MultipleDestinationExporter" /> object is being reported.
             </summary>
-      <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
+      <remarks>
+        <see cref="F:Gemstone.EventArgs`1.Argument" /> is the status message being reported by the <see cref="T:Gemstone.IO.MultipleDestinationExporter" />.
+            </remarks>
     </member>
-    <member name="P:Gemstone.IO.SafeFileWatcher.EnableRaisingEvents">
+    <member name="P:Gemstone.IO.MultipleDestinationExporter.TextEncoding">
       <summary>
-            Gets or sets a value indicating whether the component is enabled.
-            </summary>
-      <returns>
-            true if the component is enabled; otherwise, false. The default is false. If you are using the component on a designer in Visual Studio 2005, the default is true.</returns>
-      <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.FileSystemWatcher" /> object has been disposed.</exception>
-      <exception cref="T:System.PlatformNotSupportedException">The current operating system is not Microsoft Windows NT or later.</exception>
-      <exception cref="T:System.IO.FileNotFoundException">The directory specified in <see cref="P:Gemstone.IO.SafeFileWatcher.Path" /> could not be found.</exception>
-      <exception cref="T:System.ArgumentException">
-        <see cref="P:Gemstone.IO.SafeFileWatcher.Path" /> has not been set or is invalid.</exception>
-    </member>
-    <member name="M:Gemstone.IO.SafeFileWatcher.EndInit">
-      <summary>
-            Ends the initialization of a <see cref="T:Gemstone.IO.SafeFileWatcher" /> used on a form or used by another component. The initialization occurs at run time.
+            Gets or sets the <see cref="T:System.Text.Encoding" /> to be used to encode text data being exported.
             </summary>
     </member>
-    <member name="E:Gemstone.IO.SafeFileWatcher.Error">
+    <member name="P:Gemstone.IO.MultipleDestinationExporter.TotalExports">
       <summary>
-            Occurs when the internal buffer overflows.
+            Gets the total number exports performed successfully.
             </summary>
-    </member>
-    <member name="P:Gemstone.IO.SafeFileWatcher.Filter">
-      <summary>
-            Gets or sets the filter string used to determine what files are monitored in a directory.
-            </summary>
-      <returns>
-            The filter string. The default is "*.*" (Watches all files.) 
-            </returns>
-    </member>
-    <member name="M:Gemstone.IO.SafeFileWatcher.Finalize">
-      <summary>
-            Terminates <see cref="T:Gemstone.IO.SafeFileWatcher" /> instance making sure to release unmanaged resources.
-            </summary>
-    </member>
-    <member name="P:Gemstone.IO.SafeFileWatcher.IncludeSubdirectories">
-      <summary>
-            Gets or sets a value indicating whether subdirectories within the specified path should be monitored.
-            </summary>
-      <returns>
-            true if you want to monitor subdirectories; otherwise, false. The default is false.
-            </returns>
-    </member>
-    <member name="P:Gemstone.IO.SafeFileWatcher.InternalBufferSize">
-      <summary>
-            Gets or sets the size of the internal buffer.
-            </summary>
-      <returns>
-            The internal buffer size. The default is 8192 (8K).
-            </returns>
-    </member>
-    <member name="P:Gemstone.IO.SafeFileWatcher.NotifyFilter">
-      <summary>
-            Gets or sets the type of changes to watch for.
-            </summary>
-      <returns>
-            One of the <see cref="T:System.IO.NotifyFilters" /> values. The default is the bitwise OR combination of LastWrite, FileName, and DirectoryName.</returns>
-      <exception cref="T:System.ArgumentException">The value is not a valid bitwise OR combination of the <see cref="T:System.IO.NotifyFilters" /> values.</exception>
-      <exception cref="T:System.ComponentModel.InvalidEnumArgumentException">The value that is being set is not valid.</exception>
-    </member>
-    <member name="P:Gemstone.IO.SafeFileWatcher.Path">
-      <summary>
-            Gets or sets the path of the directory to watch.
-            </summary>
-      <returns>
-            The path to monitor. The default is an empty string ("").
-            </returns>
-      <exception cref="T:System.ArgumentException">
-            The specified path does not exist or could not be found. -or-
-            The specified path contains wildcard characters. -or-
-            The specified path contains invalid path characters.
-            </exception>
-    </member>
-    <member name="E:Gemstone.IO.SafeFileWatcher.Renamed">
-      <summary>
-            Occurs when a file or directory in the specified <see cref="P:Gemstone.IO.SafeFileWatcher.Path" /> is renamed.
-            </summary>
-    </member>
-    <member name="P:Gemstone.IO.SafeFileWatcher.Site">
-      <summary>
-            Gets or sets an <see cref="T:System.ComponentModel.ISite" /> for the <see cref="T:Gemstone.IO.SafeFileWatcher" />.
-            </summary>
-      <returns>
-            An <see cref="T:System.ComponentModel.ISite" /> for the <see cref="T:Gemstone.IO.SafeFileWatcher" />.
-            </returns>
-    </member>
-    <member name="P:Gemstone.IO.SafeFileWatcher.SynchronizingObject">
-      <summary>
-            Gets or sets the object used to marshal the event handler calls issued as a result of a directory change.
-            </summary>
-      <returns>
-            The <see cref="T:System.ComponentModel.ISynchronizeInvoke" /> that represents the object used to marshal the event handler calls issued as a result of a directory change. The default is null.
-            </returns>
-    </member>
-    <member name="M:Gemstone.IO.SafeFileWatcher.WaitForChanged(System.IO.WatcherChangeTypes)">
-      <summary>
-            A synchronous method that returns a structure that contains specific information on the change that occurred, given the type of change you want to monitor.
-            </summary>
-      <param name="changeType">The <see cref="T:System.IO.WatcherChangeTypes" /> to watch for.</param>
-      <returns>A <see cref="T:System.IO.WaitForChangedResult" /> that contains specific information on the change that occurred.</returns>
-    </member>
-    <member name="M:Gemstone.IO.SafeFileWatcher.WaitForChanged(System.IO.WatcherChangeTypes,System.Int32)">
-      <summary>
-            A synchronous method that returns a structure that contains specific information on the change that occurred, given the type of change you want to monitor and the time (in milliseconds) to wait before timing out.
-            </summary>
-      <param name="changeType">The <see cref="T:System.IO.WatcherChangeTypes" /> to watch for.</param>
-      <param name="timeout">The time (in milliseconds) to wait before timing out.</param>
-      <returns>A <see cref="T:System.IO.WaitForChangedResult" /> that contains specific information on the change that occurred.</returns>
     </member>
     <member name="T:Gemstone.IO.Checksums.Adler32">
       <summary>
