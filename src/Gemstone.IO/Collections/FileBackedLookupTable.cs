@@ -1901,27 +1901,6 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
         return TypeCode.Object;
     }
 
-    private static TypeCode GetTypeCode<T>()
-    {
-        TypeCode typeCode = Type.GetTypeCode(typeof(T));
-
-        if (typeCode != TypeCode.Object)
-            return typeCode;
-
-        try
-        {
-            // IConvertible types will provide their own type code
-            if (Activator.CreateInstance<T>() is IConvertible convertible)
-                return convertible.GetTypeCode();
-        }
-        catch (Exception ex)
-        {
-            LibraryEvents.OnSuppressedException(typeof(FileBackedLookupTable<,>), ex);
-        }
-
-        return TypeCode.Object;
-    }
-
     private static long GetFirstHash(int hashCode)
     {
         uint i = (uint)hashCode;
