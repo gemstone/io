@@ -1707,14 +1707,14 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
 
         if (writeKeyAction is null || readKeyFunc is null)
         {
-            writeKeyAction = (_, _) => throw new InvalidOperationException($"Type of TKey ({typeof(TKey).FullName}) is not serializable.");
-            readKeyFunc = _ => throw new InvalidOperationException($"Type of TKey ({typeof(TKey).FullName}) is not serializable.");
+            writeKeyAction = (_, _) => throw new InvalidOperationException($"Type of TKey ({typeof(TKey).FullName}) is not write serializable.");
+            readKeyFunc = _ => throw new InvalidOperationException($"Type of TKey ({typeof(TKey).FullName}) is not read serializable.");
         }
 
         if (writeValueAction is null || readValueFunc is null)
         {
-            writeValueAction = (_, _) => throw new InvalidOperationException($"Type of TValue ({typeof(TKey).FullName}) is not serializable.");
-            readValueFunc = _ => throw new InvalidOperationException($"Type of TValue ({typeof(TKey).FullName}) is not serializable.");
+            writeValueAction = (_, _) => throw new InvalidOperationException($"Type of TValue ({typeof(TValue).FullName}) is not write serializable.");
+            readValueFunc = _ => throw new InvalidOperationException($"Type of TValue ({typeof(TValue).FullName}) is not read serializable.");
         }
 
         s_writeKeyAction = writeKeyAction!;
@@ -1808,7 +1808,7 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
                 writer.Write(str is null);
         }
 
-        TypeCode typeCode = Type.GetTypeCode(typeof(T));
+        TypeCode typeCode = GetTypeCode<T>();
 
         return typeCode switch
         {
@@ -1846,7 +1846,7 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
             return !isNull ? str : null;
         }
 
-        TypeCode typeCode = Type.GetTypeCode(typeof(T));
+        TypeCode typeCode = GetTypeCode<T>();
 
         return typeCode switch
         {
@@ -1867,6 +1867,27 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
             TypeCode.UInt64 => reader => (T)(object)reader.ReadUInt64(),
             _ => null
         };
+    }
+
+    private static TypeCode GetTypeCode<T>()
+    {
+        TypeCode typeCode = Type.GetTypeCode(typeof(T));
+
+        if (typeCode != TypeCode.Object)
+            return typeCode;
+
+        try
+        {
+            // IConvertible types will provide their own type code
+            if (Activator.CreateInstance<T>() is IConvertible convertible)
+                return convertible.GetTypeCode();
+        }
+        catch (Exception ex)
+        {
+            LibraryEvents.OnSuppressedException(typeof(FileBackedLookupTable<,>), ex);
+        }
+
+        return TypeCode.Object;
     }
 
     private static long GetFirstHash(int hashCode)
