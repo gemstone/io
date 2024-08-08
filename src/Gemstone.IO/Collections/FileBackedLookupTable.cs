@@ -24,10 +24,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Gemstone.GuidExtensions;
 using Gemstone.IO.Checksums;
@@ -1845,28 +1847,58 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
             bool isNull = str == string.Empty && reader.ReadBoolean();
             return !isNull ? str : null;
         }
-
+        
         TypeCode typeCode = GetTypeCode<T>();
+        TypeConverter converter = TypeDescriptor.GetConverter(typeof(T));
 
         return typeCode switch
         {
-            TypeCode.Boolean => reader => (T)(object)reader.ReadBoolean(),
-            TypeCode.Byte => reader => (T)(object)reader.ReadByte(),
-            TypeCode.Char => reader => (T)(object)reader.ReadChar(),
-            TypeCode.DateTime => reader => (T)(object)ReadDateTime(reader),
-            TypeCode.Decimal => reader => (T)(object)reader.ReadDecimal(),
-            TypeCode.Double => reader => (T)(object)reader.ReadDouble(),
-            TypeCode.Int16 => reader => (T)(object)reader.ReadInt16(),
-            TypeCode.Int32 => reader => (T)(object)reader.ReadInt32(),
-            TypeCode.Int64 => reader => (T)(object)reader.ReadInt64(),
-            TypeCode.SByte => reader => (T)(object)reader.ReadSByte(),
-            TypeCode.Single => reader => (T)(object)reader.ReadSingle(),
-            TypeCode.String => reader => (T)(object)ReadString(reader)!,
-            TypeCode.UInt16 => reader => (T)(object)reader.ReadUInt16(),
-            TypeCode.UInt32 => reader => (T)(object)reader.ReadUInt32(),
-            TypeCode.UInt64 => reader => (T)(object)reader.ReadUInt64(),
+            TypeCode.Boolean => reader => getConvertedValue(reader.ReadBoolean()),
+            TypeCode.Byte => reader => getConvertedValue(reader.ReadByte()),
+            TypeCode.Char => reader => getConvertedValue(reader.ReadChar()),
+            TypeCode.DateTime => reader => getConvertedValue(ReadDateTime(reader)),
+            TypeCode.Decimal => reader => getConvertedValue(reader.ReadDecimal()),
+            TypeCode.Double => reader => getConvertedValue(reader.ReadDouble()),
+            TypeCode.Int16 => reader => getConvertedValue(reader.ReadInt16()),
+            TypeCode.Int32 => reader => getConvertedValue(reader.ReadInt32()),
+            TypeCode.Int64 => reader => getConvertedValue(reader.ReadInt64()),
+            TypeCode.SByte => reader => getConvertedValue(reader.ReadSByte()),
+            TypeCode.Single => reader => getConvertedValue(reader.ReadSingle()),
+            TypeCode.String => reader => getConvertedValue(ReadString(reader)),
+            TypeCode.UInt16 => reader => getConvertedValue(reader.ReadUInt16()),
+            TypeCode.UInt32 => reader => getConvertedValue(reader.ReadUInt32()),
+            TypeCode.UInt64 => reader => getConvertedValue(reader.ReadUInt64()),
             _ => null
         };
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        T getConvertedValue<TReader>(TReader readValue)
+        {
+            return converter.CanConvertFrom(typeof(TReader)) ? 
+                (T)converter.ConvertFrom(readValue)! : 
+                (T)(object)readValue!;
+        }
+    }
+
+    private static TypeCode GetTypeCode<T>()
+    {
+        TypeCode typeCode = Type.GetTypeCode(typeof(T));
+
+        if (typeCode != TypeCode.Object)
+            return typeCode;
+
+        try
+        {
+            // IConvertible types will provide their own type code
+            if (Activator.CreateInstance<T>() is IConvertible convertible)
+                return convertible.GetTypeCode();
+        }
+        catch (Exception ex)
+        {
+            LibraryEvents.OnSuppressedException(typeof(FileBackedLookupTable<,>), ex);
+        }
+
+        return TypeCode.Object;
     }
 
     private static TypeCode GetTypeCode<T>()
