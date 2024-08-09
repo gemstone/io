@@ -25,266 +25,248 @@ using System.Linq;
 using Gemstone.IO.Collections;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Gemstone.IO.UnitTests.Collections
+namespace Gemstone.IO.UnitTests.Collections;
+
+[TestClass]
+public class FileBackedHashSetTest
 {
-    [TestClass]
-    public class FileBackedHashSetTest
+    [TestMethod]
+    public void AddTest()
     {
-        [TestMethod]
-        public void AddTest()
+        using FileBackedHashSet<int> hashSet = new();
+
+        hashSet.Add(0);
+        Assert.IsTrue(hashSet.Contains(0));
+        Assert.AreEqual(hashSet.Count, 1);
+    }
+
+    [TestMethod]
+    public void RemoveTest()
+    {
+        using FileBackedHashSet<int> hashSet = new();
+
+        hashSet.Add(0);
+        Assert.IsTrue(hashSet.Contains(0));
+        hashSet.Remove(0);
+        Assert.IsFalse(hashSet.Contains(0));
+        Assert.AreEqual(hashSet.Count, 0);
+    }
+
+    [TestMethod]
+    public void UnionWithTest()
+    {
+        using FileBackedHashSet<int> hashSet = new();
+
+        for (int i = 0; i < 10; i++)
+            hashSet.Add(i);
+
+        hashSet.UnionWith(Enumerable.Range(5, 10));
+
+        for (int i = 0; i < 15; i++)
+            Assert.IsTrue(hashSet.Contains(i), i.ToString());
+
+        Assert.AreEqual(hashSet.Count, 15);
+    }
+
+    [TestMethod]
+    public void IntersectWithTest()
+    {
+        using FileBackedHashSet<int> hashSet = new();
+
+        for (int i = 0; i < 10; i++)
+            hashSet.Add(i);
+
+        hashSet.IntersectWith(Enumerable.Range(5, 10));
+
+        for (int i = 5; i < 10; i++)
+            Assert.IsTrue(hashSet.Contains(i), i.ToString());
+
+        Assert.AreEqual(hashSet.Count, 5);
+    }
+
+    [TestMethod]
+    public void ExceptWithTest()
+    {
+        using FileBackedHashSet<int> hashSet = new();
+
+        for (int i = 0; i < 10; i++)
+            hashSet.Add(i);
+
+        hashSet.ExceptWith(Enumerable.Range(5, 10));
+
+        for (int i = 0; i < 5; i++)
+            Assert.IsTrue(hashSet.Contains(i), i.ToString());
+
+        Assert.AreEqual(hashSet.Count, 5);
+    }
+
+    [TestMethod]
+    public void SymmetricExceptWithTest()
+    {
+        using FileBackedHashSet<int> hashSet = new();
+
+        for (int i = 0; i < 10; i++)
+            hashSet.Add(i);
+
+        hashSet.SymmetricExceptWith(Enumerable.Range(5, 10));
+
+        for (int i = 0; i < 5; i++)
+            Assert.IsTrue(hashSet.Contains(i), i.ToString());
+
+        for (int i = 10; i < 15; i++)
+            Assert.IsTrue(hashSet.Contains(i), i.ToString());
+
+        Assert.AreEqual(hashSet.Count, 10);
+    }
+
+    [TestMethod]
+    public void IsSubsetOfTest()
+    {
+        using FileBackedHashSet<int> hashSet = new();
+
+        for (int i = 0; i < 5; i++)
+            hashSet.Add(i);
+
+        Assert.IsTrue(hashSet.IsSubsetOf(Enumerable.Range(0, 5)), "Equal");
+        Assert.IsTrue(hashSet.IsSubsetOf(Enumerable.Range(0, 10)), "Superset");
+        Assert.IsFalse(hashSet.IsSubsetOf(Enumerable.Range(0, 3)), "Subset");
+        Assert.IsFalse(hashSet.IsSubsetOf(Enumerable.Range(1, 5)), "Overlap");
+        Assert.IsFalse(hashSet.IsSubsetOf(Enumerable.Range(5, 5)), "Disjoint");
+    }
+
+    [TestMethod]
+    public void IsSupersetOfTest()
+    {
+        using FileBackedHashSet<int> hashSet = new();
+
+        for (int i = 0; i < 5; i++)
+            hashSet.Add(i);
+
+        Assert.IsTrue(hashSet.IsSupersetOf(Enumerable.Range(0, 5)), "Equal");
+        Assert.IsFalse(hashSet.IsSupersetOf(Enumerable.Range(0, 10)), "Superset");
+        Assert.IsTrue(hashSet.IsSupersetOf(Enumerable.Range(0, 3)), "Subset");
+        Assert.IsFalse(hashSet.IsSupersetOf(Enumerable.Range(1, 5)), "Overlap");
+        Assert.IsFalse(hashSet.IsSupersetOf(Enumerable.Range(5, 5)), "Disjoint");
+    }
+
+    [TestMethod]
+    public void IsProperSupersetOfTest()
+    {
+        using FileBackedHashSet<int> hashSet = new();
+
+        for (int i = 0; i < 5; i++)
+            hashSet.Add(i);
+
+        Assert.IsFalse(hashSet.IsProperSupersetOf(Enumerable.Range(0, 5)), "Equal");
+        Assert.IsFalse(hashSet.IsProperSupersetOf(Enumerable.Range(0, 10)), "Superset");
+        Assert.IsTrue(hashSet.IsProperSupersetOf(Enumerable.Range(0, 3)), "Subset");
+        Assert.IsFalse(hashSet.IsProperSupersetOf(Enumerable.Range(1, 5)), "Overlap");
+        Assert.IsFalse(hashSet.IsProperSupersetOf(Enumerable.Range(5, 5)), "Disjoint");
+    }
+
+    [TestMethod]
+    public void IsProperSubsetOfTest()
+    {
+        using FileBackedHashSet<int> hashSet = new();
+
+        for (int i = 0; i < 5; i++)
+            hashSet.Add(i);
+
+        Assert.IsFalse(hashSet.IsProperSubsetOf(Enumerable.Range(0, 5)), "Equal");
+        Assert.IsTrue(hashSet.IsProperSubsetOf(Enumerable.Range(0, 10)), "Superset");
+        Assert.IsFalse(hashSet.IsProperSubsetOf(Enumerable.Range(0, 3)), "Subset");
+        Assert.IsFalse(hashSet.IsProperSubsetOf(Enumerable.Range(1, 5)), "Overlap");
+        Assert.IsFalse(hashSet.IsProperSubsetOf(Enumerable.Range(5, 5)), "Disjoint");
+    }
+
+    [TestMethod]
+    public void OverlapsTest()
+    {
+        using FileBackedHashSet<int> hashSet = new();
+
+        for (int i = 0; i < 5; i++)
+            hashSet.Add(i);
+
+        Assert.IsTrue(hashSet.Overlaps(Enumerable.Range(0, 5)), "Equal");
+        Assert.IsTrue(hashSet.Overlaps(Enumerable.Range(0, 10)), "Superset");
+        Assert.IsTrue(hashSet.Overlaps(Enumerable.Range(0, 3)), "Subset");
+        Assert.IsTrue(hashSet.Overlaps(Enumerable.Range(1, 5)), "Overlap");
+        Assert.IsFalse(hashSet.Overlaps(Enumerable.Range(5, 5)), "Disjoint");
+    }
+
+    [TestMethod]
+    public void SetEqualsTest()
+    {
+        using FileBackedHashSet<int> hashSet = new();
+
+        for (int i = 0; i < 5; i++)
+            hashSet.Add(i);
+
+        Assert.IsTrue(hashSet.SetEquals(Enumerable.Range(0, 5)), "Equal");
+        Assert.IsFalse(hashSet.SetEquals(Enumerable.Range(0, 10)), "Superset");
+        Assert.IsFalse(hashSet.SetEquals(Enumerable.Range(0, 3)), "Subset");
+        Assert.IsFalse(hashSet.SetEquals(Enumerable.Range(1, 5)), "Overlap");
+        Assert.IsFalse(hashSet.SetEquals(Enumerable.Range(5, 5)), "Disjoint");
+    }
+
+    [TestMethod]
+    public void ClearTest()
+    {
+        using FileBackedHashSet<int> hashSet = new();
+
+        for (int i = 0; i < 100; i++)
+            hashSet.Add(i);
+
+        Assert.AreEqual(hashSet.Count, 100);
+        hashSet.Clear();
+        Assert.AreEqual(hashSet.Count, 0);
+    }
+
+    [TestMethod]
+    public void CopyToTest()
+    {
+        using FileBackedHashSet<int> hashSet = new();
+
+        for (int i = 1; i <= 100; i++)
+            hashSet.Add(i);
+
+        Assert.AreEqual(hashSet.Count, 100);
+
+        int[] array = new int[hashSet.Count];
+        hashSet.CopyTo(array, 0);
+
+        foreach (int i in array)
+            Assert.IsTrue(hashSet.Contains(i));
+    }
+
+    [TestMethod]
+    public void CompactTest()
+    {
+        using FileBackedHashSet<int> hashSet = new();
+
+        for (int i = 0; i < 10000; i += 4)
         {
-            using (FileBackedHashSet<int> hashSet = new())
-            {
-                hashSet.Add(0);
-                Assert.IsTrue(hashSet.Contains(0));
-                Assert.AreEqual(hashSet.Count, 1);
-            }
+            hashSet.Add(i);
+
+            if (i % 100 == 0)
+                hashSet.Remove(i);
+
+            if (i % 400 == 0)
+                hashSet.Add(i);
         }
 
-        [TestMethod]
-        public void RemoveTest()
+        hashSet.Compact();
+
+        for (int i = 0; i < 10000; i++)
         {
-            using (FileBackedHashSet<int> hashSet = new())
-            {
-                hashSet.Add(0);
-                Assert.IsTrue(hashSet.Contains(0));
-                hashSet.Remove(0);
-                Assert.IsFalse(hashSet.Contains(0));
-                Assert.AreEqual(hashSet.Count, 0);
-            }
-        }
-
-        [TestMethod]
-        public void UnionWithTest()
-        {
-            using (FileBackedHashSet<int> hashSet = new())
-            {
-                for (int i = 0; i < 10; i++)
-                    hashSet.Add(i);
-
-                hashSet.UnionWith(Enumerable.Range(5, 10));
-
-                for (int i = 0; i < 15; i++)
-                    Assert.IsTrue(hashSet.Contains(i), i.ToString());
-
-                Assert.AreEqual(hashSet.Count, 15);
-            }
-        }
-
-        [TestMethod]
-        public void IntersectWithTest()
-        {
-            using (FileBackedHashSet<int> hashSet = new())
-            {
-                for (int i = 0; i < 10; i++)
-                    hashSet.Add(i);
-
-                hashSet.IntersectWith(Enumerable.Range(5, 10));
-
-                for (int i = 5; i < 10; i++)
-                    Assert.IsTrue(hashSet.Contains(i), i.ToString());
-
-                Assert.AreEqual(hashSet.Count, 5);
-            }
-        }
-
-        [TestMethod]
-        public void ExceptWithTest()
-        {
-            using (FileBackedHashSet<int> hashSet = new())
-            {
-                for (int i = 0; i < 10; i++)
-                    hashSet.Add(i);
-
-                hashSet.ExceptWith(Enumerable.Range(5, 10));
-
-                for (int i = 0; i < 5; i++)
-                    Assert.IsTrue(hashSet.Contains(i), i.ToString());
-
-                Assert.AreEqual(hashSet.Count, 5);
-            }
-        }
-
-        [TestMethod]
-        public void SymmetricExceptWithTest()
-        {
-            using (FileBackedHashSet<int> hashSet = new())
-            {
-                for (int i = 0; i < 10; i++)
-                    hashSet.Add(i);
-
-                hashSet.SymmetricExceptWith(Enumerable.Range(5, 10));
-
-                for (int i = 0; i < 5; i++)
-                    Assert.IsTrue(hashSet.Contains(i), i.ToString());
-
-                for (int i = 10; i < 15; i++)
-                    Assert.IsTrue(hashSet.Contains(i), i.ToString());
-
-                Assert.AreEqual(hashSet.Count, 10);
-            }
-        }
-
-        [TestMethod]
-        public void IsSubsetOfTest()
-        {
-            using (FileBackedHashSet<int> hashSet = new())
-            {
-                for (int i = 0; i < 5; i++)
-                    hashSet.Add(i);
-
-                Assert.IsTrue(hashSet.IsSubsetOf(Enumerable.Range(0, 5)), "Equal");
-                Assert.IsTrue(hashSet.IsSubsetOf(Enumerable.Range(0, 10)), "Superset");
-                Assert.IsFalse(hashSet.IsSubsetOf(Enumerable.Range(0, 3)), "Subset");
-                Assert.IsFalse(hashSet.IsSubsetOf(Enumerable.Range(1, 5)), "Overlap");
-                Assert.IsFalse(hashSet.IsSubsetOf(Enumerable.Range(5, 5)), "Disjoint");
-            }
-        }
-
-        [TestMethod]
-        public void IsSupersetOfTest()
-        {
-            using (FileBackedHashSet<int> hashSet = new())
-            {
-                for (int i = 0; i < 5; i++)
-                    hashSet.Add(i);
-
-                Assert.IsTrue(hashSet.IsSupersetOf(Enumerable.Range(0, 5)), "Equal");
-                Assert.IsFalse(hashSet.IsSupersetOf(Enumerable.Range(0, 10)), "Superset");
-                Assert.IsTrue(hashSet.IsSupersetOf(Enumerable.Range(0, 3)), "Subset");
-                Assert.IsFalse(hashSet.IsSupersetOf(Enumerable.Range(1, 5)), "Overlap");
-                Assert.IsFalse(hashSet.IsSupersetOf(Enumerable.Range(5, 5)), "Disjoint");
-            }
-        }
-
-        [TestMethod]
-        public void IsProperSupersetOfTest()
-        {
-            using (FileBackedHashSet<int> hashSet = new())
-            {
-                for (int i = 0; i < 5; i++)
-                    hashSet.Add(i);
-
-                Assert.IsFalse(hashSet.IsProperSupersetOf(Enumerable.Range(0, 5)), "Equal");
-                Assert.IsFalse(hashSet.IsProperSupersetOf(Enumerable.Range(0, 10)), "Superset");
-                Assert.IsTrue(hashSet.IsProperSupersetOf(Enumerable.Range(0, 3)), "Subset");
-                Assert.IsFalse(hashSet.IsProperSupersetOf(Enumerable.Range(1, 5)), "Overlap");
-                Assert.IsFalse(hashSet.IsProperSupersetOf(Enumerable.Range(5, 5)), "Disjoint");
-            }
-        }
-
-        [TestMethod]
-        public void IsProperSubsetOfTest()
-        {
-            using (FileBackedHashSet<int> hashSet = new())
-            {
-                for (int i = 0; i < 5; i++)
-                    hashSet.Add(i);
-
-                Assert.IsFalse(hashSet.IsProperSubsetOf(Enumerable.Range(0, 5)), "Equal");
-                Assert.IsTrue(hashSet.IsProperSubsetOf(Enumerable.Range(0, 10)), "Superset");
-                Assert.IsFalse(hashSet.IsProperSubsetOf(Enumerable.Range(0, 3)), "Subset");
-                Assert.IsFalse(hashSet.IsProperSubsetOf(Enumerable.Range(1, 5)), "Overlap");
-                Assert.IsFalse(hashSet.IsProperSubsetOf(Enumerable.Range(5, 5)), "Disjoint");
-            }
-        }
-
-        [TestMethod]
-        public void OverlapsTest()
-        {
-            using (FileBackedHashSet<int> hashSet = new())
-            {
-                for (int i = 0; i < 5; i++)
-                    hashSet.Add(i);
-
-                Assert.IsTrue(hashSet.Overlaps(Enumerable.Range(0, 5)), "Equal");
-                Assert.IsTrue(hashSet.Overlaps(Enumerable.Range(0, 10)), "Superset");
-                Assert.IsTrue(hashSet.Overlaps(Enumerable.Range(0, 3)), "Subset");
-                Assert.IsTrue(hashSet.Overlaps(Enumerable.Range(1, 5)), "Overlap");
-                Assert.IsFalse(hashSet.Overlaps(Enumerable.Range(5, 5)), "Disjoint");
-            }
-        }
-
-        [TestMethod]
-        public void SetEqualsTest()
-        {
-            using (FileBackedHashSet<int> hashSet = new())
-            {
-                for (int i = 0; i < 5; i++)
-                    hashSet.Add(i);
-
-                Assert.IsTrue(hashSet.SetEquals(Enumerable.Range(0, 5)), "Equal");
-                Assert.IsFalse(hashSet.SetEquals(Enumerable.Range(0, 10)), "Superset");
-                Assert.IsFalse(hashSet.SetEquals(Enumerable.Range(0, 3)), "Subset");
-                Assert.IsFalse(hashSet.SetEquals(Enumerable.Range(1, 5)), "Overlap");
-                Assert.IsFalse(hashSet.SetEquals(Enumerable.Range(5, 5)), "Disjoint");
-            }
-        }
-
-        [TestMethod]
-        public void ClearTest()
-        {
-            using (FileBackedHashSet<int> hashSet = new())
-            {
-                for (int i = 0; i < 100; i++)
-                    hashSet.Add(i);
-
-                Assert.AreEqual(hashSet.Count, 100);
-                hashSet.Clear();
-                Assert.AreEqual(hashSet.Count, 0);
-            }
-        }
-
-        [TestMethod]
-        public void CopyToTest()
-        {
-            int[] array;
-
-            using (FileBackedHashSet<int> hashSet = new())
-            {
-                for (int i = 1; i <= 100; i++)
-                    hashSet.Add(i);
-
-                Assert.AreEqual(hashSet.Count, 100);
-
-                array = new int[hashSet.Count];
-                hashSet.CopyTo(array, 0);
-
-                foreach (int i in array)
-                    Assert.IsTrue(hashSet.Contains(i));
-            }
-        }
-
-        [TestMethod]
-        public void CompactTest()
-        {
-            using (FileBackedHashSet<int> hashSet = new())
-            {
-                for (int i = 0; i < 10000; i += 4)
-                {
-                    hashSet.Add(i);
-
-                    if (i % 100 == 0)
-                        hashSet.Remove(i);
-
-                    if (i % 400 == 0)
-                        hashSet.Add(i);
-                }
-
-                hashSet.Compact();
-
-                for (int i = 0; i < 10000; i++)
-                {
-                    if (i % 400 == 0)
-                        Assert.IsTrue(hashSet.Contains(i));
-                    else if (i % 100 == 0)
-                        Assert.IsFalse(hashSet.Contains(i));
-                    else if (i % 4 == 0)
-                        Assert.IsTrue(hashSet.Contains(i));
-                    else
-                        Assert.IsFalse(hashSet.Contains(i));
-                }
-            }
+            if (i % 400 == 0)
+                Assert.IsTrue(hashSet.Contains(i));
+            else if (i % 100 == 0)
+                Assert.IsFalse(hashSet.Contains(i));
+            else if (i % 4 == 0)
+                Assert.IsTrue(hashSet.Contains(i));
+            else
+                Assert.IsFalse(hashSet.Contains(i));
         }
     }
 }
