@@ -25,11 +25,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices.ComTypes;
+using System.Security.Cryptography;
 using System.Text;
 using Gemstone.GuidExtensions;
 using Gemstone.IO.Checksums;
@@ -1691,8 +1694,8 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
     #region [ Static ]
 
     // Static Fields
-    private const BindingFlags Flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-    private static readonly Type[] s_types = { typeof(Stream) };
+    private const BindingFlags s_instanceFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+    private static readonly Type[] s_types = [ typeof(Stream) ];
     private static readonly Action<Stream, TKey?> s_writeKeyAction;
     private static readonly Action<Stream, TValue> s_writeValueAction;
     private static readonly Func<Stream, TKey> s_readKeyFunc;
@@ -1707,17 +1710,10 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
         Func<Stream, TKey>? readKeyFunc = GetReadMethod<TKey>();
         Func<Stream, TValue>? readValueFunc = GetReadMethod<TValue>();
 
-        if (writeKeyAction is null || readKeyFunc is null)
-        {
-            writeKeyAction = (_, _) => throw new InvalidOperationException($"Type of TKey ({typeof(TKey).FullName}) is not write serializable.");
-            readKeyFunc = _ => throw new InvalidOperationException($"Type of TKey ({typeof(TKey).FullName}) is not read serializable.");
-        }
-
-        if (writeValueAction is null || readValueFunc is null)
-        {
-            writeValueAction = (_, _) => throw new InvalidOperationException($"Type of TValue ({typeof(TValue).FullName}) is not write serializable.");
-            readValueFunc = _ => throw new InvalidOperationException($"Type of TValue ({typeof(TValue).FullName}) is not read serializable.");
-        }
+        writeKeyAction ??= (_, _) => throw new InvalidOperationException($"Type of TKey ({typeof(TKey).FullName}) is not write serializable.");
+        readKeyFunc ??= _ => throw new InvalidOperationException($"Type of TKey ({typeof(TKey).FullName}) is not read serializable.");
+        writeValueAction ??= (_, _) => throw new InvalidOperationException($"Type of TValue ({typeof(TValue).FullName}) is not write serializable.");
+        readValueFunc ??= _ => throw new InvalidOperationException($"Type of TValue ({typeof(TValue).FullName}) is not read serializable.");
 
         s_writeKeyAction = writeKeyAction!;
         s_writeValueAction = writeValueAction;
@@ -1727,66 +1723,87 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
 
     // Static Methods
 
-    private static Action<Stream, T>? GetWriteMethod<T>()
+    private static Action<Stream, object>? GetWriteMethod(Type type)
     {
-        Type type = typeof(T);
-        MethodInfo? method = type.GetMethod("WriteTo", Flags, null, s_types, null);
+        MethodInfo? method = type.GetMethod("WriteTo", s_instanceFlags, null, s_types, null);
 
         if (method is not null)
-        {
-            Action<T, Stream> action = (Action<T, Stream>)Delegate.CreateDelegate(typeof(Action<T, Stream>), method);
-            return (stream, obj) => action(obj, stream);
-        }
+            return (stream, obj) => method.Invoke(obj, [stream]);
 
-        Action<BinaryWriter, T>? binaryWriterAction = GetBinaryWriterMethod<T>();
+        Action<BinaryWriter, object>? binaryWriterAction = GetBinaryWriterMethod(type);
 
         if (binaryWriterAction is null)
             return null;
 
         return (stream, obj) =>
         {
-            using BinaryWriter writer = new BinaryWriter(stream, Encoding.UTF8, true);
+            using BinaryWriter writer = new(stream, Encoding.UTF8, true);
             binaryWriterAction(writer, obj);
         };
     }
 
-    private static Func<Stream, T>? GetReadMethod<T>()
+    private static Action<Stream, T>? GetWriteMethod<T>()
     {
         Type type = typeof(T);
-        ConstructorInfo? constructor = type.GetConstructor(Flags, null, s_types, null);
+
+        if (!IsListType(type))
+            return (stream, obj) => GetWriteMethod(type)?.Invoke(stream, obj!);
+
+        Type elementType = GetListTypeElement(type);
+        Action<Stream, object>? method = GetWriteMethod(elementType);
+
+        if (method is null)
+            return null;
+
+        return (stream, source) =>
+        {
+            if (source is not IList items)
+                return;
+
+            BinaryWriter writer = new(stream, Encoding.UTF8, true);
+            writer.Write(items.Count);
+
+            foreach (object item in items)
+                method(stream, item);
+        };
+    }
+
+    private static Func<Stream, object>? GetReadMethod(Type type)
+    {
+        ConstructorInfo? constructor = type.GetConstructor(s_instanceFlags, null, s_types, null);
 
         if (constructor is not null)
         {
             List<ParameterExpression> parameterExpressions = s_types.Select(Expression.Parameter).ToList();
             NewExpression newExpression = Expression.New(constructor, parameterExpressions);
-            LambdaExpression lambdaExpression = Expression.Lambda(typeof(Func<Stream, T>), newExpression, parameterExpressions);
-            return (Func<Stream, T>)lambdaExpression.Compile();
+            LambdaExpression lambdaExpression = Expression.Lambda(typeof(Func<Stream, object>), newExpression, parameterExpressions);
+            return (Func<Stream, object>)lambdaExpression.Compile();
         }
 
-        constructor = type.GetConstructor(Flags, null, Type.EmptyTypes, null);
+        constructor = type.GetConstructor(s_instanceFlags, null, Type.EmptyTypes, null);
 
         if (constructor is not null)
         {
-            MethodInfo? method = type.GetMethod("ReadFrom", Flags, null, s_types, null);
+            MethodInfo? method = type.GetMethod("ReadFrom", s_instanceFlags, null, s_types, null);
 
             if (method is not null)
             {
                 return stream =>
                 {
-                    T obj = Activator.CreateInstance<T>();
-                    method.Invoke(obj, new object[] { stream });
+                    object obj = Activator.CreateInstance(type);
+                    method.Invoke(obj, [stream]);
                     return obj;
                 };
             }
         }
 
-        Func<BinaryReader, T>? binaryReaderFunc = GetBinaryReaderMethod<T>();
+        Func<BinaryReader, object>? binaryReaderFunc = GetBinaryReaderMethod(type);
 
         if (binaryReaderFunc is not null)
         {
             return stream =>
             {
-                using BinaryReader reader = new BinaryReader(stream, Encoding.UTF8, true);
+                using BinaryReader reader = new(stream, Encoding.UTF8, true);
                 return binaryReaderFunc(reader);
             };
         }
@@ -1794,7 +1811,51 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
         return null;
     }
 
-    private static Action<BinaryWriter, T>? GetBinaryWriterMethod<T>()
+    private static Func<Stream, T>? GetReadMethod<T>()
+    {
+        Type type = typeof(T);
+
+        if (!IsListType(type))
+        {
+            return stream =>
+            {
+                object? obj = GetReadMethod(type)?.Invoke(stream);
+                return obj is null ? default! : (T)obj;
+            };
+        }
+
+        Type elementType = GetListTypeElement(type);
+        Func<Stream, object>? method = GetReadMethod(elementType);
+
+        if (method is null)
+            return null;
+
+        return stream =>
+        {
+            BinaryReader reader = new(stream, Encoding.UTF8, true);
+            int count = reader.ReadInt32();
+            IList items;
+
+            if (type.IsArray)
+            {
+                items = (IList)Activator.CreateInstance(elementType.MakeArrayType(), count);
+
+                for (int i = 0; i < count; i++)
+                    items[i] = method(stream);
+            }
+            else
+            {
+                items = (IList)Activator.CreateInstance(type);
+
+                for (int i = 0; i < count; i++)
+                    items.Add(method(stream));
+            }
+
+            return (T)items;
+        };
+    }
+
+    private static Action<BinaryWriter, object>? GetBinaryWriterMethod(Type type)
     {
         void WriteDateTime(BinaryWriter writer, DateTime dt)
         {
@@ -1810,7 +1871,7 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
                 writer.Write(str is null);
         }
 
-        TypeCode typeCode = GetTypeCode<T>();
+        TypeCode typeCode = GetTypeCode(type);
 
         return typeCode switch
         {
@@ -1833,7 +1894,7 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
         };
     }
 
-    private static Func<BinaryReader, T>? GetBinaryReaderMethod<T>()
+    private static Func<BinaryReader, object>? GetBinaryReaderMethod(Type type)
     {
         static DateTime ReadDateTime(BinaryReader reader)
         {
@@ -1848,8 +1909,8 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
             return !isNull ? str : null;
         }
         
-        TypeCode typeCode = GetTypeCode<T>();
-        TypeConverter converter = TypeDescriptor.GetConverter(typeof(T));
+        TypeCode typeCode = GetTypeCode(type);
+        TypeConverter converter = TypeDescriptor.GetConverter(type);
 
         return typeCode switch
         {
@@ -1872,17 +1933,17 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
         };
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        T getConvertedValue<TReader>(TReader readValue)
+        object getConvertedValue<TReader>(TReader readValue)
         {
             return converter.CanConvertFrom(typeof(TReader)) ? 
-                (T)converter.ConvertFrom(readValue)! : 
-                (T)(object)readValue!;
+                converter.ConvertFrom(readValue)! : 
+                readValue!;
         }
     }
 
-    private static TypeCode GetTypeCode<T>()
+    private static TypeCode GetTypeCode(Type type)
     {
-        TypeCode typeCode = Type.GetTypeCode(typeof(T));
+        TypeCode typeCode = Type.GetTypeCode(type);
 
         if (typeCode != TypeCode.Object)
             return typeCode;
@@ -1890,7 +1951,7 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
         try
         {
             // IConvertible types will provide their own type code
-            if (Activator.CreateInstance<T>() is IConvertible convertible)
+            if (Activator.CreateInstance(type) is IConvertible convertible)
                 return convertible.GetTypeCode();
         }
         catch (Exception ex)
@@ -1899,6 +1960,16 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
         }
 
         return TypeCode.Object;
+    }
+
+    private static bool IsListType(Type type)
+    {
+        return type.IsArray || type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IList<>);
+    }
+
+    private static Type GetListTypeElement(Type type)
+    {
+        return type.IsArray ? type.GetElementType()! : type.GetGenericArguments()[0];
     }
 
     private static long GetFirstHash(int hashCode)
