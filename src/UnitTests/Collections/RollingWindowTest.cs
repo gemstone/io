@@ -24,143 +24,142 @@
 using Gemstone.IO.Collections;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Gemstone.IO.UnitTests.Collections
+namespace Gemstone.IO.UnitTests.Collections;
+
+[TestClass]
+public class RollingWindowTest
 {
-    [TestClass]
-    public class RollingWindowTest
+    [TestMethod]
+    public void AddTest()
     {
-        [TestMethod]
-        public void AddTest()
+        RollingWindow<int> rollingWindow = new(5);
+
+        for (int i = 0; i < rollingWindow.WindowSize; i++)
         {
-            RollingWindow<int> rollingWindow = new(5);
-
-            for (int i = 0; i < rollingWindow.WindowSize; i++)
-            {
-                Assert.AreEqual(i, rollingWindow.Count);
-                rollingWindow.Add(i);
-                Assert.AreEqual(i, rollingWindow[i]);
-            }
-
-            Assert.AreEqual(rollingWindow.WindowSize, rollingWindow.Count);
-            rollingWindow.Add(rollingWindow.WindowSize);
-            Assert.AreEqual(rollingWindow.WindowSize, rollingWindow.Count);
-
-            for (int i = 0; i < rollingWindow.WindowSize; i++)
-                Assert.AreEqual(i + 1, rollingWindow[i]);
+            Assert.AreEqual(i, rollingWindow.Count);
+            rollingWindow.Add(i);
+            Assert.AreEqual(i, rollingWindow[i]);
         }
 
-        [TestMethod]
-        public void InsertTest()
-        {
-            RollingWindow<int> rollingWindow = new(5);
+        Assert.AreEqual(rollingWindow.WindowSize, rollingWindow.Count);
+        rollingWindow.Add(rollingWindow.WindowSize);
+        Assert.AreEqual(rollingWindow.WindowSize, rollingWindow.Count);
 
-            rollingWindow.Insert(0, 1);
-            rollingWindow.Insert(1, 3);
-            rollingWindow.Insert(0, 0);
-            rollingWindow.Insert(2, 2);
-            rollingWindow.Insert(4, 4);
+        for (int i = 0; i < rollingWindow.WindowSize; i++)
+            Assert.AreEqual(i + 1, rollingWindow[i]);
+    }
 
-            for (int i = 0; i < rollingWindow.Count; i++)
-                Assert.AreEqual(i, rollingWindow[i]);
-        }
+    [TestMethod]
+    public void InsertTest()
+    {
+        RollingWindow<int> rollingWindow = new(5);
 
-        [TestMethod]
-        public void RemoveTest()
-        {
-            RollingWindow<int> rollingWindow = new(5);
+        rollingWindow.Insert(0, 1);
+        rollingWindow.Insert(1, 3);
+        rollingWindow.Insert(0, 0);
+        rollingWindow.Insert(2, 2);
+        rollingWindow.Insert(4, 4);
 
-            for (int i = 0; i < rollingWindow.WindowSize; i++)
-                rollingWindow.Add(i);
+        for (int i = 0; i < rollingWindow.Count; i++)
+            Assert.AreEqual(i, rollingWindow[i]);
+    }
 
-            rollingWindow.Remove(1);
-            rollingWindow.Remove(3);
+    [TestMethod]
+    public void RemoveTest()
+    {
+        RollingWindow<int> rollingWindow = new(5);
 
-            Assert.AreEqual(3, rollingWindow.Count);
-            Assert.AreEqual(0, rollingWindow[0]);
-            Assert.AreEqual(2, rollingWindow[1]);
-            Assert.AreEqual(4, rollingWindow[2]);
-        }
+        for (int i = 0; i < rollingWindow.WindowSize; i++)
+            rollingWindow.Add(i);
 
-        [TestMethod]
-        public void RemoveAtTest()
-        {
-            RollingWindow<int> rollingWindow = new(5);
+        rollingWindow.Remove(1);
+        rollingWindow.Remove(3);
 
-            for (int i = 0; i < rollingWindow.WindowSize; i++)
-                rollingWindow.Add(i);
+        Assert.AreEqual(3, rollingWindow.Count);
+        Assert.AreEqual(0, rollingWindow[0]);
+        Assert.AreEqual(2, rollingWindow[1]);
+        Assert.AreEqual(4, rollingWindow[2]);
+    }
 
-            rollingWindow.RemoveAt(3);
-            rollingWindow.RemoveAt(1);
+    [TestMethod]
+    public void RemoveAtTest()
+    {
+        RollingWindow<int> rollingWindow = new(5);
 
-            Assert.AreEqual(3, rollingWindow.Count);
-            Assert.AreEqual(0, rollingWindow[0]);
-            Assert.AreEqual(2, rollingWindow[1]);
-            Assert.AreEqual(4, rollingWindow[2]);
-        }
+        for (int i = 0; i < rollingWindow.WindowSize; i++)
+            rollingWindow.Add(i);
 
-        [TestMethod]
-        public void IndexOfTest()
-        {
-            RollingWindow<int> rollingWindow = new(5);
+        rollingWindow.RemoveAt(3);
+        rollingWindow.RemoveAt(1);
 
-            for (int i = 0; i < rollingWindow.WindowSize; i++)
-                rollingWindow.Add(i);
+        Assert.AreEqual(3, rollingWindow.Count);
+        Assert.AreEqual(0, rollingWindow[0]);
+        Assert.AreEqual(2, rollingWindow[1]);
+        Assert.AreEqual(4, rollingWindow[2]);
+    }
 
-            for (int i = 0; i < rollingWindow.WindowSize; i++)
-                Assert.AreEqual(i, rollingWindow.IndexOf(i));
-        }
+    [TestMethod]
+    public void IndexOfTest()
+    {
+        RollingWindow<int> rollingWindow = new(5);
 
-        [TestMethod]
-        public void ContainsTest()
-        {
-            RollingWindow<int> rollingWindow = new(5);
+        for (int i = 0; i < rollingWindow.WindowSize; i++)
+            rollingWindow.Add(i);
 
-            for (int i = 0; i < rollingWindow.WindowSize; i++)
-                rollingWindow.Add(i);
+        for (int i = 0; i < rollingWindow.WindowSize; i++)
+            Assert.AreEqual(i, rollingWindow.IndexOf(i));
+    }
 
-            for (int i = -5; i < 10; i++)
-                Assert.AreEqual(i is >= 0 and < 5, rollingWindow.Contains(i));
-        }
+    [TestMethod]
+    public void ContainsTest()
+    {
+        RollingWindow<int> rollingWindow = new(5);
 
-        [TestMethod]
-        public void ClearTest()
-        {
-            RollingWindow<int> rollingWindow = new(5);
+        for (int i = 0; i < rollingWindow.WindowSize; i++)
+            rollingWindow.Add(i);
 
-            for (int i = 0; i < rollingWindow.WindowSize; i++)
-                rollingWindow.Add(i);
+        for (int i = -5; i < 10; i++)
+            Assert.AreEqual(i is >= 0 and < 5, rollingWindow.Contains(i));
+    }
 
-            Assert.AreEqual(rollingWindow.WindowSize, rollingWindow.Count);
-            rollingWindow.Clear();
-            Assert.AreEqual(0, rollingWindow.Count);
-        }
+    [TestMethod]
+    public void ClearTest()
+    {
+        RollingWindow<int> rollingWindow = new(5);
 
-        [TestMethod]
-        public void CopyToTest()
-        {
-            RollingWindow<int> rollingWindow = new(5);
-            int[] array = new int[rollingWindow.WindowSize];
+        for (int i = 0; i < rollingWindow.WindowSize; i++)
+            rollingWindow.Add(i);
 
-            for (int i = 0; i < rollingWindow.WindowSize + 1; i++)
-                rollingWindow.Add(i);
+        Assert.AreEqual(rollingWindow.WindowSize, rollingWindow.Count);
+        rollingWindow.Clear();
+        Assert.AreEqual(0, rollingWindow.Count);
+    }
 
-            rollingWindow.CopyTo(array, 0);
+    [TestMethod]
+    public void CopyToTest()
+    {
+        RollingWindow<int> rollingWindow = new(5);
+        int[] array = new int[rollingWindow.WindowSize];
 
-            for (int i = 0; i < array.Length; i++)
-                Assert.AreEqual(i + 1, array[i]);
-        }
+        for (int i = 0; i < rollingWindow.WindowSize + 1; i++)
+            rollingWindow.Add(i);
 
-        [TestMethod]
-        public void GetEnumeratorTest()
-        {
-            RollingWindow<int> rollingWindow = new(5);
-            int count = 0;
+        rollingWindow.CopyTo(array, 0);
 
-            for (int i = 0; i < rollingWindow.WindowSize + 1; i++)
-                rollingWindow.Add(i);
+        for (int i = 0; i < array.Length; i++)
+            Assert.AreEqual(i + 1, array[i]);
+    }
 
-            foreach (int i in rollingWindow)
-                Assert.AreEqual(++count, i);
-        }
+    [TestMethod]
+    public void GetEnumeratorTest()
+    {
+        RollingWindow<int> rollingWindow = new(5);
+        int count = 0;
+
+        for (int i = 0; i < rollingWindow.WindowSize + 1; i++)
+            rollingWindow.Add(i);
+
+        foreach (int i in rollingWindow)
+            Assert.AreEqual(++count, i);
     }
 }
