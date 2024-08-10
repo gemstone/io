@@ -24,7 +24,10 @@
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
+using System.Text;
 using Gemstone.ArrayExtensions;
 using Gemstone.IO.Collections;
 using Gemstone.Security.Cryptography;
@@ -32,6 +35,112 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Random = Gemstone.Security.Cryptography.Random;
 
 namespace Gemstone.IO.UnitTests.Collections;
+
+/// <summary>
+/// Example class for manual instance serialization.
+/// </summary>
+public class InstanceTest
+{
+    public InstanceTest()
+    {
+    }
+
+    public InstanceTest(Guid id, string name, ConnectionState status)
+    {
+        ID = id;
+        Name = name;
+        Status = status;
+    }
+
+    public Guid ID { get; set; }
+
+    public string Name { get; set; } = "";
+
+    public ConnectionState Status { get; set; }
+
+    /// <summary>
+    /// Deserializes the <see cref="InstanceTest"/> from a <see cref="Stream"/>.
+    /// </summary>
+    /// <param name="stream">Source stream.</param>
+    public void ReadFrom(Stream stream)
+    {
+        BinaryReader reader = new(stream, Encoding.UTF8, true);
+
+        ID = new Guid(reader.ReadBytes(16));
+        Name = reader.ReadString();
+        Status = (ConnectionState)reader.ReadByte();
+    }
+
+    /// <summary>
+    /// Serializes the <see cref="InstanceTest"/> to a <see cref="Stream"/>.
+    /// </summary>
+    /// <param name="stream">Target stream.</param>
+    public void WriteTo(Stream stream)
+    {
+        BinaryWriter writer = new(stream, Encoding.UTF8, true);
+
+        writer.Write(ID.ToByteArray());
+        writer.Write(Name);
+        writer.Write((byte)Status);
+    }
+}
+
+/// <summary>
+/// Example class for manual static serialization.
+/// </summary>
+public class StaticTest
+{
+    public StaticTest()
+    {
+    }
+
+    public StaticTest(Guid id, string name, ConnectionState status)
+    {
+        ID = id;
+        Name = name;
+        Status = status;
+    }
+
+    public Guid ID { get; set; }
+
+    public string Name { get; set; } = "";
+
+    public ConnectionState Status { get; set; }
+
+    /// <summary>
+    /// Deserializes the <see cref="InstanceTest"/> from a <see cref="Stream"/>.
+    /// </summary>
+    /// <param name="stream">Source stream.</param>
+    /// <returns>New deserialized instance.</returns>
+    public static object ReadFrom(Stream stream)
+    {
+        BinaryReader reader = new(stream, Encoding.UTF8, true);
+
+        return new StaticTest
+        {
+            ID = new Guid(reader.ReadBytes(16)),
+            Name = reader.ReadString(),
+            Status = (ConnectionState)reader.ReadByte()
+        };
+    }
+
+    /// <summary>
+    /// Serializes the <see cref="InstanceTest"/> to a <see cref="Stream"/>.
+    /// </summary>
+    /// <param name="stream">Target stream.</param>
+    /// <param name="obj">Instance to serialize.</param>
+    public static void WriteTo(Stream stream, object obj)
+    {
+        BinaryWriter writer = new(stream, Encoding.UTF8, true);
+
+        if (obj is not StaticTest instance)
+            throw new ArgumentException($"Object is not a '{nameof(StaticTest)}'", nameof(obj));
+
+        writer.Write(instance.ID.ToByteArray());
+        writer.Write(instance.Name);
+        writer.Write((byte)instance.Status);
+    }
+}
 
 [TestClass]
 public class FileBackedDictionaryTest
@@ -85,7 +194,7 @@ public class FileBackedDictionaryTest
     public void CopyToTest()
     {
         using FileBackedDictionary<int, int> dictionary = [];
-            
+
         for (int i = 1; i <= 100; i++)
             dictionary.Add(i, i);
 
@@ -125,7 +234,7 @@ public class FileBackedDictionaryTest
                 Assert.AreEqual(dictionary[i], 400);
             else if (i % 100 == 0)
                 Assert.IsFalse(dictionary.ContainsKey(i), i.ToString());
-            else if (i % 4 ==  0)
+            else if (i % 4 == 0)
                 Assert.AreEqual(dictionary[i], 4);
             else
                 Assert.IsFalse(dictionary.ContainsKey(i), i.ToString());
@@ -224,15 +333,15 @@ public class FileBackedDictionaryTest
 
         public bool Equals(string[] x, string[] y)
         {
-            return x?.SequenceEqual(y ?? [], m_ignoreCase ? 
-                StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal) ?? false;
+            return x?.SequenceEqual(y ?? [],
+                m_ignoreCase ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal) ?? false;
         }
 
         public int GetHashCode(string[] obj)
         {
-            return m_ignoreCase ? 
-                obj.Aggregate(0, (hash, item) => hash ^ item.ToUpperInvariant().GetHashCode()) : 
-                obj.Aggregate(0, (hash, item) => hash ^ item.GetHashCode());
+            return m_ignoreCase
+                ? obj.Aggregate(0, (hash, item) => hash ^ item.ToUpperInvariant().GetHashCode())
+                : obj.Aggregate(0, (hash, item) => hash ^ item.GetHashCode());
         }
     }
 
@@ -430,7 +539,6 @@ public class FileBackedDictionaryTest
         });
     }
 
-
     private void ListTest<T>(Func<int, List<T>> indexer) where T : IComparable<T>
     {
         using FileBackedDictionary<int, List<T>> dictionary = [];
@@ -458,5 +566,67 @@ public class FileBackedDictionaryTest
         Assert.IsTrue(dictionary.ContainsKey(1));
         Assert.AreEqual(dictionary.Count, 2);
         Assert.IsTrue(dictionary[1].ToArray().CompareTo(list.ToArray()) == 0);
+    }
+
+    [TestMethod]
+    public void InstanceSerializationTest()
+    {
+        using FileBackedDictionary<int, InstanceTest[]> dictionary = [];
+
+        dictionary.Add(0,
+        [
+            new InstanceTest { ID = Guid.NewGuid(), Name = "Test1.1", Status = ConnectionState.Open },
+            new InstanceTest { ID = Guid.NewGuid(), Name = "Test1.2", Status = ConnectionState.Closed }
+        ]);
+
+        Assert.IsTrue(dictionary.ContainsKey(0));
+        Assert.AreEqual(dictionary.Count, 1);
+        Assert.IsTrue(dictionary[0][0].Name == "Test1.1");
+        Assert.IsTrue(dictionary[0][1].Status == ConnectionState.Closed);
+
+        dictionary.Add(1,
+        [
+            new InstanceTest { ID = Guid.NewGuid(), Name = "Test2.1", Status = ConnectionState.Open },
+            new InstanceTest { ID = Guid.NewGuid(), Name = "Test2.2", Status = ConnectionState.Closed },
+            new InstanceTest { ID = Guid.NewGuid(), Name = "Test2.3", Status = ConnectionState.Executing },
+            new InstanceTest { ID = Guid.NewGuid(), Name = "Test2.4", Status = ConnectionState.Broken }
+        ]);
+
+        Assert.IsTrue(dictionary.ContainsKey(1));
+        Assert.AreEqual(dictionary.Count, 2);
+        Assert.IsTrue(dictionary[0][1].Name == "Test1.2");
+        Assert.IsTrue(dictionary[1][2].Name == "Test2.3");
+        Assert.IsTrue(dictionary[1][3].Status == ConnectionState.Broken);
+    }
+
+    [TestMethod]
+    public void StaticSerializationTest()
+    {
+        using FileBackedDictionary<int, StaticTest[]> dictionary = [];
+
+        dictionary.Add(0,
+        [
+            new StaticTest { ID = Guid.NewGuid(), Name = "Test1.1", Status = ConnectionState.Open },
+            new StaticTest { ID = Guid.NewGuid(), Name = "Test1.2", Status = ConnectionState.Closed }
+        ]);
+
+        Assert.IsTrue(dictionary.ContainsKey(0));
+        Assert.AreEqual(dictionary.Count, 1);
+        Assert.IsTrue(dictionary[0][0].Name == "Test1.1");
+        Assert.IsTrue(dictionary[0][1].Status == ConnectionState.Closed);
+
+        dictionary.Add(1,
+        [
+            new StaticTest { ID = Guid.NewGuid(), Name = "Test2.1", Status = ConnectionState.Open },
+            new StaticTest { ID = Guid.NewGuid(), Name = "Test2.2", Status = ConnectionState.Closed },
+            new StaticTest { ID = Guid.NewGuid(), Name = "Test2.3", Status = ConnectionState.Executing },
+            new StaticTest { ID = Guid.NewGuid(), Name = "Test2.4", Status = ConnectionState.Broken }
+        ]);
+
+        Assert.IsTrue(dictionary.ContainsKey(1));
+        Assert.AreEqual(dictionary.Count, 2);
+        Assert.IsTrue(dictionary[0][1].Name == "Test1.2");
+        Assert.IsTrue(dictionary[1][2].Name == "Test2.3");
+        Assert.IsTrue(dictionary[1][3].Status == ConnectionState.Broken);
     }
 }
