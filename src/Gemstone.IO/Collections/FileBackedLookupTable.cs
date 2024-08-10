@@ -1692,6 +1692,7 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
 
     // Static Fields
     private const BindingFlags s_instanceFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+    private const BindingFlags s_staticFlags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
     private static readonly Type[] s_types = [ typeof(Stream) ];
     private static readonly Action<Stream, TKey?> s_writeKeyAction;
     private static readonly Action<Stream, TValue> s_writeValueAction;
@@ -1726,10 +1727,28 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
 
         if (method is not null)
         {
-            Action<object?, Stream> action = (Action<object?, Stream>)method.CreateDelegate(typeof(Action<object?, Stream>));
-            return (stream, obj) => action(obj, stream);
+            ParameterExpression streamParam = Expression.Parameter(typeof(Stream), "stream");
+            ParameterExpression objParam = Expression.Parameter(typeof(object), "obj");
+            UnaryExpression objCast = Expression.Convert(objParam, type);
+            MethodCallExpression methodCall = Expression.Call(objCast, method, streamParam);
+
+            Expression<Action<Stream, object?>> lambda = Expression.Lambda<Action<Stream, object?>>(
+                methodCall,
+                streamParam,
+                objParam
+            );
+
+            return lambda.Compile();
         }
-        
+
+        method = type.GetMethod("WriteTo", s_staticFlags, null, [..s_types, type], null);
+
+        if (method is not null)
+        {
+            Action<Stream, object?> action = (Action<Stream, object?>)Delegate.CreateDelegate(typeof(Action<Stream, object?>), method);
+            return (stream, obj) => action(stream, obj);
+        }
+
         Action<BinaryWriter, object?>? binaryWriterAction = GetBinaryWriterMethod(type);
 
         if (binaryWriterAction is null)
@@ -1790,17 +1809,30 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
             if (method is not null)
             {
                 NewExpression newExpression = Expression.New(type);
-                Expression<Func<object>> lambdaExpression = Expression.Lambda<Func<object>>(newExpression);
-                Func<object> createType = lambdaExpression.Compile();
+                ParameterExpression streamParam = Expression.Parameter(typeof(Stream), "stream");
+                ParameterExpression instanceVar = Expression.Variable(type, "instance");
+                BinaryExpression assignInstance = Expression.Assign(instanceVar, newExpression);
+                MethodCallExpression methodCall = Expression.Call(instanceVar, method, streamParam);
 
-                Action<object?, Stream> action = (Action<object?, Stream>)method.CreateDelegate(typeof(Action<object?, Stream>));
+                Expression<Func<Stream, object>> lambda = Expression.Lambda<Func<Stream, object>>(
+                    Expression.Block(
+                        new[] { instanceVar }, // Declare the variable in the block
+                        assignInstance,        // Assign the new instance
+                        methodCall,            // Call the method on the instance
+                        Expression.Convert(instanceVar, typeof(object)) // Return the instance as object
+                    ),
+                    streamParam
+                );
 
-                return stream =>
-                {
-                    object obj = createType();
-                    action(obj, stream);
-                    return obj;
-                };
+                return lambda.Compile();
+            }
+
+            method = type.GetMethod("ReadFrom", s_staticFlags, null, s_types, null);
+
+            if (method is not null && method.ReturnType == typeof(object))
+            {
+                Func<Stream, object?> action = (Func<Stream, object?>)Delegate.CreateDelegate(typeof(Func<Stream, object?>), method);
+                return stream => action(stream);
             }
         }
 
