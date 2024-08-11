@@ -1826,6 +1826,8 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
             return (Func<Stream, object>)lambda.Compile();
         }
 
+        MethodInfo? method;
+
         // Check for parameterless constructor
         constructor = type.GetConstructor(s_instanceFlags, null, Type.EmptyTypes, null);
 
@@ -1833,7 +1835,7 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
         {
             // Create from instance-based method with following signature:
             // void ReadFrom(Stream stream)
-            MethodInfo? method = type.GetMethod("ReadFrom", s_instanceFlags, null, s_types, null);
+            method = type.GetMethod("ReadFrom", s_instanceFlags, null, s_types, null);
 
             if (method is not null)
             {
@@ -1855,35 +1857,35 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
 
                 return lambda.Compile();
             }
+        }
 
-            // See if a static "ReadFrom" method exists
-            method = type.GetMethod("ReadFrom", s_staticFlags, null, s_types, null);
+        // See if a static "ReadFrom" method exists
+        method = type.GetMethod("ReadFrom", s_staticFlags, null, s_types, null);
 
-            if (method is not null)
+        if (method is not null)
+        {
+            // Create from static-based method with object return with following signature:
+            // static object ReadFrom(Stream stream)
+            if (method.ReturnType == typeof(object))
             {
-                // Create from static-based method with object return with following signature:
-                // static object ReadFrom(Stream stream)
-                if (method.ReturnType == typeof(object))
-                {
-                    Func<Stream, object?> action = (Func<Stream, object?>)Delegate.CreateDelegate(typeof(Func<Stream, object?>), method);
-                    return stream => action(stream);
-                }
+                Func<Stream, object?> action = (Func<Stream, object?>)Delegate.CreateDelegate(typeof(Func<Stream, object?>), method);
+                return stream => action(stream);
+            }
 
-                // Create from static-based method with strongly-typed return with following signature:
-                // static T ReadFrom(Stream stream)
-                if (method.ReturnType == type)
-                {
-                    ParameterExpression streamParam = Expression.Parameter(typeof(Stream), "stream");
-                    MethodCallExpression methodCall = Expression.Call(method, streamParam);
-                    UnaryExpression convertToObject = Expression.Convert(methodCall, typeof(object));
+            // Create from static-based method with strongly-typed return with following signature:
+            // static T ReadFrom(Stream stream)
+            if (method.ReturnType == type)
+            {
+                ParameterExpression streamParam = Expression.Parameter(typeof(Stream), "stream");
+                MethodCallExpression methodCall = Expression.Call(method, streamParam);
+                UnaryExpression convertToObject = Expression.Convert(methodCall, typeof(object));
 
-                    Expression<Func<Stream, object>> lambda = Expression.Lambda<Func<Stream, object>>(
-                        convertToObject,
-                        streamParam
-                    );
+                Expression<Func<Stream, object>> lambda = Expression.Lambda<Func<Stream, object>>(
+                    convertToObject,
+                    streamParam
+                );
 
-                    return (Func<Stream, object>)lambda.Compile();
-                }
+                return (Func<Stream, object>)lambda.Compile();
             }
         }
 
