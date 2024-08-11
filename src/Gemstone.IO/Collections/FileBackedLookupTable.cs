@@ -1820,9 +1820,10 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
 
         if (constructor is not null)
         {
-            List<ParameterExpression> parameterExpressions = s_types.Select(Expression.Parameter).ToList();
-            NewExpression newExpression = Expression.New(constructor, parameterExpressions);
-            LambdaExpression lambda = Expression.Lambda(typeof(Func<Stream, object>), newExpression, parameterExpressions);
+            ParameterExpression streamParam = Expression.Parameter(typeof(Stream), "stream");
+            NewExpression newExpression = Expression.New(constructor, streamParam);
+            LambdaExpression lambda = Expression.Lambda(typeof(Func<Stream, object>), newExpression, streamParam);
+            
             return (Func<Stream, object>)lambda.Compile();
         }
 
@@ -1847,10 +1848,10 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
 
                 Expression<Func<Stream, object>> lambda = Expression.Lambda<Func<Stream, object>>(
                     Expression.Block(
-                        new[] { instanceVar }, // Declare the variable in the block
-                        assignInstance,        // Assign the new instance
-                        methodCall,            // Call the method on the instance
-                        Expression.Convert(instanceVar, typeof(object)) // Return the instance as object
+                        [instanceVar],  // Declare the variable in the block
+                        assignInstance, // Assign the new instance
+                        methodCall,     // Call the method on the instance
+                        Expression.Convert(instanceVar, typeof(object))
                     ),
                     streamParam
                 );
@@ -1885,7 +1886,7 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
                     streamParam
                 );
 
-                return (Func<Stream, object>)lambda.Compile();
+                return lambda.Compile();
             }
         }
 
@@ -1951,20 +1952,6 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
 
     private static Action<BinaryWriter, object?>? GetBinaryWriterMethod(Type type)
     {
-        void WriteDateTime(BinaryWriter writer, DateTime dt)
-        {
-            writer.Write((byte)dt.Kind);
-            writer.Write(dt.Ticks);
-        }
-
-        void WriteString(BinaryWriter writer, string? str, bool isNull)
-        {
-            writer.Write(str ?? string.Empty);
-
-            if (string.IsNullOrEmpty(str))
-                writer.Write(isNull);
-        }
-
         TypeCode typeCode = GetTypeCode(type);
 
         return typeCode switch
@@ -1972,7 +1959,7 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
             TypeCode.Boolean => (writer, obj) => writer.Write(Convert.ToBoolean(obj)),
             TypeCode.Byte => (writer, obj) => writer.Write(Convert.ToByte(obj)),
             TypeCode.Char => (writer, obj) => writer.Write(Convert.ToChar(obj)),
-            TypeCode.DateTime => (writer, obj) => WriteDateTime(writer, Convert.ToDateTime(obj)),
+            TypeCode.DateTime => (writer, obj) => writeDateTime(writer, Convert.ToDateTime(obj)),
             TypeCode.Decimal => (writer, obj) => writer.Write(Convert.ToDecimal(obj)),
             TypeCode.Double => (writer, obj) => writer.Write(Convert.ToDouble(obj)),
             TypeCode.Int16 => (writer, obj) => writer.Write(Convert.ToInt16(obj)),
@@ -1980,29 +1967,31 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
             TypeCode.Int64 => (writer, obj) => writer.Write(Convert.ToInt64(obj)),
             TypeCode.SByte => (writer, obj) => writer.Write(Convert.ToSByte(obj)),
             TypeCode.Single => (writer, obj) => writer.Write(Convert.ToSingle(obj)),
-            TypeCode.String => (writer, obj) => WriteString(writer, Convert.ToString(obj), obj is null),
+            TypeCode.String => (writer, obj) => writeString(writer, Convert.ToString(obj), obj is null),
             TypeCode.UInt16 => (writer, obj) => writer.Write(Convert.ToUInt16(obj)),
             TypeCode.UInt32 => (writer, obj) => writer.Write(Convert.ToUInt32(obj)),
             TypeCode.UInt64 => (writer, obj) => writer.Write(Convert.ToUInt64(obj)),
             _ => null
         };
+
+        void writeDateTime(BinaryWriter writer, DateTime dt)
+        {
+            writer.Write((byte)dt.Kind);
+            writer.Write(dt.Ticks);
+        }
+
+        // Note that Convert.ToString returns empty string for null inputs, hence the following logic
+        void writeString(BinaryWriter writer, string? str, bool isNull)
+        {
+            writer.Write(str ?? string.Empty);
+
+            if (string.IsNullOrEmpty(str))
+                writer.Write(isNull);
+        }
     }
 
     private static Func<BinaryReader, object?>? GetBinaryReaderMethod(Type type)
     {
-        static DateTime ReadDateTime(BinaryReader reader)
-        {
-            DateTimeKind kind = (DateTimeKind)reader.ReadByte();
-            return new DateTime(reader.ReadInt64(), kind);
-        }
-
-        static string? ReadString(BinaryReader reader)
-        {
-            string str = reader.ReadString();
-            bool isNull = str == string.Empty && reader.ReadBoolean();
-            return isNull ? null : str;
-        }
-        
         TypeCode typeCode = GetTypeCode(type);
         TypeConverter converter = TypeDescriptor.GetConverter(type);
 
@@ -2011,7 +2000,7 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
             TypeCode.Boolean => reader => getConvertedValue(reader.ReadBoolean()),
             TypeCode.Byte => reader => getConvertedValue(reader.ReadByte()),
             TypeCode.Char => reader => getConvertedValue(reader.ReadChar()),
-            TypeCode.DateTime => reader => getConvertedValue(ReadDateTime(reader)),
+            TypeCode.DateTime => reader => getConvertedValue(readDateTime(reader)),
             TypeCode.Decimal => reader => getConvertedValue(reader.ReadDecimal()),
             TypeCode.Double => reader => getConvertedValue(reader.ReadDouble()),
             TypeCode.Int16 => reader => getConvertedValue(reader.ReadInt16()),
@@ -2019,14 +2008,14 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
             TypeCode.Int64 => reader => getConvertedValue(reader.ReadInt64()),
             TypeCode.SByte => reader => getConvertedValue(reader.ReadSByte()),
             TypeCode.Single => reader => getConvertedValue(reader.ReadSingle()),
-            TypeCode.String => reader => getConvertedValue(ReadString(reader), true),
+            TypeCode.String => reader => getConvertedValue(readString(reader), true),
             TypeCode.UInt16 => reader => getConvertedValue(reader.ReadUInt16()),
             TypeCode.UInt32 => reader => getConvertedValue(reader.ReadUInt32()),
             TypeCode.UInt64 => reader => getConvertedValue(reader.ReadUInt64()),
             _ => null
         };
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        // Note that converter.ConvertFrom returns empty string for null string inputs, hence the following logic
         object? getConvertedValue<TReader>(TReader readValue, bool retainNull = false)
         {
             if (retainNull && readValue is null)
@@ -2035,6 +2024,19 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
             return converter.CanConvertFrom(typeof(TReader)) ? 
                 converter.ConvertFrom(readValue!) : 
                 readValue;
+        }
+
+        static DateTime readDateTime(BinaryReader reader)
+        {
+            DateTimeKind kind = (DateTimeKind)reader.ReadByte();
+            return new DateTime(reader.ReadInt64(), kind);
+        }
+
+        static string? readString(BinaryReader reader)
+        {
+            string str = reader.ReadString();
+            bool isNull = str == string.Empty && reader.ReadBoolean();
+            return isNull ? null : str;
         }
     }
 
@@ -2066,7 +2068,8 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
 
     private static Type GetListTypeElement(Type type)
     {
-        return type.IsArray ? type.GetElementType()! : type.IsGenericType ? type.GetGenericArguments()[0] : typeof(object);
+        return type.IsArray ? type.GetElementType()! : 
+            type.IsGenericType ? type.GetGenericArguments()[0] : typeof(object);
     }
 
     private static long GetFirstHash(int hashCode)
