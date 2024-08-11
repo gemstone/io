@@ -1723,6 +1723,8 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
 
     private static Action<Stream, object?>? GetWriteMethod(Type type)
     {
+        // Create from instance-based method with following signature:
+        // void WriteTo(Stream stream)
         MethodInfo? method = type.GetMethod("WriteTo", s_instanceFlags, null, s_types, null);
 
         if (method is not null)
@@ -1741,7 +1743,9 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
             return lambda.Compile();
         }
 
-        method = type.GetMethod("WriteTo", s_staticFlags, null, [..s_types, type], null);
+        // Create from static-based method with object-typed parameter with following signature:
+        // static void WriteTo(Stream stream, object obj)
+        method = type.GetMethod("WriteTo", s_staticFlags, null, [..s_types, typeof(object)], null);
 
         if (method is not null)
         {
@@ -1749,6 +1753,27 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
             return (stream, obj) => action(stream, obj);
         }
 
+        // Create from static-based method with strongly-typed parameter with following signature:
+        // static void WriteTo(Stream stream, T instance)
+        method = type.GetMethod("WriteTo", s_staticFlags, null, [..s_types, type], null);
+
+        if (method is not null)
+        {
+            ParameterExpression streamParam = Expression.Parameter(typeof(Stream), "stream");
+            ParameterExpression objParam = Expression.Parameter(typeof(object), "obj");
+            UnaryExpression objCast = Expression.Convert(objParam, type);
+            MethodCallExpression methodCall = Expression.Call(method, streamParam, objCast);
+
+            Expression<Action<Stream, object?>> lambda = Expression.Lambda<Action<Stream, object?>>(
+                methodCall,
+                streamParam,
+                objParam
+            );
+
+            return lambda.Compile();
+        }
+
+        // Handle native types
         Action<BinaryWriter, object?>? binaryWriterAction = GetBinaryWriterMethod(type);
 
         if (binaryWriterAction is null)
@@ -1774,6 +1799,7 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
         if (method is null)
             return null;
 
+        // Handle list/array types
         return (stream, source) =>
         {
             if (source is not IList items)
@@ -1789,14 +1815,15 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
 
     private static Func<Stream, object?>? GetReadMethod(Type type)
     {
+        // Create from constructor with stream parameter
         ConstructorInfo? constructor = type.GetConstructor(s_instanceFlags, null, s_types, null);
 
         if (constructor is not null)
         {
             List<ParameterExpression> parameterExpressions = s_types.Select(Expression.Parameter).ToList();
             NewExpression newExpression = Expression.New(constructor, parameterExpressions);
-            LambdaExpression lambdaExpression = Expression.Lambda(typeof(Func<Stream, object>), newExpression, parameterExpressions);
-            return (Func<Stream, object>)lambdaExpression.Compile();
+            LambdaExpression lambda = Expression.Lambda(typeof(Func<Stream, object>), newExpression, parameterExpressions);
+            return (Func<Stream, object>)lambda.Compile();
         }
 
         // Check for parameterless constructor
@@ -1804,6 +1831,8 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
 
         if (constructor is not null)
         {
+            // Create from instance-based method with following signature:
+            // void ReadFrom(Stream stream)
             MethodInfo? method = type.GetMethod("ReadFrom", s_instanceFlags, null, s_types, null);
 
             if (method is not null)
@@ -1827,15 +1856,38 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
                 return lambda.Compile();
             }
 
+            // See if a static "ReadFrom" method exists
             method = type.GetMethod("ReadFrom", s_staticFlags, null, s_types, null);
 
-            if (method is not null && method.ReturnType == typeof(object))
+            if (method is not null)
             {
-                Func<Stream, object?> action = (Func<Stream, object?>)Delegate.CreateDelegate(typeof(Func<Stream, object?>), method);
-                return stream => action(stream);
+                // Create from static-based method with object return with following signature:
+                // static object ReadFrom(Stream stream)
+                if (method.ReturnType == typeof(object))
+                {
+                    Func<Stream, object?> action = (Func<Stream, object?>)Delegate.CreateDelegate(typeof(Func<Stream, object?>), method);
+                    return stream => action(stream);
+                }
+
+                // Create from static-based method with strongly-typed return with following signature:
+                // static T ReadFrom(Stream stream)
+                if (method.ReturnType == type)
+                {
+                    ParameterExpression streamParam = Expression.Parameter(typeof(Stream), "stream");
+                    MethodCallExpression methodCall = Expression.Call(method, streamParam);
+                    UnaryExpression convertToObject = Expression.Convert(methodCall, typeof(object));
+
+                    Expression<Func<Stream, object>> lambda = Expression.Lambda<Func<Stream, object>>(
+                        convertToObject,
+                        streamParam
+                    );
+
+                    return (Func<Stream, object>)lambda.Compile();
+                }
             }
         }
 
+        // Handle native types
         Func<BinaryReader, object?>? binaryReaderFunc = GetBinaryReaderMethod(type);
 
         if (binaryReaderFunc is not null)
@@ -1869,6 +1921,7 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
         if (method is null)
             return null;
 
+        // Handle list/array types
         return stream =>
         {
             BinaryReader reader = new(stream, Encoding.UTF8, true);
