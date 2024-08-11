@@ -1961,8 +1961,8 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
         {
             writer.Write(str ?? string.Empty);
 
-            if (isNull)
-                writer.Write(true);
+            if (string.IsNullOrEmpty(str))
+                writer.Write(isNull);
         }
 
         TypeCode typeCode = GetTypeCode(type);
