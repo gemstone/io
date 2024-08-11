@@ -20,9 +20,9 @@
 //       Generated original version of source code.
 //
 //******************************************************************************************************
+// ReSharper disable InconsistentNaming
 
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -135,6 +135,60 @@ public class StaticTest
 
         if (obj is not StaticTest instance)
             throw new ArgumentException($"Object is not a '{nameof(StaticTest)}'", nameof(obj));
+
+        writer.Write(instance.ID.ToByteArray());
+        writer.Write(instance.Name);
+        writer.Write((byte)instance.Status);
+    }
+}
+
+/// <summary>
+/// Example class for manual static strongly-typed serialization.
+/// </summary>
+public class StaticTestST
+{
+    public StaticTestST()
+    {
+    }
+
+    public StaticTestST(Guid id, string name, ConnectionState status)
+    {
+        ID = id;
+        Name = name;
+        Status = status;
+    }
+
+    public Guid ID { get; set; }
+
+    public string Name { get; set; } = "";
+
+    public ConnectionState Status { get; set; }
+
+    /// <summary>
+    /// Deserializes the <see cref="InstanceTest"/> from a <see cref="Stream"/>.
+    /// </summary>
+    /// <param name="stream">Source stream.</param>
+    /// <returns>New deserialized instance.</returns>
+    public static StaticTestST ReadFrom(Stream stream)
+    {
+        BinaryReader reader = new(stream, Encoding.UTF8, true);
+
+        return new StaticTestST
+        {
+            ID = new Guid(reader.ReadBytes(16)),
+            Name = reader.ReadString(),
+            Status = (ConnectionState)reader.ReadByte()
+        };
+    }
+
+    /// <summary>
+    /// Serializes the <see cref="InstanceTest"/> to a <see cref="Stream"/>.
+    /// </summary>
+    /// <param name="stream">Target stream.</param>
+    /// <param name="instance">Instance to serialize.</param>
+    public static void WriteTo(Stream stream, StaticTestST instance)
+    {
+        BinaryWriter writer = new(stream, Encoding.UTF8, true);
 
         writer.Write(instance.ID.ToByteArray());
         writer.Write(instance.Name);
@@ -628,5 +682,36 @@ public class FileBackedDictionaryTest
         Assert.IsTrue(dictionary[0][1].Name == "Test1.2");
         Assert.IsTrue(dictionary[1][2].Name == "Test2.3");
         Assert.IsTrue(dictionary[1][3].Status == ConnectionState.Broken);
+    }
+
+    [TestMethod]
+    public void StronglyTypedStaticSerializationTest()
+    {
+        using FileBackedDictionary<int, StaticTestST[]> dictionary = [];
+
+        dictionary.Add(0,
+        [
+            new StaticTestST { ID = Guid.NewGuid(), Name = "ST-Test1.1", Status = ConnectionState.Closed },
+            new StaticTestST { ID = Guid.NewGuid(), Name = "ST-Test1.2", Status = ConnectionState.Executing }
+        ]);
+
+        Assert.IsTrue(dictionary.ContainsKey(0));
+        Assert.AreEqual(dictionary.Count, 1);
+        Assert.IsTrue(dictionary[0][0].Name == "ST-Test1.1");
+        Assert.IsTrue(dictionary[0][1].Status == ConnectionState.Executing);
+
+        dictionary.Add(1,
+        [
+            new StaticTestST { ID = Guid.NewGuid(), Name = "ST-Test2.1", Status = ConnectionState.Connecting },
+            new StaticTestST { ID = Guid.NewGuid(), Name = "ST-Test2.2", Status = ConnectionState.Broken },
+            new StaticTestST { ID = Guid.NewGuid(), Name = "ST-Test2.3", Status = ConnectionState.Closed },
+            new StaticTestST { ID = Guid.NewGuid(), Name = "ST-Test2.4", Status = ConnectionState.Fetching }
+        ]);
+
+        Assert.IsTrue(dictionary.ContainsKey(1));
+        Assert.AreEqual(dictionary.Count, 2);
+        Assert.IsTrue(dictionary[0][1].Name == "ST-Test1.2");
+        Assert.IsTrue(dictionary[1][2].Name == "ST-Test2.3");
+        Assert.IsTrue(dictionary[1][3].Status == ConnectionState.Fetching);
     }
 }
