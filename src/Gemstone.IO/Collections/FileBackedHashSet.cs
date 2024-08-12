@@ -34,12 +34,51 @@ namespace Gemstone.IO.Collections;
 /// Represents a lookup table backed by a file, with very little memory overhead.
 /// </summary>
 /// <typeparam name="T">The type of the items in the lookup table.</typeparam>
-public sealed class FileBackedHashSet<T> : ISet<T>, IDisposable where T : notnull
+public sealed class FileBackedHashSet<T> : FileBackedHashSet<T, object> where T : notnull
+{
+    /// <inheritdoc />
+    public FileBackedHashSet() { }
+
+    /// <inheritdoc />
+    public FileBackedHashSet(string filePath) : 
+        base(filePath) { }
+
+    /// <inheritdoc />
+    public FileBackedHashSet(IEqualityComparer<T>? comparer) :
+        base(comparer) { }
+
+    /// <inheritdoc />
+    public FileBackedHashSet(IEnumerable<T> enumerable) :
+        base(enumerable) { }
+
+    /// <inheritdoc />
+    public FileBackedHashSet(string filePath, IEqualityComparer<T>? comparer) :
+        base(filePath, comparer) { }
+
+    /// <inheritdoc />
+    public FileBackedHashSet(string filePath, IEnumerable<T> enumerable)
+        : base(filePath, enumerable) { }
+
+    /// <inheritdoc />
+    public FileBackedHashSet(IEnumerable<T> enumerable, IEqualityComparer<T>? comparer)
+        : base(enumerable, comparer) { }
+
+    /// <inheritdoc />
+    public FileBackedHashSet(string filePath, IEnumerable<T> enumerable, IEqualityComparer<T>? comparer) :
+        base(filePath, enumerable, comparer) { }
+}
+
+/// <summary>
+/// Represents a lookup table backed by a file, with very little memory overhead.
+/// </summary>
+/// <typeparam name="T">The type of the items in the lookup table.</typeparam>
+/// <typeparam name="TElem">The element type of <typeparamref name="T"/> when it is a <see cref="IList"/> type; otherwise, <see cref="object"/>.</typeparam>
+public class FileBackedHashSet<T, TElem> : ISet<T>, IDisposable where T : notnull
 {
     #region [ Members ]
 
     // Fields
-    private readonly FileBackedLookupTable<T, object, object, object> m_lookupTable;
+    private readonly FileBackedLookupTable<T, object, TElem, object> m_lookupTable;
 
     #endregion
 
@@ -127,7 +166,7 @@ public sealed class FileBackedHashSet<T> : ISet<T>, IDisposable where T : notnul
     /// <exception cref="InvalidOperationException"><typeparamref name="T"/> cannot be serialized.</exception>
     public FileBackedHashSet(string filePath, IEqualityComparer<T>? comparer)
     {
-        m_lookupTable = new FileBackedLookupTable<T, object, object, object>(LookupTableType.HashSet, filePath, comparer);
+        m_lookupTable = new FileBackedLookupTable<T, object, TElem, object>(LookupTableType.HashSet, filePath, comparer);
     }
 
     /// <summary>
@@ -176,7 +215,7 @@ public sealed class FileBackedHashSet<T> : ISet<T>, IDisposable where T : notnul
     /// <exception cref="InvalidOperationException"><typeparamref name="T"/> cannot be serialized.</exception>
     public FileBackedHashSet(string filePath, IEnumerable<T> enumerable, IEqualityComparer<T>? comparer)
     {
-        m_lookupTable = new FileBackedLookupTable<T, object, object, object>(LookupTableType.HashSet, filePath, comparer);
+        m_lookupTable = new FileBackedLookupTable<T, object, TElem, object>(LookupTableType.HashSet, filePath, comparer);
 
         foreach (T item in enumerable)
             Add(item);
