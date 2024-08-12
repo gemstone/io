@@ -56,12 +56,12 @@ public sealed class FileBackedHashSet<T> : FileBackedHashSet<T, object> where T 
         base(filePath, comparer) { }
 
     /// <inheritdoc />
-    public FileBackedHashSet(string filePath, IEnumerable<T> enumerable)
-        : base(filePath, enumerable) { }
+    public FileBackedHashSet(string filePath, IEnumerable<T> enumerable) : 
+        base(filePath, enumerable) { }
 
     /// <inheritdoc />
-    public FileBackedHashSet(IEnumerable<T> enumerable, IEqualityComparer<T>? comparer)
-        : base(enumerable, comparer) { }
+    public FileBackedHashSet(IEnumerable<T> enumerable, IEqualityComparer<T>? comparer) : 
+        base(enumerable, comparer) { }
 
     /// <inheritdoc />
     public FileBackedHashSet(string filePath, IEnumerable<T> enumerable, IEqualityComparer<T>? comparer) :
