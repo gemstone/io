@@ -650,7 +650,7 @@ public class FileBackedDictionaryTest
     [TestMethod]
     public void InstanceTestWithIListSerializationTest()
     {
-        using FileBackedDictionary<int, InstanceTestWithIList, InstanceTest> dictionary = [];
+        using FileBackedDictionary<int, InstanceTestWithIList, object, InstanceTest> dictionary = [];
 
         dictionary.Add(0,
         [

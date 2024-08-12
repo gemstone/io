@@ -39,7 +39,7 @@ public sealed class FileBackedHashSet<T> : ISet<T>, IDisposable where T : notnul
     #region [ Members ]
 
     // Fields
-    private readonly FileBackedLookupTable<T, object, object> m_lookupTable;
+    private readonly FileBackedLookupTable<T, object, object, object> m_lookupTable;
 
     #endregion
 
@@ -127,7 +127,7 @@ public sealed class FileBackedHashSet<T> : ISet<T>, IDisposable where T : notnul
     /// <exception cref="InvalidOperationException"><typeparamref name="T"/> cannot be serialized.</exception>
     public FileBackedHashSet(string filePath, IEqualityComparer<T>? comparer)
     {
-        m_lookupTable = new FileBackedLookupTable<T, object, object>(LookupTableType.HashSet, filePath, comparer);
+        m_lookupTable = new FileBackedLookupTable<T, object, object, object>(LookupTableType.HashSet, filePath, comparer);
     }
 
     /// <summary>
@@ -176,7 +176,7 @@ public sealed class FileBackedHashSet<T> : ISet<T>, IDisposable where T : notnul
     /// <exception cref="InvalidOperationException"><typeparamref name="T"/> cannot be serialized.</exception>
     public FileBackedHashSet(string filePath, IEnumerable<T> enumerable, IEqualityComparer<T>? comparer)
     {
-        m_lookupTable = new FileBackedLookupTable<T, object, object>(LookupTableType.HashSet, filePath, comparer);
+        m_lookupTable = new FileBackedLookupTable<T, object, object, object>(LookupTableType.HashSet, filePath, comparer);
 
         foreach (T item in enumerable)
             Add(item);
@@ -220,7 +220,7 @@ public sealed class FileBackedHashSet<T> : ISet<T>, IDisposable where T : notnul
     /// Gets the default signature used by the <see cref="FileBackedHashSet{T}"/>
     /// if no user-defined signature is supplied.
     /// </summary>
-    public byte[] DefaultSignature => new Guid(FileBackedLookupTable<T, object, object>.HashSetSignature).ToRfcBytes();
+    public byte[] DefaultSignature => new Guid(FileBackedLookupTable<T, object, object, object>.HashSetSignature).ToRfcBytes();
 
     /// <summary>
     /// Gets or sets the signature of the file backing the lookup table.

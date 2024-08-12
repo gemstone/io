@@ -20,6 +20,10 @@
 //       Generated original version of source code.
 //
 //******************************************************************************************************
+// ReSharper disable StaticFieldInGenericType
+// ReSharper disable UnusedMember.Local
+// ReSharper disable InconsistentNaming
+// ReSharper disable MustUseReturnValue
 
 using System;
 using System.Collections;
@@ -29,10 +33,6 @@ using System.Linq;
 using Gemstone.GuidExtensions;
 using Gemstone.IO.Checksums;
 using Gemstone.IO.Parsing;
-
-// ReSharper disable StaticFieldInGenericType
-// ReSharper disable UnusedMember.Local
-// ReSharper disable InconsistentNaming
 
 namespace Gemstone.IO.Collections;
 
@@ -49,7 +49,7 @@ internal enum LookupTableType
     HashSet
 }
 
-internal sealed class FileBackedLookupTable<TKey, TValue, TElem> : IEnumerable<KeyValuePair<TKey, TValue>>, IDisposable where TKey : notnull
+internal sealed class FileBackedLookupTable<TKey, TValue, TKeyElem, TValueElem> : IEnumerable<KeyValuePair<TKey, TValue>>, IDisposable where TKey : notnull
 {
     #region [ Members ]
 
@@ -245,7 +245,7 @@ internal sealed class FileBackedLookupTable<TKey, TValue, TElem> : IEnumerable<K
     #region [ Constructors ]
 
     /// <summary>
-    /// Creates a new instance of the <see cref="FileBackedLookupTable{TKey, TValue}"/> class.
+    /// Creates a new instance of the <see cref="FileBackedLookupTable{TKey, TValue, TKeyElem, TValueElem}"/> class.
     /// </summary>
     /// <param name="lookupTableType">Type of the lookup table used to tweak the file format.</param>
     /// <exception cref="InvalidOperationException">Either <typeparamref name="TKey"/> or <typeparamref name="TValue"/> cannot be serialized.</exception>
@@ -255,7 +255,7 @@ internal sealed class FileBackedLookupTable<TKey, TValue, TElem> : IEnumerable<K
     }
 
     /// <summary>
-    /// Creates a new instance of the <see cref="FileBackedLookupTable{TKey, TValue}"/> class.
+    /// Creates a new instance of the <see cref="FileBackedLookupTable{TKey, TValue, TKeyElem, TValueElem}"/> class.
     /// </summary>
     /// <param name="lookupTableType">Type of the lookup table used to tweak the file format.</param>
     /// <param name="filePath">The path to the file used to store the lookup table.</param>
@@ -268,7 +268,7 @@ internal sealed class FileBackedLookupTable<TKey, TValue, TElem> : IEnumerable<K
     }
 
     /// <summary>
-    /// Creates a new instance of the <see cref="FileBackedLookupTable{TKey, TValue}"/> class.
+    /// Creates a new instance of the <see cref="FileBackedLookupTable{TKey, TValue, TKeyElem, TValueElem}"/> class.
     /// </summary>
     /// <param name="lookupTableType">Type of the lookup table used to tweak the file format.</param>
     /// <param name="keyComparer">The equality comparer used to compare keys in the lookup table.</param>
@@ -279,7 +279,7 @@ internal sealed class FileBackedLookupTable<TKey, TValue, TElem> : IEnumerable<K
     }
 
     /// <summary>
-    /// Creates a new instance of the <see cref="FileBackedLookupTable{TKey, TValue}"/> class.
+    /// Creates a new instance of the <see cref="FileBackedLookupTable{TKey, TValue, TKeyElem, TValueElem}"/> class.
     /// </summary>
     /// <param name="lookupTableType">Type of the lookup table used to tweak the file format.</param>
     /// <param name="filePath">The path to the file used to store the lookup table.</param>
@@ -348,10 +348,10 @@ internal sealed class FileBackedLookupTable<TKey, TValue, TElem> : IEnumerable<K
     }
 
     /// <summary>
-    /// Gets the number of elements contained in the <see cref="FileBackedLookupTable{TKey, TValue}"/>.
+    /// Gets the number of elements contained in the <see cref="FileBackedLookupTable{TKey, TValue, TKeyElem, TValueElem}"/>.
     /// </summary>
     /// <returns>
-    /// The number of elements contained in the <see cref="FileBackedLookupTable{TKey, TValue}"/>.
+    /// The number of elements contained in the <see cref="FileBackedLookupTable{TKey, TValue, TKeyElem, TValueElem}"/>.
     /// </returns>
     public int Count
     {
@@ -365,10 +365,10 @@ internal sealed class FileBackedLookupTable<TKey, TValue, TElem> : IEnumerable<K
     }
 
     /// <summary>
-    /// Gets a value indicating whether the <see cref="FileBackedLookupTable{TKey, TValue}"/> is read-only.
+    /// Gets a value indicating whether the <see cref="FileBackedLookupTable{TKey, TValue, TKeyElem, TValueElem}"/> is read-only.
     /// </summary>
     /// <returns>
-    /// true if the <see cref="FileBackedLookupTable{TKey, TValue}"/> is read-only; otherwise, false.
+    /// true if the <see cref="FileBackedLookupTable{TKey, TValue, TKeyElem, TValueElem}"/> is read-only; otherwise, false.
     /// </returns>
     public bool IsReadOnly
     {
@@ -424,7 +424,7 @@ internal sealed class FileBackedLookupTable<TKey, TValue, TElem> : IEnumerable<K
     /// <param name="key">The key of the element to get or set.</param>
     /// <exception cref="ArgumentNullException"><paramref name="key"/> is null.</exception>
     /// <exception cref="KeyNotFoundException">The property is retrieved and <paramref name="key"/> is not found.</exception>
-    /// <exception cref="NotSupportedException">The property is set and the <see cref="FileBackedLookupTable{TKey, TValue}"/> is read-only.</exception>
+    /// <exception cref="NotSupportedException">The property is set and the <see cref="FileBackedLookupTable{TKey, TValue, TKeyElem, TValueElem}"/> is read-only.</exception>
     public TValue this[TKey key]
     {
         get
@@ -640,7 +640,7 @@ internal sealed class FileBackedLookupTable<TKey, TValue, TElem> : IEnumerable<K
         try
         {
             // There may be undefined behavior when reading from a lookup table with a
-            // pending transaction so we aggressively attempt to complete the transaction
+            // pending transaction, so we aggressively attempt to complete the transaction
             // and then reopen the file in read-only mode
             while (m_journalNode.Operation != JournalNode.None)
             {
@@ -657,13 +657,13 @@ internal sealed class FileBackedLookupTable<TKey, TValue, TElem> : IEnumerable<K
     }
 
     /// <summary>
-    /// Adds an element with the provided key and value to the <see cref="FileBackedLookupTable{TKey, TValue}"/>.
+    /// Adds an element with the provided key and value to the <see cref="FileBackedLookupTable{TKey, TValue, TKeyElem, TValueElem}"/>.
     /// </summary>
     /// <param name="key">The object to use as the key of the element to add.</param>
     /// <param name="value">The object to use as the value of the element to add.</param>
     /// <exception cref="ArgumentNullException"><paramref name="key"/> is null.</exception>
-    /// <exception cref="ArgumentException">An element with the same key already exists in the <see cref="FileBackedLookupTable{TKey, TValue}"/>.</exception>
-    /// <exception cref="NotSupportedException">The <see cref="FileBackedLookupTable{TKey, TValue}"/> is read-only.</exception>
+    /// <exception cref="ArgumentException">An element with the same key already exists in the <see cref="FileBackedLookupTable{TKey, TValue, TKeyElem, TValueElem}"/>.</exception>
+    /// <exception cref="NotSupportedException">The <see cref="FileBackedLookupTable{TKey, TValue, TKeyElem, TValueElem}"/> is read-only.</exception>
     public void Add(TKey key, TValue value)
     {
         if (key is null)
@@ -697,14 +697,14 @@ internal sealed class FileBackedLookupTable<TKey, TValue, TElem> : IEnumerable<K
     }
 
     /// <summary>
-    /// Adds an element with the provided key and value to the <see cref="FileBackedLookupTable{TKey, TValue}"/>.
+    /// Adds an element with the provided key and value to the <see cref="FileBackedLookupTable{TKey, TValue, TKeyElem, TValueElem}"/>.
     /// </summary>
     /// <param name="key">The object to use as the key of the element to add.</param>
     /// <param name="value">The object to use as the value of the element to add.</param>
     /// <returns>True if the item was successfully added; false otherwise.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="key"/> is null.</exception>
-    /// <exception cref="ArgumentException">An element with the same key already exists in the <see cref="FileBackedLookupTable{TKey, TValue}"/>.</exception>
-    /// <exception cref="NotSupportedException">The <see cref="FileBackedLookupTable{TKey, TValue}"/> is read-only.</exception>
+    /// <exception cref="ArgumentException">An element with the same key already exists in the <see cref="FileBackedLookupTable{TKey, TValue, TKeyElem, TValueElem}"/>.</exception>
+    /// <exception cref="NotSupportedException">The <see cref="FileBackedLookupTable{TKey, TValue, TKeyElem, TValueElem}"/> is read-only.</exception>
     public bool TryAdd(TKey? key, TValue value)
     {
         if (key is null || IsReadOnly)
@@ -737,16 +737,16 @@ internal sealed class FileBackedLookupTable<TKey, TValue, TElem> : IEnumerable<K
     }
 
     /// <summary>
-    /// Removes the element with the specified key from the <see cref="FileBackedLookupTable{TKey, TValue}"/>.
+    /// Removes the element with the specified key from the <see cref="FileBackedLookupTable{TKey, TValue, TKeyElem, TValueElem}"/>.
     /// </summary>
     /// <returns>
     /// true if the element is successfully removed; otherwise, false.
     /// This method also returns false if <paramref name="key"/> was not
-    /// found in the original <see cref="FileBackedLookupTable{TKey, TValue}"/>.
+    /// found in the original <see cref="FileBackedLookupTable{TKey, TValue, TKeyElem, TValueElem}"/>.
     /// </returns>
     /// <param name="key">The key of the element to remove.</param>
     /// <exception cref="ArgumentNullException"><paramref name="key"/> is null.</exception>
-    /// <exception cref="NotSupportedException">The <see cref="FileBackedLookupTable{TKey, TValue}"/> is read-only.</exception>
+    /// <exception cref="NotSupportedException">The <see cref="FileBackedLookupTable{TKey, TValue, TKeyElem, TValueElem}"/> is read-only.</exception>
     public bool Remove(TKey key)
     {
         if (key is null)
@@ -770,7 +770,7 @@ internal sealed class FileBackedLookupTable<TKey, TValue, TElem> : IEnumerable<K
     /// key and, if found, marks the lookup node.
     /// </summary>
     /// <param name="key">The key used to find the lookup node to be marked.</param>
-    /// <exception cref="NotSupportedException">The <see cref="FileBackedLookupTable{TKey, TValue}"/> is read-only.</exception>
+    /// <exception cref="NotSupportedException">The <see cref="FileBackedLookupTable{TKey, TValue, TKeyElem, TValueElem}"/> is read-only.</exception>
     public bool TryMark(TKey key)
     {
         if (m_lookupTableType != LookupTableType.HashSet)
@@ -793,7 +793,7 @@ internal sealed class FileBackedLookupTable<TKey, TValue, TElem> : IEnumerable<K
     /// Determines whether all occupied lookup nodes are marked.
     /// </summary>
     /// <returns>True if all occupied lookup nodes are marked; false otherwise.</returns>
-    /// <exception cref="NotSupportedException">The <see cref="FileBackedLookupTable{TKey, TValue}"/> is read-only.</exception>
+    /// <exception cref="NotSupportedException">The <see cref="FileBackedLookupTable{TKey, TValue, TKeyElem, TValueElem}"/> is read-only.</exception>
     public bool AllMarked()
     {
         if (m_lookupTableType != LookupTableType.HashSet)
@@ -821,7 +821,7 @@ internal sealed class FileBackedLookupTable<TKey, TValue, TElem> : IEnumerable<K
     /// <summary>
     /// Removes all unmarked nodes from the hash set.
     /// </summary>
-    /// <exception cref="NotSupportedException">The <see cref="FileBackedLookupTable{TKey, TValue}"/> is read-only.</exception>
+    /// <exception cref="NotSupportedException">The <see cref="FileBackedLookupTable{TKey, TValue, TKeyElem, TValueElem}"/> is read-only.</exception>
     public void RemoveMarked()
     {
         if (m_lookupTableType != LookupTableType.HashSet)
@@ -849,7 +849,7 @@ internal sealed class FileBackedLookupTable<TKey, TValue, TElem> : IEnumerable<K
     /// <summary>
     /// Removes all unmarked nodes from the hash set.
     /// </summary>
-    /// <exception cref="NotSupportedException">The <see cref="FileBackedLookupTable{TKey, TValue}"/> is read-only.</exception>
+    /// <exception cref="NotSupportedException">The <see cref="FileBackedLookupTable{TKey, TValue, TKeyElem, TValueElem}"/> is read-only.</exception>
     public void RemoveUnmarked()
     {
         if (m_lookupTableType != LookupTableType.HashSet)
@@ -878,7 +878,7 @@ internal sealed class FileBackedLookupTable<TKey, TValue, TElem> : IEnumerable<K
     /// <summary>
     /// Unmarks all lookup nodes in the hash set.
     /// </summary>
-    /// <exception cref="NotSupportedException">The <see cref="FileBackedLookupTable{TKey, TValue}"/> is read-only.</exception>
+    /// <exception cref="NotSupportedException">The <see cref="FileBackedLookupTable{TKey, TValue, TKeyElem, TValueElem}"/> is read-only.</exception>
     public void UnmarkAll()
     {
         if (m_lookupTableType != LookupTableType.HashSet)
@@ -897,12 +897,12 @@ internal sealed class FileBackedLookupTable<TKey, TValue, TElem> : IEnumerable<K
     }
 
     /// <summary>
-    /// Determines whether the <see cref="FileBackedLookupTable{TKey, TValue}"/> contains an element with the specified key.
+    /// Determines whether the <see cref="FileBackedLookupTable{TKey, TValue, TKeyElem, TValueElem}"/> contains an element with the specified key.
     /// </summary>
     /// <returns>
-    /// true if the <see cref="FileBackedLookupTable{TKey, TValue}"/> contains an element with the key; otherwise, false.
+    /// true if the <see cref="FileBackedLookupTable{TKey, TValue, TKeyElem, TValueElem}"/> contains an element with the key; otherwise, false.
     /// </returns>
-    /// <param name="key">The key to locate in the <see cref="FileBackedLookupTable{TKey, TValue}"/>.</param>
+    /// <param name="key">The key to locate in the <see cref="FileBackedLookupTable{TKey, TValue, TKeyElem, TValueElem}"/>.</param>
     /// <exception cref="ArgumentNullException"><paramref name="key"/> is null.</exception>
     public bool ContainsKey(TKey key)
     {
@@ -921,7 +921,7 @@ internal sealed class FileBackedLookupTable<TKey, TValue, TElem> : IEnumerable<K
     /// Gets the value associated with the specified key.
     /// </summary>
     /// <returns>
-    /// true if the object that implements <see cref="FileBackedLookupTable{TKey, TValue}"/> contains an element with the specified key; otherwise, false.
+    /// true if the object that implements <see cref="FileBackedLookupTable{TKey, TValue, TKeyElem, TValueElem}"/> contains an element with the specified key; otherwise, false.
     /// </returns>
     /// <param name="key">The key whose value to get.</param>
     /// <param name="value">When this method returns, the value associated with the specified key, if the key is found; otherwise, the default value for the type of the <paramref name="value"/> parameter. This parameter is passed uninitialized.</param>
@@ -949,9 +949,9 @@ internal sealed class FileBackedLookupTable<TKey, TValue, TElem> : IEnumerable<K
     }
 
     /// <summary>
-    /// Removes all items from the <see cref="FileBackedLookupTable{TKey, TValue}"/>.
+    /// Removes all items from the <see cref="FileBackedLookupTable{TKey, TValue, TKeyElem, TValueElem}"/>.
     /// </summary>
-    /// <exception cref="NotSupportedException">The <see cref="FileBackedLookupTable{TKey, TValue}"/> is read-only. </exception>
+    /// <exception cref="NotSupportedException">The <see cref="FileBackedLookupTable{TKey, TValue, TKeyElem, TValueElem}"/> is read-only. </exception>
     public void Clear()
     {
         FailIfReadOnly();
@@ -1090,8 +1090,8 @@ internal sealed class FileBackedLookupTable<TKey, TValue, TElem> : IEnumerable<K
                         FileStream.Seek(item1 + 2 * sizeof(long), SeekOrigin.Begin);
                         FileStream.Write(bytes, 2 * sizeof(long), length2 - 2 * sizeof(long));
 
-                        // Position nextItemPointer of the soon
-                        // to be orphaned node, pointing at item2
+                        // Position nextItemPointer of the soon-to-be
+                        // orphaned node, pointing at item2
                         FileWriter.Write(lookup1);
                         FileWriter.Write(item2);
 
@@ -1158,7 +1158,7 @@ internal sealed class FileBackedLookupTable<TKey, TValue, TElem> : IEnumerable<K
     }
 
     /// <summary>
-    /// Releases all the resources used by the <see cref="FileBackedLookupTable{TKey, TValue}"/> object.
+    /// Releases all the resources used by the <see cref="FileBackedLookupTable{TKey, TValue, TKeyElem, TValueElem}"/> object.
     /// </summary>
     public void Dispose() => Close();
 
@@ -1166,8 +1166,8 @@ internal sealed class FileBackedLookupTable<TKey, TValue, TElem> : IEnumerable<K
     {
         // When accessing the lookup table without explicitly opening the file,
         // we cannot determine the level of access required by all operations
-        // that will be performed against the lookup table so we default to write
-        // access and fall back on read access if necessary
+        // that will be performed against the lookup table, so we default to
+        // write access and fall back on read access if necessary
         try
         {
             Open();
@@ -1696,10 +1696,10 @@ internal sealed class FileBackedLookupTable<TKey, TValue, TElem> : IEnumerable<K
 
     static FileBackedLookupTable()
     {
-        Action<Stream, TKey>? writeKeyAction = StreamSerialization<TKey>.GetWriteMethod();
-        Action<Stream, TValue>? writeValueAction = StreamSerialization<TValue>.GetWriteMethod(typeof(TElem));
-        Func<Stream, TKey>? readKeyFunc = StreamSerialization<TKey>.GetReadMethod();
-        Func<Stream, TValue>? readValueFunc = StreamSerialization<TValue>.GetReadMethod(typeof(TElem));
+        Action<Stream, TKey>? writeKeyAction = StreamSerialization<TKey>.GetWriteMethod(typeof(TKeyElem));
+        Action<Stream, TValue>? writeValueAction = StreamSerialization<TValue>.GetWriteMethod(typeof(TValueElem));
+        Func<Stream, TKey>? readKeyFunc = StreamSerialization<TKey>.GetReadMethod(typeof(TKeyElem));
+        Func<Stream, TValue>? readValueFunc = StreamSerialization<TValue>.GetReadMethod(typeof(TValueElem));
 
         writeKeyAction ??= (_, _) => throw new InvalidOperationException($"Type of TKey ({typeof(TKey).FullName}) is not write serializable.");
         readKeyFunc ??= _ => throw new InvalidOperationException($"Type of TKey ({typeof(TKey).FullName}) is not read serializable.");
