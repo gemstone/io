@@ -259,7 +259,7 @@ public class FileBackedHashSet<T, TElem> : ISet<T>, IDisposable where T : notnul
     /// Gets the default signature used by the <see cref="FileBackedHashSet{T}"/>
     /// if no user-defined signature is supplied.
     /// </summary>
-    public byte[] DefaultSignature => new Guid(FileBackedLookupTable<T, object, object, object>.HashSetSignature).ToRfcBytes();
+    public byte[] DefaultSignature => new Guid(FileBackedLookupTable<T, object, TElem, object>.HashSetSignature).ToRfcBytes();
 
     /// <summary>
     /// Gets or sets the signature of the file backing the lookup table.
