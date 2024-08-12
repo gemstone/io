@@ -1790,7 +1790,10 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
         Type type = typeof(T);
 
         if (!IsListType(type))
-            return (stream, obj) => GetWriteMethod(type)?.Invoke(stream, obj!);
+        {
+            Action<Stream, object?>? writeMethod = GetWriteMethod(type);
+            return (stream, obj) => writeMethod?.Invoke(stream, obj!);
+        }
 
         Type elementType = GetListTypeElement(type);
         Action<Stream, object>? method = GetWriteMethod(elementType);
@@ -1910,9 +1913,11 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
 
         if (!IsListType(type))
         {
+            Func<Stream, object?>? readMethod = GetReadMethod(type);
+
             return stream =>
             {
-                object? obj = GetReadMethod(type)?.Invoke(stream);
+                object? obj = readMethod?.Invoke(stream);
                 return obj is null ? default! : (T)obj;
             };
         }
