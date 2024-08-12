@@ -1693,7 +1693,6 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
     // Static Fields
     private const BindingFlags s_instanceFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
     private const BindingFlags s_staticFlags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
-    private static readonly Type[] s_types = [ typeof(Stream) ];
     private static readonly Action<Stream, TKey?> s_writeKeyAction;
     private static readonly Action<Stream, TValue> s_writeValueAction;
     private static readonly Func<Stream, TKey> s_readKeyFunc;
@@ -1725,7 +1724,7 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
     {
         // Create from instance-based method with following signature:
         // void WriteTo(Stream stream)
-        MethodInfo? method = type.GetMethod("WriteTo", s_instanceFlags, null, s_types, null);
+        MethodInfo? method = type.GetMethod("WriteTo", s_instanceFlags, null, [typeof(Stream)], null);
 
         if (method is not null)
         {
@@ -1745,7 +1744,7 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
 
         // Create from static-based method with object-typed parameter with following signature:
         // static void WriteTo(Stream stream, object obj)
-        method = type.GetMethod("WriteTo", s_staticFlags, null, [..s_types, typeof(object)], null);
+        method = type.GetMethod("WriteTo", s_staticFlags, null, [typeof(Stream), typeof(object)], null);
 
         if (method is not null)
         {
@@ -1755,7 +1754,7 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
 
         // Create from static-based method with strongly-typed parameter with following signature:
         // static void WriteTo(Stream stream, T instance)
-        method = type.GetMethod("WriteTo", s_staticFlags, null, [..s_types, type], null);
+        method = type.GetMethod("WriteTo", s_staticFlags, null, [typeof(Stream), type], null);
 
         if (method is not null)
         {
@@ -1816,7 +1815,7 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
     private static Func<Stream, object?>? GetReadMethod(Type type)
     {
         // Create from constructor with stream parameter
-        ConstructorInfo? constructor = type.GetConstructor(s_instanceFlags, null, s_types, null);
+        ConstructorInfo? constructor = type.GetConstructor(s_instanceFlags, null, [typeof(Stream)], null);
 
         if (constructor is not null)
         {
@@ -1836,7 +1835,7 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
         {
             // Create from instance-based method with following signature:
             // void ReadFrom(Stream stream)
-            method = type.GetMethod("ReadFrom", s_instanceFlags, null, s_types, null);
+            method = type.GetMethod("ReadFrom", s_instanceFlags, null, [typeof(Stream)], null);
 
             if (method is not null)
             {
@@ -1861,7 +1860,7 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
         }
 
         // See if a static "ReadFrom" method exists
-        method = type.GetMethod("ReadFrom", s_staticFlags, null, s_types, null);
+        method = type.GetMethod("ReadFrom", s_staticFlags, null, [typeof(Stream)], null);
 
         if (method is not null)
         {
