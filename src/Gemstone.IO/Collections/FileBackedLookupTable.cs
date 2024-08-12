@@ -1802,9 +1802,9 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
             return null;
 
         // Handle list/array types
-        return (stream, source) =>
+        return (stream, obj) =>
         {
-            if (source is not IList items)
+            if (obj is not IList items)
                 return;
 
             BinaryWriter writer = new(stream, Encoding.UTF8, true);
