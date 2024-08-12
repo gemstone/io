@@ -30,17 +30,53 @@ using Gemstone.GuidExtensions;
 
 namespace Gemstone.IO.Collections;
 
+/// <inheritdoc />
+public sealed class FileBackedDictionary<TKey, TValue> : FileBackedDictionary<TKey, TValue, object> where TKey : notnull
+{
+    /// <inheritdoc />
+    public FileBackedDictionary() { }
+
+    /// <inheritdoc />
+    public FileBackedDictionary(string filePath) :
+        base(filePath) { }
+
+    /// <inheritdoc />
+    public FileBackedDictionary(IDictionary<TKey, TValue> dictionary) :
+        base(dictionary) { }
+
+    /// <inheritdoc />
+    public FileBackedDictionary(IEqualityComparer<TKey>? keyComparer) :
+        base(keyComparer) { }
+
+    /// <inheritdoc />
+    public FileBackedDictionary(string filePath, IDictionary<TKey, TValue> dictionary) :
+        base(filePath, dictionary) { }
+
+    /// <inheritdoc />
+    public FileBackedDictionary(string filePath, IEqualityComparer<TKey>? keyComparer) :
+        base (filePath, keyComparer) { }
+
+    /// <inheritdoc />
+    public FileBackedDictionary(IDictionary<TKey, TValue> dictionary, IEqualityComparer<TKey> keyComparer) : 
+        base( dictionary, keyComparer) { }
+
+    /// <inheritdoc />
+    public FileBackedDictionary(string filePath, IDictionary<TKey, TValue> dictionary, IEqualityComparer<TKey>? keyComparer) : 
+        base(filePath, dictionary, keyComparer) { }
+}
+
 /// <summary>
 /// Represents a lookup table of key/value pairs backed by a file, with very little memory overhead.
 /// </summary>
 /// <typeparam name="TKey">The type of the keys in the lookup table.</typeparam>
 /// <typeparam name="TValue">The type of the values in the lookup table.</typeparam>
-public sealed class FileBackedDictionary<TKey, TValue> : IDictionary<TKey, TValue>, IDisposable where TKey : notnull
+/// <typeparam name="TElem">The element type of <typeparamref name="TValue"/> when it is a <see cref="IList"/> type.</typeparam>
+public class FileBackedDictionary<TKey, TValue, TElem> : IDictionary<TKey, TValue>, IDisposable where TKey : notnull
 {
     #region [ Members ]
 
     // Fields
-    private readonly FileBackedLookupTable<TKey, TValue> m_lookupTable;
+    private readonly FileBackedLookupTable<TKey, TValue, TElem> m_lookupTable;
 
     #endregion
 
@@ -151,7 +187,7 @@ public sealed class FileBackedDictionary<TKey, TValue> : IDictionary<TKey, TValu
     /// <exception cref="InvalidOperationException">Either <typeparamref name="TKey"/> or <typeparamref name="TValue"/> cannot be serialized.</exception>
     public FileBackedDictionary(string filePath, IEqualityComparer<TKey>? keyComparer)
     {
-        m_lookupTable = new FileBackedLookupTable<TKey, TValue>(LookupTableType.Dictionary, filePath, keyComparer);
+        m_lookupTable = new FileBackedLookupTable<TKey, TValue, TElem>(LookupTableType.Dictionary, filePath, keyComparer);
     }
 
     /// <summary>
@@ -177,7 +213,7 @@ public sealed class FileBackedDictionary<TKey, TValue> : IDictionary<TKey, TValu
     /// <exception cref="InvalidOperationException">Either <typeparamref name="TKey"/> or <typeparamref name="TValue"/> cannot be serialized.</exception>
     public FileBackedDictionary(string filePath, IDictionary<TKey, TValue> dictionary, IEqualityComparer<TKey>? keyComparer)
     {
-        m_lookupTable = new FileBackedLookupTable<TKey, TValue>(LookupTableType.Dictionary, filePath, keyComparer);
+        m_lookupTable = new FileBackedLookupTable<TKey, TValue, TElem>(LookupTableType.Dictionary, filePath, keyComparer);
 
         foreach (KeyValuePair<TKey, TValue> kvp in dictionary)
             Add(kvp);
@@ -221,7 +257,7 @@ public sealed class FileBackedDictionary<TKey, TValue> : IDictionary<TKey, TValu
     /// Gets the default signature used by the <see cref="FileBackedDictionary{TKey, TValue}"/>
     /// if no user-defined signature is supplied.
     /// </summary>
-    public byte[] DefaultSignature => new Guid(FileBackedLookupTable<TKey, TValue>.DictionarySignature).ToRfcBytes();
+    public byte[] DefaultSignature => new Guid(FileBackedLookupTable<TKey, TValue, TElem>.DictionarySignature).ToRfcBytes();
 
     /// <summary>
     /// Gets or sets the signature of the file backing the lookup table.

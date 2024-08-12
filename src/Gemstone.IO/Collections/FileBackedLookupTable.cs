@@ -24,15 +24,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Text;
 using Gemstone.GuidExtensions;
 using Gemstone.IO.Checksums;
+using Gemstone.IO.Parsing;
 
 // ReSharper disable StaticFieldInGenericType
 // ReSharper disable UnusedMember.Local
@@ -53,7 +49,7 @@ internal enum LookupTableType
     HashSet
 }
 
-internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>, IDisposable where TKey : notnull
+internal sealed class FileBackedLookupTable<TKey, TValue, TElem> : IEnumerable<KeyValuePair<TKey, TValue>>, IDisposable where TKey : notnull
 {
     #region [ Members ]
 
@@ -1691,8 +1687,6 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
     #region [ Static ]
 
     // Static Fields
-    private const BindingFlags s_instanceFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-    private const BindingFlags s_staticFlags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
     private static readonly Action<Stream, TKey?> s_writeKeyAction;
     private static readonly Action<Stream, TValue> s_writeValueAction;
     private static readonly Func<Stream, TKey> s_readKeyFunc;
@@ -1702,10 +1696,10 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
 
     static FileBackedLookupTable()
     {
-        Action<Stream, TKey>? writeKeyAction = GetWriteMethod<TKey>();
-        Action<Stream, TValue>? writeValueAction = GetWriteMethod<TValue>();
-        Func<Stream, TKey>? readKeyFunc = GetReadMethod<TKey>();
-        Func<Stream, TValue>? readValueFunc = GetReadMethod<TValue>();
+        Action<Stream, TKey>? writeKeyAction = StreamSerialization<TKey>.GetWriteMethod();
+        Action<Stream, TValue>? writeValueAction = StreamSerialization<TValue>.GetWriteMethod(typeof(TElem));
+        Func<Stream, TKey>? readKeyFunc = StreamSerialization<TKey>.GetReadMethod();
+        Func<Stream, TValue>? readValueFunc = StreamSerialization<TValue>.GetReadMethod(typeof(TElem));
 
         writeKeyAction ??= (_, _) => throw new InvalidOperationException($"Type of TKey ({typeof(TKey).FullName}) is not write serializable.");
         readKeyFunc ??= _ => throw new InvalidOperationException($"Type of TKey ({typeof(TKey).FullName}) is not read serializable.");
@@ -1719,362 +1713,6 @@ internal sealed class FileBackedLookupTable<TKey, TValue> : IEnumerable<KeyValue
     }
 
     // Static Methods
-
-    private static Action<Stream, object?>? GetWriteMethod(Type type)
-    {
-        // Create from instance-based method with following signature:
-        // void WriteTo(Stream stream)
-        MethodInfo? method = type.GetMethod("WriteTo", s_instanceFlags, null, [typeof(Stream)], null);
-
-        if (method is not null)
-        {
-            ParameterExpression streamParam = Expression.Parameter(typeof(Stream), "stream");
-            ParameterExpression objParam = Expression.Parameter(typeof(object), "obj");
-            UnaryExpression objCast = Expression.Convert(objParam, type);
-            MethodCallExpression methodCall = Expression.Call(objCast, method, streamParam);
-
-            Expression<Action<Stream, object?>> lambda = Expression.Lambda<Action<Stream, object?>>(
-                methodCall,
-                streamParam,
-                objParam
-            );
-
-            return lambda.Compile();
-        }
-
-        // Create from static-based method with object-typed parameter with following signature:
-        // static void WriteTo(Stream stream, object obj)
-        method = type.GetMethod("WriteTo", s_staticFlags, null, [typeof(Stream), typeof(object)], null);
-
-        if (method is not null)
-        {
-            Action<Stream, object?> action = (Action<Stream, object?>)Delegate.CreateDelegate(typeof(Action<Stream, object?>), method);
-            return (stream, obj) => action(stream, obj);
-        }
-
-        // Create from static-based method with strongly-typed parameter with following signature:
-        // static void WriteTo(Stream stream, T instance)
-        method = type.GetMethod("WriteTo", s_staticFlags, null, [typeof(Stream), type], null);
-
-        if (method is not null)
-        {
-            ParameterExpression streamParam = Expression.Parameter(typeof(Stream), "stream");
-            ParameterExpression objParam = Expression.Parameter(typeof(object), "obj");
-            UnaryExpression objCast = Expression.Convert(objParam, type);
-            MethodCallExpression methodCall = Expression.Call(method, streamParam, objCast);
-
-            Expression<Action<Stream, object?>> lambda = Expression.Lambda<Action<Stream, object?>>(
-                methodCall,
-                streamParam,
-                objParam
-            );
-
-            return lambda.Compile();
-        }
-
-        // Handle native types
-        Action<BinaryWriter, object?>? binaryWriterAction = GetBinaryWriterMethod(type);
-
-        if (binaryWriterAction is null)
-            return null;
-
-        return (stream, obj) =>
-        {
-            using BinaryWriter writer = new(stream, Encoding.UTF8, true);
-            binaryWriterAction(writer, obj);
-        };
-    }
-
-    private static Action<Stream, T>? GetWriteMethod<T>()
-    {
-        Type type = typeof(T);
-
-        if (!IsListType(type))
-        {
-            Action<Stream, object?>? writeMethod = GetWriteMethod(type);
-            return (stream, obj) => writeMethod?.Invoke(stream, obj!);
-        }
-
-        Type elementType = GetListTypeElement(type);
-        Action<Stream, object>? method = GetWriteMethod(elementType);
-
-        if (method is null)
-            return null;
-
-        // Handle list/array types
-        return (stream, obj) =>
-        {
-            if (obj is not IList items)
-                return;
-
-            BinaryWriter writer = new(stream, Encoding.UTF8, true);
-            writer.Write(items.Count);
-
-            foreach (object item in items)
-                method(stream, item);
-        };
-    }
-
-    private static Func<Stream, object?>? GetReadMethod(Type type)
-    {
-        // Create from constructor with stream parameter
-        ConstructorInfo? constructor = type.GetConstructor(s_instanceFlags, null, [typeof(Stream)], null);
-
-        if (constructor is not null)
-        {
-            ParameterExpression streamParam = Expression.Parameter(typeof(Stream), "stream");
-            NewExpression newExpression = Expression.New(constructor, streamParam);
-            LambdaExpression lambda = Expression.Lambda(typeof(Func<Stream, object>), newExpression, streamParam);
-            
-            return (Func<Stream, object>)lambda.Compile();
-        }
-
-        MethodInfo? method;
-
-        // Check for parameterless constructor
-        constructor = type.GetConstructor(s_instanceFlags, null, Type.EmptyTypes, null);
-
-        if (constructor is not null)
-        {
-            // Create from instance-based method with following signature:
-            // void ReadFrom(Stream stream)
-            method = type.GetMethod("ReadFrom", s_instanceFlags, null, [typeof(Stream)], null);
-
-            if (method is not null)
-            {
-                NewExpression newExpression = Expression.New(type);
-                ParameterExpression streamParam = Expression.Parameter(typeof(Stream), "stream");
-                ParameterExpression instanceVar = Expression.Variable(type, "instance");
-                BinaryExpression assignInstance = Expression.Assign(instanceVar, newExpression);
-                MethodCallExpression methodCall = Expression.Call(instanceVar, method, streamParam);
-
-                Expression<Func<Stream, object>> lambda = Expression.Lambda<Func<Stream, object>>(
-                    Expression.Block(
-                        [instanceVar],  // Declare the variable in the block
-                        assignInstance, // Assign the new instance
-                        methodCall,     // Call the method on the instance
-                        Expression.Convert(instanceVar, typeof(object))
-                    ),
-                    streamParam
-                );
-
-                return lambda.Compile();
-            }
-        }
-
-        // See if a static "ReadFrom" method exists
-        method = type.GetMethod("ReadFrom", s_staticFlags, null, [typeof(Stream)], null);
-
-        if (method is not null)
-        {
-            // Create from static-based method with object return with following signature:
-            // static object ReadFrom(Stream stream)
-            if (method.ReturnType == typeof(object))
-            {
-                Func<Stream, object?> action = (Func<Stream, object?>)Delegate.CreateDelegate(typeof(Func<Stream, object?>), method);
-                return stream => action(stream);
-            }
-
-            // Create from static-based method with strongly-typed return with following signature:
-            // static T ReadFrom(Stream stream)
-            if (method.ReturnType == type)
-            {
-                ParameterExpression streamParam = Expression.Parameter(typeof(Stream), "stream");
-                MethodCallExpression methodCall = Expression.Call(method, streamParam);
-                UnaryExpression convertToObject = Expression.Convert(methodCall, typeof(object));
-
-                Expression<Func<Stream, object>> lambda = Expression.Lambda<Func<Stream, object>>(
-                    convertToObject,
-                    streamParam
-                );
-
-                return lambda.Compile();
-            }
-        }
-
-        // Handle native types
-        Func<BinaryReader, object?>? binaryReaderFunc = GetBinaryReaderMethod(type);
-
-        if (binaryReaderFunc is not null)
-        {
-            return stream =>
-            {
-                using BinaryReader reader = new(stream, Encoding.UTF8, true);
-                return binaryReaderFunc(reader);
-            };
-        }
-
-        return null;
-    }
-
-    private static Func<Stream, T>? GetReadMethod<T>()
-    {
-        Type type = typeof(T);
-
-        if (!IsListType(type))
-        {
-            Func<Stream, object?>? readMethod = GetReadMethod(type);
-
-            return stream =>
-            {
-                object? obj = readMethod?.Invoke(stream);
-                return obj is null ? default! : (T)obj;
-            };
-        }
-
-        Type elementType = GetListTypeElement(type);
-        Func<Stream, object?>? method = GetReadMethod(elementType);
-
-        if (method is null)
-            return null;
-
-        // Handle list/array types
-        return stream =>
-        {
-            BinaryReader reader = new(stream, Encoding.UTF8, true);
-            int count = reader.ReadInt32();
-            IList items;
-
-            if (type.IsArray)
-            {
-                items = (IList)Activator.CreateInstance(elementType.MakeArrayType(), count)!;
-
-                for (int i = 0; i < count; i++)
-                    items[i] = method(stream);
-            }
-            else
-            {
-                items = (IList)Activator.CreateInstance(type)!;
-
-                for (int i = 0; i < count; i++)
-                    items.Add(method(stream));
-            }
-
-            return (T)items;
-        };
-    }
-
-    private static Action<BinaryWriter, object?>? GetBinaryWriterMethod(Type type)
-    {
-        TypeCode typeCode = GetTypeCode(type);
-
-        return typeCode switch
-        {
-            TypeCode.Boolean => (writer, obj) => writer.Write(Convert.ToBoolean(obj)),
-            TypeCode.Byte => (writer, obj) => writer.Write(Convert.ToByte(obj)),
-            TypeCode.Char => (writer, obj) => writer.Write(Convert.ToChar(obj)),
-            TypeCode.DateTime => (writer, obj) => writeDateTime(writer, Convert.ToDateTime(obj)),
-            TypeCode.Decimal => (writer, obj) => writer.Write(Convert.ToDecimal(obj)),
-            TypeCode.Double => (writer, obj) => writer.Write(Convert.ToDouble(obj)),
-            TypeCode.Int16 => (writer, obj) => writer.Write(Convert.ToInt16(obj)),
-            TypeCode.Int32 => (writer, obj) => writer.Write(Convert.ToInt32(obj)),
-            TypeCode.Int64 => (writer, obj) => writer.Write(Convert.ToInt64(obj)),
-            TypeCode.SByte => (writer, obj) => writer.Write(Convert.ToSByte(obj)),
-            TypeCode.Single => (writer, obj) => writer.Write(Convert.ToSingle(obj)),
-            TypeCode.String => (writer, obj) => writeString(writer, Convert.ToString(obj), obj is null),
-            TypeCode.UInt16 => (writer, obj) => writer.Write(Convert.ToUInt16(obj)),
-            TypeCode.UInt32 => (writer, obj) => writer.Write(Convert.ToUInt32(obj)),
-            TypeCode.UInt64 => (writer, obj) => writer.Write(Convert.ToUInt64(obj)),
-            _ => null
-        };
-
-        void writeDateTime(BinaryWriter writer, DateTime dt)
-        {
-            writer.Write((byte)dt.Kind);
-            writer.Write(dt.Ticks);
-        }
-
-        // Note that Convert.ToString returns empty string for null inputs, hence the following logic
-        void writeString(BinaryWriter writer, string? str, bool isNull)
-        {
-            writer.Write(str ?? string.Empty);
-
-            if (string.IsNullOrEmpty(str))
-                writer.Write(isNull);
-        }
-    }
-
-    private static Func<BinaryReader, object?>? GetBinaryReaderMethod(Type type)
-    {
-        TypeCode typeCode = GetTypeCode(type);
-        TypeConverter converter = TypeDescriptor.GetConverter(type);
-
-        return typeCode switch
-        {
-            TypeCode.Boolean => reader => getConvertedValue(reader.ReadBoolean()),
-            TypeCode.Byte => reader => getConvertedValue(reader.ReadByte()),
-            TypeCode.Char => reader => getConvertedValue(reader.ReadChar()),
-            TypeCode.DateTime => reader => getConvertedValue(readDateTime(reader)),
-            TypeCode.Decimal => reader => getConvertedValue(reader.ReadDecimal()),
-            TypeCode.Double => reader => getConvertedValue(reader.ReadDouble()),
-            TypeCode.Int16 => reader => getConvertedValue(reader.ReadInt16()),
-            TypeCode.Int32 => reader => getConvertedValue(reader.ReadInt32()),
-            TypeCode.Int64 => reader => getConvertedValue(reader.ReadInt64()),
-            TypeCode.SByte => reader => getConvertedValue(reader.ReadSByte()),
-            TypeCode.Single => reader => getConvertedValue(reader.ReadSingle()),
-            TypeCode.String => reader => getConvertedValue(readString(reader), true),
-            TypeCode.UInt16 => reader => getConvertedValue(reader.ReadUInt16()),
-            TypeCode.UInt32 => reader => getConvertedValue(reader.ReadUInt32()),
-            TypeCode.UInt64 => reader => getConvertedValue(reader.ReadUInt64()),
-            _ => null
-        };
-
-        // Note that converter.ConvertFrom returns empty string for null string inputs, hence the following logic
-        object? getConvertedValue<TReader>(TReader readValue, bool retainNull = false)
-        {
-            if (retainNull && readValue is null)
-                return null;
-
-            return converter.CanConvertFrom(typeof(TReader)) ? 
-                converter.ConvertFrom(readValue!) : 
-                readValue;
-        }
-
-        static DateTime readDateTime(BinaryReader reader)
-        {
-            DateTimeKind kind = (DateTimeKind)reader.ReadByte();
-            return new DateTime(reader.ReadInt64(), kind);
-        }
-
-        static string? readString(BinaryReader reader)
-        {
-            string str = reader.ReadString();
-            bool isNull = str == string.Empty && reader.ReadBoolean();
-            return isNull ? null : str;
-        }
-    }
-
-    private static TypeCode GetTypeCode(Type type)
-    {
-        TypeCode typeCode = Type.GetTypeCode(type);
-
-        if (typeCode != TypeCode.Object)
-            return typeCode;
-
-        try
-        {
-            // IConvertible types will provide their own type code
-            if (Activator.CreateInstance(type) is IConvertible convertible)
-                return convertible.GetTypeCode();
-        }
-        catch (Exception ex)
-        {
-            LibraryEvents.OnSuppressedException(typeof(FileBackedLookupTable<,>), ex);
-        }
-
-        return TypeCode.Object;
-    }
-
-    private static bool IsListType(Type type)
-    {
-        return typeof(IList).IsAssignableFrom(type);
-    }
-
-    private static Type GetListTypeElement(Type type)
-    {
-        return type.IsArray ? type.GetElementType()! : 
-            type.IsGenericType ? type.GetGenericArguments()[0] : typeof(object);
-    }
 
     private static long GetFirstHash(int hashCode)
     {
