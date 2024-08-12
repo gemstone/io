@@ -79,7 +79,7 @@ public static class StreamSerialization<T>
     /// <summary>
     /// Gets read deserialization method for type <typeparamref name="T"/>.
     /// </summary>
-    /// <param name="typeHint">Provides a type for types if type can not otherwise be ascertained.</param>
+    /// <param name="typeHint">Provides a type for element list types if type can not otherwise be ascertained.</param>
     /// <typeparam name="T">Type that implements stream serialization.</typeparam>
     /// <returns>Read deserialization method.</returns>
     public static Func<Stream, T>? GetReadMethod(Type? typeHint = null)
@@ -276,7 +276,7 @@ public static class StreamSerialization<T>
     /// <summary>
     /// Gets write serialization method for type <typeparamref name="T"/>.
     /// </summary>
-    /// <param name="typeHint">Provides a type for types if type can not otherwise be ascertained.</param>
+    /// <param name="typeHint">Provides a type for element list types if type can not otherwise be ascertained.</param>
     /// <typeparam name="T"></typeparam>
     /// <returns>Write serialization method.</returns>
     public static Action<Stream, T>? GetWriteMethod(Type? typeHint = null)
