@@ -1211,14 +1211,143 @@
         <paramref name="filePath" /> is null.</exception>
       <exception cref="T:System.InvalidOperationException">Either <typeparamref name="TKey" /> or <typeparamref name="TValue" /> cannot be serialized.</exception>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`2.Add(System.Collections.Generic.KeyValuePair{`0,`1})">
+    <member name="T:Gemstone.IO.Collections.FileBackedDictionary`4">
+      <summary>
+            Represents a lookup table of key/value pairs backed by a file, with very little memory overhead.
+            </summary>
+      <typeparam name="TKey">The type of the keys in the lookup table.</typeparam>
+      <typeparam name="TValue">The type of the values in the lookup table.</typeparam>
+      <typeparam name="TKeyElem">The element type of <typeparamref name="TKey" /> when it is a <see cref="T:System.Collections.IList" /> type; otherwise, <see cref="T:System.Object" />.</typeparam>
+      <typeparam name="TValueElem">The element type of <typeparamref name="TValue" /> when it is a <see cref="T:System.Collections.IList" /> type; otherwise, <see cref="T:System.Object" />.</typeparam>
+    </member>
+    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`4.#ctor">
+      <summary>
+            Creates a new instance of the <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" /> class.
+            </summary>
+      <remarks>
+            This constructor uses the default equality comparer for file backed lookup tables,
+            which is not the same as the default equality comparer for <typeparamref name="TKey" />
+            objects. This is because the default implementation of <see cref="M:System.Object.GetHashCode" />
+            does not provide guarantees about consistency across platforms, or even implementations
+            of the CLR. Instead, the default equality comparer uses a byte-for-byte comparison to
+            determine equality between keys and a CRC-32 for its hash code implementation. This
+            means the performance of the hashing function is dependent on the performance of the
+            serialization function.
+            </remarks>
+      <exception cref="T:System.InvalidOperationException">Either <typeparamref name="TKey" /> or <typeparamref name="TValue" /> cannot be serialized.</exception>
+    </member>
+    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`4.#ctor(System.Collections.Generic.IDictionary{`0,`1})">
+      <summary>
+            Creates a new instance of the <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" /> class.
+            </summary>
+      <param name="dictionary">The dictionary whose elements are copied to this dictionary.</param>
+      <remarks>
+            This constructor uses the default equality comparer for file backed lookup tables,
+            which is not the same as the default equality comparer for <typeparamref name="TKey" />
+            objects. This is because the default implementation of <see cref="M:System.Object.GetHashCode" />
+            does not provide guarantees about consistency across platforms, or even implementations
+            of the CLR. Instead, the default equality comparer uses a byte-for-byte comparison to
+            determine equality between keys and a CRC-32 for its hash code implementation. This
+            means the performance of the hashing function is dependent on the performance of the
+            serialization function.
+            </remarks>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="dictionary" /> is null.</exception>
+      <exception cref="T:System.InvalidOperationException">Either <typeparamref name="TKey" /> or <typeparamref name="TValue" /> cannot be serialized.</exception>
+    </member>
+    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`4.#ctor(System.Collections.Generic.IDictionary{`0,`1},System.Collections.Generic.IEqualityComparer{`0})">
+      <summary>
+            Creates a new instance of the <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" /> class.
+            </summary>
+      <param name="dictionary">The dictionary whose elements are copied to this dictionary.</param>
+      <param name="keyComparer">The equality comparer used to compare keys in the dictionary.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="dictionary" /> is null.</exception>
+      <exception cref="T:System.InvalidOperationException">Either <typeparamref name="TKey" /> or <typeparamref name="TValue" /> cannot be serialized.</exception>
+    </member>
+    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`4.#ctor(System.Collections.Generic.IEqualityComparer{`0})">
+      <summary>
+            Creates a new instance of the <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" /> class.
+            </summary>
+      <param name="keyComparer">The equality comparer used to compare keys in the dictionary.</param>
+      <exception cref="T:System.InvalidOperationException">Either <typeparamref name="TKey" /> or <typeparamref name="TValue" /> cannot be serialized.</exception>
+    </member>
+    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`4.#ctor(System.String)">
+      <summary>
+            Creates a new instance of the <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" /> class.
+            </summary>
+      <param name="filePath">The path to the file used to store the lookup table.</param>
+      <remarks>
+            This constructor uses the default equality comparer for file backed lookup tables,
+            which is not the same as the default equality comparer for <typeparamref name="TKey" />
+            objects. This is because the default implementation of <see cref="M:System.Object.GetHashCode" />
+            does not provide guarantees about consistency across platforms, or even implementations
+            of the CLR. Instead, the default equality comparer uses a byte-for-byte comparison to
+            determine equality between keys and a CRC-32 for its hash code implementation. This
+            means the performance of the hashing function is dependent on the performance of the
+            serialization function.
+            </remarks>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="filePath" /> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="M:System.IO.Path.GetInvalidPathChars" />.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="filePath" /> is null.</exception>
+      <exception cref="T:System.InvalidOperationException">Either <typeparamref name="TKey" /> or <typeparamref name="TValue" /> cannot be serialized.</exception>
+    </member>
+    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`4.#ctor(System.String,System.Collections.Generic.IDictionary{`0,`1})">
+      <summary>
+            Creates a new instance of the <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" /> class.
+            </summary>
+      <param name="filePath">The path to the file used to store the lookup table.</param>
+      <param name="dictionary">The dictionary whose elements are copied to this dictionary.</param>
+      <remarks>
+            This constructor uses the default equality comparer for file backed lookup tables,
+            which is not the same as the default equality comparer for <typeparamref name="TKey" />
+            objects. This is because the default implementation of <see cref="M:System.Object.GetHashCode" />
+            does not provide guarantees about consistency across platforms, or even implementations
+            of the CLR. Instead, the default equality comparer uses a byte-for-byte comparison to
+            determine equality between keys and a CRC-32 for its hash code implementation. This
+            means the performance of the hashing function is dependent on the performance of the
+            serialization function.
+            </remarks>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="filePath" /> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="M:System.IO.Path.GetInvalidPathChars" />.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="filePath" /> is null or <paramref name="dictionary" /> is null.</exception>
+      <exception cref="T:System.InvalidOperationException">Either <typeparamref name="TKey" /> or <typeparamref name="TValue" /> cannot be serialized.</exception>
+    </member>
+    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`4.#ctor(System.String,System.Collections.Generic.IDictionary{`0,`1},System.Collections.Generic.IEqualityComparer{`0})">
+      <summary>
+            Creates a new instance of the <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" /> class.
+            </summary>
+      <param name="filePath">The path to the file used to store the lookup table.</param>
+      <param name="dictionary">The dictionary whose elements are copied to this dictionary.</param>
+      <param name="keyComparer">The equality comparer used to compare keys in the dictionary.</param>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="filePath" /> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="M:System.IO.Path.GetInvalidPathChars" />.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="filePath" /> is null or <paramref name="dictionary" /> is null.</exception>
+      <exception cref="T:System.InvalidOperationException">Either <typeparamref name="TKey" /> or <typeparamref name="TValue" /> cannot be serialized.</exception>
+    </member>
+    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`4.#ctor(System.String,System.Collections.Generic.IEqualityComparer{`0})">
+      <summary>
+            Creates a new instance of the <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" /> class.
+            </summary>
+      <param name="filePath">The path to the file used to store the lookup table.</param>
+      <param name="keyComparer">The equality comparer used to compare keys in the dictionary.</param>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="filePath" /> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="M:System.IO.Path.GetInvalidPathChars" />.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="filePath" /> is null.</exception>
+      <exception cref="T:System.InvalidOperationException">Either <typeparamref name="TKey" /> or <typeparamref name="TValue" /> cannot be serialized.</exception>
+    </member>
+    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`4.Add(System.Collections.Generic.KeyValuePair{`0,`1})">
       <summary>
             Adds an item to the <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" />.
             </summary>
       <param name="item">The object to add to the <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" />.</param>
       <exception cref="T:System.NotSupportedException">The <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" /> is read-only.</exception>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`2.Add(`0,`1)">
+    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`4.Add(`0,`1)">
       <summary>
             Adds an element with the provided key and value to the <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" />.
             </summary>
@@ -1229,30 +1358,30 @@
       <exception cref="T:System.ArgumentException">An element with the same key already exists in the <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" />.</exception>
       <exception cref="T:System.NotSupportedException">The <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" /> is read-only.</exception>
     </member>
-    <member name="P:Gemstone.IO.Collections.FileBackedDictionary`2.CacheSize">
+    <member name="P:Gemstone.IO.Collections.FileBackedDictionary`4.CacheSize">
       <summary>
             Gets or sets the size of the cache used
             to store data from the file in memory.
             </summary>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`2.Clear">
+    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`4.Clear">
       <summary>
             Removes all items from the <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" />.
             </summary>
       <exception cref="T:System.NotSupportedException">The <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" /> is read-only. </exception>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`2.Close">
+    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`4.Close">
       <summary>
             Closes the file backing this dictionary.
             </summary>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`2.Compact">
+    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`4.Compact">
       <summary>
             Defragments the item section of the dictionary,
             which gets fragmented after removing keys or updating values.
             </summary>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`2.Contains(System.Collections.Generic.KeyValuePair{`0,`1})">
+    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`4.Contains(System.Collections.Generic.KeyValuePair{`0,`1})">
       <summary>
             Determines whether the <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" /> contains a specific value.
             </summary>
@@ -1261,7 +1390,7 @@
             true if <paramref name="item" /> is found in the <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" />; otherwise, false.
             </returns>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`2.ContainsKey(`0)">
+    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`4.ContainsKey(`0)">
       <summary>
             Determines whether the <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" /> contains an element with the specified key.
             </summary>
@@ -1272,7 +1401,7 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="key" /> is null.</exception>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`2.CopyTo(System.Collections.Generic.KeyValuePair{`0,`1}[],System.Int32)">
+    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`4.CopyTo(System.Collections.Generic.KeyValuePair{`0,`1}[],System.Int32)">
       <summary>
             Copies the elements of the <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" /> to an <see cref="T:System.Array" />, starting at a particular <see cref="T:System.Array" /> index.
             </summary>
@@ -1284,7 +1413,7 @@
         <paramref name="arrayIndex" /> is less than 0.</exception>
       <exception cref="T:System.ArgumentException">The number of elements in the source <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" /> is greater than the available space from <paramref name="arrayIndex" /> to the end of the destination <paramref name="array" />.</exception>
     </member>
-    <member name="P:Gemstone.IO.Collections.FileBackedDictionary`2.Count">
+    <member name="P:Gemstone.IO.Collections.FileBackedDictionary`4.Count">
       <summary>
             Gets the number of elements contained in the <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" />.
             </summary>
@@ -1292,18 +1421,18 @@
             The number of elements contained in the <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" />.
             </returns>
     </member>
-    <member name="P:Gemstone.IO.Collections.FileBackedDictionary`2.DefaultSignature">
+    <member name="P:Gemstone.IO.Collections.FileBackedDictionary`4.DefaultSignature">
       <summary>
             Gets the default signature used by the <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" />
             if no user-defined signature is supplied.
             </summary>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`2.Dispose">
+    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`4.Dispose">
       <summary>
             Releases all the resources used by the <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" /> object.
             </summary>
     </member>
-    <member name="P:Gemstone.IO.Collections.FileBackedDictionary`2.FilePath">
+    <member name="P:Gemstone.IO.Collections.FileBackedDictionary`4.FilePath">
       <summary>
             Gets or sets the path to the file backing this dictionary.
             </summary>
@@ -1313,7 +1442,7 @@
             </remarks>
       <exception cref="T:System.ArgumentException">FilePath is set and is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="M:System.IO.Path.GetInvalidPathChars" />.</exception>
     </member>
-    <member name="P:Gemstone.IO.Collections.FileBackedDictionary`2.FragmentationCount">
+    <member name="P:Gemstone.IO.Collections.FileBackedDictionary`4.FragmentationCount">
       <summary>
             Gets the number of operations that fragment the
             lookup table that have occurred since the last
@@ -1325,7 +1454,7 @@
             since the last time it was opened.
             </remarks>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`2.GetEnumerator">
+    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`4.GetEnumerator">
       <summary>
             Returns an enumerator that iterates through the collection.
             </summary>
@@ -1333,19 +1462,19 @@
             A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
             </returns>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`2.GetKeys">
+    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`4.GetKeys">
       <summary>
             Gets an enumerable used to iterate only the keys in the dictionary.
             </summary>
       <returns>An enumerable used to iterate only the keys in the dictionary.</returns>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`2.GetValues">
+    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`4.GetValues">
       <summary>
             Gets an enumerable used to iterate only the values in the dictionary.
             </summary>
       <returns>An enumerable used to iterate only the values in the dictionary.</returns>
     </member>
-    <member name="P:Gemstone.IO.Collections.FileBackedDictionary`2.IsReadOnly">
+    <member name="P:Gemstone.IO.Collections.FileBackedDictionary`4.IsReadOnly">
       <summary>
             Gets a value indicating whether the <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" /> is read-only.
             </summary>
@@ -1353,7 +1482,7 @@
             true if the <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" /> is read-only; otherwise, false.
             </returns>
     </member>
-    <member name="P:Gemstone.IO.Collections.FileBackedDictionary`2.Item(`0)">
+    <member name="P:Gemstone.IO.Collections.FileBackedDictionary`4.Item(`0)">
       <summary>
             Gets or sets the element with the specified key.
             </summary>
@@ -1366,7 +1495,7 @@
       <exception cref="T:System.Collections.Generic.KeyNotFoundException">The property is retrieved and <paramref name="key" /> is not found.</exception>
       <exception cref="T:System.NotSupportedException">The property is set and the <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" /> is read-only.</exception>
     </member>
-    <member name="P:Gemstone.IO.Collections.FileBackedDictionary`2.Keys">
+    <member name="P:Gemstone.IO.Collections.FileBackedDictionary`4.Keys">
       <summary>
             Gets an <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" /> containing the keys of the <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" />.
             </summary>
@@ -1374,19 +1503,19 @@
             An <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" /> containing the keys of the object that implements <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" />.
             </returns>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`2.Open">
+    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`4.Open">
       <summary>
             Opens the file backing this dictionary.
             </summary>
       <exception cref="T:System.InvalidOperationException">File is already open.</exception>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`2.OpenRead">
+    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`4.OpenRead">
       <summary>
             Opens the file backing this hash set in read-only mode.
             </summary>
       <exception cref="T:System.InvalidOperationException">File is already open.</exception>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`2.Remove(System.Collections.Generic.KeyValuePair{`0,`1})">
+    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`4.Remove(System.Collections.Generic.KeyValuePair{`0,`1})">
       <summary>
             Removes the first occurrence of a specific object from the <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" />.
             </summary>
@@ -1397,7 +1526,7 @@
             </returns>
       <exception cref="T:System.NotSupportedException">The <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" /> is read-only.</exception>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`2.Remove(`0)">
+    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`4.Remove(`0)">
       <summary>
             Removes the element with the specified key from the <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" />.
             </summary>
@@ -1411,7 +1540,7 @@
         <paramref name="key" /> is null.</exception>
       <exception cref="T:System.NotSupportedException">The <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" /> is read-only.</exception>
     </member>
-    <member name="P:Gemstone.IO.Collections.FileBackedDictionary`2.Signature">
+    <member name="P:Gemstone.IO.Collections.FileBackedDictionary`4.Signature">
       <summary>
             Gets or sets the signature of the file backing the lookup table.
             </summary>
@@ -1419,7 +1548,7 @@
       <exception cref="T:System.ArgumentException">Attempt is made to set Signature to a value larger than the maximum allowed size.</exception>
       <exception cref="T:System.NotSupportedException">Attempt is made to modify Signature of a read-only lookup table.</exception>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`2.TryGetValue(`0,`1@)">
+    <member name="M:Gemstone.IO.Collections.FileBackedDictionary`4.TryGetValue(`0,`1@)">
       <summary>
             Gets the value associated with the specified key.
             </summary>
@@ -1431,7 +1560,7 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="key" /> is null.</exception>
     </member>
-    <member name="P:Gemstone.IO.Collections.FileBackedDictionary`2.Values">
+    <member name="P:Gemstone.IO.Collections.FileBackedDictionary`4.Values">
       <summary>
             Gets an <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" /> containing the values in the <see cref="T:Gemstone.IO.Collections.FileBackedDictionary`2" />.
             </summary>
@@ -1573,7 +1702,142 @@
       <exception cref="T:System.InvalidOperationException">
         <typeparamref name="T" /> cannot be serialized.</exception>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`1.Add(`0)">
+    <member name="T:Gemstone.IO.Collections.FileBackedHashSet`2">
+      <summary>
+            Represents a lookup table backed by a file, with very little memory overhead.
+            </summary>
+      <typeparam name="T">The type of the items in the lookup table.</typeparam>
+      <typeparam name="TElem">The element type of <typeparamref name="T" /> when it is a <see cref="T:System.Collections.IList" /> type; otherwise, <see cref="T:System.Object" />.</typeparam>
+    </member>
+    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`2.#ctor">
+      <summary>
+            Creates a new instance of the <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" /> class.
+            </summary>
+      <remarks>
+            This constructor uses the default equality comparer for file backed lookup tables,
+            which is not the same as the default equality comparer for <typeparamref name="T" />
+            objects. This is because the default implementation of <see cref="M:System.Object.GetHashCode" />
+            does not provide guarantees about consistency across platforms, or even implementations
+            of the CLR. Instead, the default equality comparer uses a byte-for-byte comparison to
+            determine equality between keys and a CRC-32 for its hash code implementation. This
+            means the performance of the hashing function is dependent on the performance of the
+            serialization function.
+            </remarks>
+      <exception cref="T:System.InvalidOperationException">
+        <typeparamref name="T" /> cannot be serialized.</exception>
+    </member>
+    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`2.#ctor(System.Collections.Generic.IEnumerable{`0})">
+      <summary>
+            Creates a new instance of the <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" /> class.
+            </summary>
+      <param name="enumerable">The enumerable whose elements are copied to this hash set.</param>
+      <remarks>
+            This constructor uses the default equality comparer for file backed lookup tables,
+            which is not the same as the default equality comparer for <typeparamref name="T" />
+            objects. This is because the default implementation of <see cref="M:System.Object.GetHashCode" />
+            does not provide guarantees about consistency across platforms, or even implementations
+            of the CLR. Instead, the default equality comparer uses a byte-for-byte comparison to
+            determine equality between keys and a CRC-32 for its hash code implementation. This
+            means the performance of the hashing function is dependent on the performance of the
+            serialization function.
+            </remarks>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="enumerable" /> is null.</exception>
+      <exception cref="T:System.InvalidOperationException">
+        <typeparamref name="T" /> cannot be serialized.</exception>
+    </member>
+    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`2.#ctor(System.Collections.Generic.IEnumerable{`0},System.Collections.Generic.IEqualityComparer{`0})">
+      <summary>
+            Creates a new instance of the <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" /> class.
+            </summary>
+      <param name="enumerable">The enumerable whose elements are copied to this hash set.</param>
+      <param name="comparer">The equality comparer used to compare items in the hash set.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="enumerable" /> is null.</exception>
+      <exception cref="T:System.InvalidOperationException">
+        <typeparamref name="T" /> cannot be serialized.</exception>
+    </member>
+    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`2.#ctor(System.Collections.Generic.IEqualityComparer{`0})">
+      <summary>
+            Creates a new instance of the <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" /> class.
+            </summary>
+      <param name="comparer">The equality comparer used to compare items in the hash set.</param>
+      <exception cref="T:System.InvalidOperationException">
+        <typeparamref name="T" /> cannot be serialized.</exception>
+    </member>
+    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`2.#ctor(System.String)">
+      <summary>
+            Creates a new instance of the <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" /> class.
+            </summary>
+      <param name="filePath">The path to the file used to store the lookup table.</param>
+      <remarks>
+            This constructor uses the default equality comparer for file backed lookup tables,
+            which is not the same as the default equality comparer for <typeparamref name="T" />
+            objects. This is because the default implementation of <see cref="M:System.Object.GetHashCode" />
+            does not provide guarantees about consistency across platforms, or even implementations
+            of the CLR. Instead, the default equality comparer uses a byte-for-byte comparison to
+            determine equality between keys and a CRC-32 for its hash code implementation. This
+            means the performance of the hashing function is dependent on the performance of the
+            serialization function.
+            </remarks>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="filePath" /> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="M:System.IO.Path.GetInvalidPathChars" />.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="filePath" /> is null.</exception>
+      <exception cref="T:System.InvalidOperationException">
+        <typeparamref name="T" /> cannot be serialized.</exception>
+    </member>
+    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`2.#ctor(System.String,System.Collections.Generic.IEnumerable{`0})">
+      <summary>
+            Creates a new instance of the <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" /> class.
+            </summary>
+      <param name="filePath">The path to the file used to store the lookup table.</param>
+      <param name="enumerable">The enumerable whose elements are copied to this hash set.</param>
+      <remarks>
+            This constructor uses the default equality comparer for file backed lookup tables,
+            which is not the same as the default equality comparer for <typeparamref name="T" />
+            objects. This is because the default implementation of <see cref="M:System.Object.GetHashCode" />
+            does not provide guarantees about consistency across platforms, or even implementations
+            of the CLR. Instead, the default equality comparer uses a byte-for-byte comparison to
+            determine equality between keys and a CRC-32 for its hash code implementation. This
+            means the performance of the hashing function is dependent on the performance of the
+            serialization function.
+            </remarks>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="filePath" /> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="M:System.IO.Path.GetInvalidPathChars" />.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="filePath" /> is null or <paramref name="enumerable" /> is null.</exception>
+      <exception cref="T:System.InvalidOperationException">
+        <typeparamref name="T" /> cannot be serialized.</exception>
+    </member>
+    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`2.#ctor(System.String,System.Collections.Generic.IEnumerable{`0},System.Collections.Generic.IEqualityComparer{`0})">
+      <summary>
+            Creates a new instance of the <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" /> class.
+            </summary>
+      <param name="filePath">The path to the file used to store the lookup table.</param>
+      <param name="enumerable">The enumerable whose elements are copied to this hash set.</param>
+      <param name="comparer">The equality comparer used to compare items in the hash set.</param>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="filePath" /> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="M:System.IO.Path.GetInvalidPathChars" />.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="filePath" /> is null or <paramref name="enumerable" /> is null.</exception>
+      <exception cref="T:System.InvalidOperationException">
+        <typeparamref name="T" /> cannot be serialized.</exception>
+    </member>
+    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`2.#ctor(System.String,System.Collections.Generic.IEqualityComparer{`0})">
+      <summary>
+            Creates a new instance of the <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" /> class.
+            </summary>
+      <param name="filePath">The path to the file used to store the lookup table.</param>
+      <param name="comparer">The equality comparer used to compare items in the hash set.</param>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="filePath" /> is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="M:System.IO.Path.GetInvalidPathChars" />.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="filePath" /> is null.</exception>
+      <exception cref="T:System.InvalidOperationException">
+        <typeparamref name="T" /> cannot be serialized.</exception>
+    </member>
+    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`2.Add(`0)">
       <summary>
             Adds an element to the current set and returns a value to indicate if the element was successfully added. 
             </summary>
@@ -1582,30 +1846,30 @@
             true if the element is added to the set; false if the element is already in the set.
             </returns>
     </member>
-    <member name="P:Gemstone.IO.Collections.FileBackedHashSet`1.CacheSize">
+    <member name="P:Gemstone.IO.Collections.FileBackedHashSet`2.CacheSize">
       <summary>
             Gets or sets the size of the cache used
             to store data from the file in memory.
             </summary>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`1.Clear">
+    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`2.Clear">
       <summary>
             Removes all items from the <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" />.
             </summary>
       <exception cref="T:System.NotSupportedException">The <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" /> is read-only.</exception>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`1.Close">
+    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`2.Close">
       <summary>
             Closes the file backing this hash set.
             </summary>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`1.Compact">
+    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`2.Compact">
       <summary>
             Defragments the item section of the hash set,
             which gets fragmented after removing items.
             </summary>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`1.Contains(`0)">
+    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`2.Contains(`0)">
       <summary>
             Determines whether the <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" /> contains a specific value.
             </summary>
@@ -1614,7 +1878,7 @@
             true if <paramref name="item" /> is found in the <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" />; otherwise, false.
             </returns>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`1.CopyTo(`0[],System.Int32)">
+    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`2.CopyTo(`0[],System.Int32)">
       <summary>
             Copies the elements of the <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" /> to an <see cref="T:System.Array" />, starting at a particular <see cref="T:System.Array" /> index.
             </summary>
@@ -1626,7 +1890,7 @@
         <paramref name="arrayIndex" /> is less than 0.</exception>
       <exception cref="T:System.ArgumentException">The number of elements in the source <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" /> is greater than the available space from <paramref name="arrayIndex" /> to the end of the destination <paramref name="array" />.</exception>
     </member>
-    <member name="P:Gemstone.IO.Collections.FileBackedHashSet`1.Count">
+    <member name="P:Gemstone.IO.Collections.FileBackedHashSet`2.Count">
       <summary>
             Gets the number of elements contained in the <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" />.
             </summary>
@@ -1634,18 +1898,18 @@
             The number of elements contained in the <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" />.
             </returns>
     </member>
-    <member name="P:Gemstone.IO.Collections.FileBackedHashSet`1.DefaultSignature">
+    <member name="P:Gemstone.IO.Collections.FileBackedHashSet`2.DefaultSignature">
       <summary>
             Gets the default signature used by the <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" />
             if no user-defined signature is supplied.
             </summary>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`1.Dispose">
+    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`2.Dispose">
       <summary>
             Releases all the resources used by the <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" /> object.
             </summary>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`1.ExceptWith(System.Collections.Generic.IEnumerable{`0})">
+    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`2.ExceptWith(System.Collections.Generic.IEnumerable{`0})">
       <summary>
             Removes all elements in the specified collection from the current set.
             </summary>
@@ -1654,7 +1918,7 @@
         <paramref name="other" /> is null.</exception>
       <exception cref="T:System.NotSupportedException">The <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" /> is read-only.</exception>
     </member>
-    <member name="P:Gemstone.IO.Collections.FileBackedHashSet`1.FilePath">
+    <member name="P:Gemstone.IO.Collections.FileBackedHashSet`2.FilePath">
       <summary>
             Gets or sets the path to the file backing this hash set.
             </summary>
@@ -1664,7 +1928,7 @@
             </remarks>
       <exception cref="T:System.ArgumentException">FilePath is set and is a zero-length string, contains only white space, or contains one or more invalid characters as defined by <see cref="M:System.IO.Path.GetInvalidPathChars" />.</exception>
     </member>
-    <member name="P:Gemstone.IO.Collections.FileBackedHashSet`1.FragmentationCount">
+    <member name="P:Gemstone.IO.Collections.FileBackedHashSet`2.FragmentationCount">
       <summary>
             Gets the number of operations that fragment the
             lookup table that have occurred since the last
@@ -1676,7 +1940,7 @@
             since the last time it was opened.
             </remarks>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`1.GetEnumerator">
+    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`2.GetEnumerator">
       <summary>
             Returns an enumerator that iterates through the collection.
             </summary>
@@ -1684,7 +1948,7 @@
             A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
             </returns>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`1.IntersectWith(System.Collections.Generic.IEnumerable{`0})">
+    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`2.IntersectWith(System.Collections.Generic.IEnumerable{`0})">
       <summary>
             Modifies the current set so that it contains only elements that are also in a specified collection.
             </summary>
@@ -1693,7 +1957,7 @@
         <paramref name="other" /> is null.</exception>
       <exception cref="T:System.NotSupportedException">The <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" /> is read-only.</exception>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`1.IsProperSubsetOf(System.Collections.Generic.IEnumerable{`0})">
+    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`2.IsProperSubsetOf(System.Collections.Generic.IEnumerable{`0})">
       <summary>
             Determines whether the current set is a proper (strict) subset of a specified collection.
             </summary>
@@ -1705,7 +1969,7 @@
         <paramref name="other" /> is null.</exception>
       <exception cref="T:System.NotSupportedException">The <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" /> is read-only.</exception>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`1.IsProperSupersetOf(System.Collections.Generic.IEnumerable{`0})">
+    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`2.IsProperSupersetOf(System.Collections.Generic.IEnumerable{`0})">
       <summary>
             Determines whether the current set is a proper (strict) superset of a specified collection.
             </summary>
@@ -1717,7 +1981,7 @@
         <paramref name="other" /> is null.</exception>
       <exception cref="T:System.NotSupportedException">The <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" /> is read-only.</exception>
     </member>
-    <member name="P:Gemstone.IO.Collections.FileBackedHashSet`1.IsReadOnly">
+    <member name="P:Gemstone.IO.Collections.FileBackedHashSet`2.IsReadOnly">
       <summary>
             Gets a value indicating whether the <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" /> is read-only.
             </summary>
@@ -1725,7 +1989,7 @@
             true if the <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" /> is read-only; otherwise, false.
             </returns>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`1.IsSubsetOf(System.Collections.Generic.IEnumerable{`0})">
+    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`2.IsSubsetOf(System.Collections.Generic.IEnumerable{`0})">
       <summary>
             Determines whether a set is a subset of a specified collection.
             </summary>
@@ -1737,7 +2001,7 @@
         <paramref name="other" /> is null.</exception>
       <exception cref="T:System.NotSupportedException">The <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" /> is read-only.</exception>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`1.IsSupersetOf(System.Collections.Generic.IEnumerable{`0})">
+    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`2.IsSupersetOf(System.Collections.Generic.IEnumerable{`0})">
       <summary>
             Determines whether the current set is a superset of a specified collection.
             </summary>
@@ -1748,19 +2012,19 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="other" /> is null.</exception>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`1.Open">
+    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`2.Open">
       <summary>
             Opens the file backing this hash set.
             </summary>
       <exception cref="T:System.InvalidOperationException">File is already open.</exception>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`1.OpenRead">
+    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`2.OpenRead">
       <summary>
             Opens the file backing this hash set in read-only mode.
             </summary>
       <exception cref="T:System.InvalidOperationException">File is already open.</exception>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`1.Overlaps(System.Collections.Generic.IEnumerable{`0})">
+    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`2.Overlaps(System.Collections.Generic.IEnumerable{`0})">
       <summary>
             Determines whether the current set overlaps with the specified collection.
             </summary>
@@ -1771,7 +2035,7 @@
       <exception cref="T:System.ArgumentNullException">
         <paramref name="other" /> is null.</exception>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`1.Remove(`0)">
+    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`2.Remove(`0)">
       <summary>
             Removes the first occurrence of a specific object from the <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" />.
             </summary>
@@ -1781,7 +2045,7 @@
             </returns>
       <exception cref="T:System.NotSupportedException">The <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" /> is read-only.</exception>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`1.RemoveWhere(System.Predicate{`0})">
+    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`2.RemoveWhere(System.Predicate{`0})">
       <summary>
             Removes all elements that match the conditions defined by the specified predicate from a <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" /> collection.
             </summary>
@@ -1790,7 +2054,7 @@
       <exception cref="T:System.ArgumentNullException">match is null</exception>
       <exception cref="T:System.NotSupportedException">The <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" /> is read-only.</exception>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`1.SetEquals(System.Collections.Generic.IEnumerable{`0})">
+    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`2.SetEquals(System.Collections.Generic.IEnumerable{`0})">
       <summary>
             Determines whether the current set and the specified collection contain the same elements.
             </summary>
@@ -1802,7 +2066,7 @@
         <paramref name="other" /> is null.</exception>
       <exception cref="T:System.NotSupportedException">The <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" /> is read-only.</exception>
     </member>
-    <member name="P:Gemstone.IO.Collections.FileBackedHashSet`1.Signature">
+    <member name="P:Gemstone.IO.Collections.FileBackedHashSet`2.Signature">
       <summary>
             Gets or sets the signature of the file backing the lookup table.
             </summary>
@@ -1810,7 +2074,7 @@
       <exception cref="T:System.ArgumentException">Attempt is made to set Signature to a value larger than the maximum allowed size.</exception>
       <exception cref="T:System.NotSupportedException">Attempt is made to modify Signature of a read-only lookup table.</exception>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`1.SymmetricExceptWith(System.Collections.Generic.IEnumerable{`0})">
+    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`2.SymmetricExceptWith(System.Collections.Generic.IEnumerable{`0})">
       <summary>
             Modifies the current set so that it contains only elements that are present
             either in the current set or in the specified collection, but not both. 
@@ -1820,7 +2084,7 @@
         <paramref name="other" /> is null.</exception>
       <exception cref="T:System.NotSupportedException">The <see cref="T:Gemstone.IO.Collections.FileBackedHashSet`1" /> is read-only.</exception>
     </member>
-    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`1.UnionWith(System.Collections.Generic.IEnumerable{`0})">
+    <member name="M:Gemstone.IO.Collections.FileBackedHashSet`2.UnionWith(System.Collections.Generic.IEnumerable{`0})">
       <summary>
             Modifies the current set so that it contains all elements that are present in either the current set or the specified collection.
             </summary>
@@ -2232,6 +2496,59 @@
             Gets or sets the data source identifier of the frame image.
             </summary>
     </member>
+    <member name="T:Gemstone.IO.Parsing.ISupportStreamSerialization">
+      <summary>
+            Specifies that an object supports serialization via static <see cref="T:System.IO.Stream" /> operations
+            using object-typed <see cref="M:Gemstone.IO.Parsing.ISupportStreamSerialization.ReadFrom(System.IO.Stream)" /> and <see cref="M:Gemstone.IO.Parsing.ISupportStreamSerialization.WriteTo(System.IO.Stream,System.Object)" /> methods.
+            </summary>
+      <remarks>
+            This interface exists to allow classes to properly define the needed method signatures for using
+            <see cref="T:Gemstone.IO.Parsing.StreamSerialization`1" /> operations. However, as long as the <see cref="M:Gemstone.IO.Parsing.ISupportStreamSerialization.ReadFrom(System.IO.Stream)" />
+            and <see cref="M:Gemstone.IO.Parsing.ISupportStreamSerialization.WriteTo(System.IO.Stream,System.Object)" /> methods exist on a class with the proper signature, actual implementation
+            of this interface is optional.
+            </remarks>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.ISupportStreamSerialization.ReadFrom(System.IO.Stream)">
+      <summary>
+            Deserializes an instance of type <typeparamref name="T" /> from a <see cref="T:System.IO.Stream" />.
+            </summary>
+      <param name="stream">Source stream.</param>
+      <returns>New deserialized instance.</returns>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.ISupportStreamSerialization.WriteTo(System.IO.Stream,System.Object)">
+      <summary>
+            Serializes an <paramref name="instance" /> of type <typeparamref name="T" /> to a <see cref="T:System.IO.Stream" />.
+            </summary>
+      <param name="stream">Target stream.</param>
+      <param name="instance">Instance to serialize.</param>
+    </member>
+    <member name="T:Gemstone.IO.Parsing.ISupportStreamSerialization`1">
+      <summary>
+            Specifies that an object supports serialization via static <see cref="T:System.IO.Stream" /> operations
+            using strongly-typed <see cref="M:Gemstone.IO.Parsing.ISupportStreamSerialization`1.ReadFrom(System.IO.Stream)" /> and <see cref="M:Gemstone.IO.Parsing.ISupportStreamSerialization`1.WriteTo(System.IO.Stream,`0)" /> methods.
+            </summary>
+      <typeparam name="T">Type that implements stream serialization.</typeparam>
+      <remarks>
+            This interface exists to allow classes to properly define the needed method signatures for using
+            <see cref="T:Gemstone.IO.Parsing.StreamSerialization`1" /> operations. However, as long as the <see cref="M:Gemstone.IO.Parsing.ISupportStreamSerialization`1.ReadFrom(System.IO.Stream)" />
+            and <see cref="M:Gemstone.IO.Parsing.ISupportStreamSerialization`1.WriteTo(System.IO.Stream,`0)" /> methods exist on a class with the proper signature, actual implementation
+            of this interface is optional.
+            </remarks>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.ISupportStreamSerialization`1.ReadFrom(System.IO.Stream)">
+      <summary>
+            Deserializes an instance of type <typeparamref name="T" /> from a <see cref="T:System.IO.Stream" />.
+            </summary>
+      <param name="stream">Source stream.</param>
+      <returns>New deserialized instance.</returns>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.ISupportStreamSerialization`1.WriteTo(System.IO.Stream,`0)">
+      <summary>
+            Serializes an <paramref name="instance" /> of type <typeparamref name="T" /> to a <see cref="T:System.IO.Stream" />.
+            </summary>
+      <param name="stream">Target stream.</param>
+      <param name="instance">Instance to serialize.</param>
+    </member>
     <member name="T:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3">
       <summary>
             This class defines a basic implementation of parsing functionality suitable for automating the parsing of multiple
@@ -2398,6 +2715,52 @@
       <summary>
             Defines the source identifier of the <see cref="F:Gemstone.IO.Parsing.MultiSourceFrameImageParserBase`3.SourceIdentifiableBuffer.Buffer" />.
             </summary>
+    </member>
+    <member name="T:Gemstone.IO.Parsing.StreamSerialization`1">
+      <summary>
+            Defines stream serialization operations for natives types or classes that expose <c>ReadFrom</c> and
+            <c>WriteTo</c> methods. Instance and static options available. Arrays and lists of types are also
+            supported, so long as base type is a native type or supports required serialization methods.
+            </summary>
+      <typeparam name="T">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>typeparam</parameter>
+            <parameter>T</parameter>
+            <parameter>T:Gemstone.IO.Parsing.StreamSerialization`1</parameter>
+          </include>
+        </markup>
+      </typeparam>
+      <remarks>
+        <para>
+            Deserialization Method Implementation Options:<br /><c>ReadFrom</c> Instance signature: <c>void ReadFrom(Stream)</c><br /><c>ReadFrom</c> Static object-based signature: <c>static object ReadFrom(Stream)</c><br /><c>ReadFrom</c> Static strongly-typed signature: <c>static T ReadFrom(Stream)</c><br />
+            Note that deserialization of type also supports a constructor that accepts a standalone
+            <see cref="T:System.IO.Stream" /> parameter.
+            </para>
+        <para>
+            Serialization Method Implementation Options:<br /><c>WriteTo</c> Instance signature: <c>void WriteTo(Stream)</c><br /><c>WriteTo</c> Static object-based signature: <c>static void WriteTo(Stream, object)</c><br /><c>WriteTo</c> Static strongly-typed signature: <c>static void WriteTo(Stream, T)</c><br /></para>
+        <para>
+            Note that proper static method signatures can be defined for a class by implementing the
+            <see cref="T:Gemstone.IO.Parsing.ISupportStreamSerialization" /> or <see cref="T:Gemstone.IO.Parsing.ISupportStreamSerialization`1" />
+            interface, implicitly or explicitly.
+            </para>
+      </remarks>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.StreamSerialization`1.GetReadMethod(System.Type)">
+      <summary>
+            Gets read deserialization method for type <typeparamref name="T" />.
+            </summary>
+      <param name="typeHint">Provides a type for element list types if type can not otherwise be ascertained.</param>
+      <typeparam name="T">Type that implements stream serialization.</typeparam>
+      <returns>Read deserialization method.</returns>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.StreamSerialization`1.GetWriteMethod(System.Type)">
+      <summary>
+            Gets write serialization method for type <typeparamref name="T" />.
+            </summary>
+      <param name="typeHint">Provides a type for element list types if type can not otherwise be ascertained.</param>
+      <typeparam name="T"></typeparam>
+      <returns>Write serialization method.</returns>
     </member>
     <member name="T:Gemstone.IO.Parsing.TemplatedExpressionParser">
       <summary>
