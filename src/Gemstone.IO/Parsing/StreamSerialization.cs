@@ -40,6 +40,7 @@ namespace Gemstone.IO.Parsing;
 /// <c>WriteTo</c> methods. Instance and static options available. Arrays and lists of types are also
 /// supported, so long as base type is a native type or supports required serialization methods.
 /// </summary>
+/// <typeparam name="T">Target type for stream serialization.</typeparam>
 /// <remarks>
 /// <para>
 /// Deserialization Method Implementation Options:<br/>

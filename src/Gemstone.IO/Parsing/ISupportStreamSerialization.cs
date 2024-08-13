@@ -24,8 +24,7 @@
 #if !NET
 using System;
 #endif
-using 
-System.IO;
+using System.IO;
 
 namespace Gemstone.IO.Parsing;
 
