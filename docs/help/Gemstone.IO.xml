@@ -2722,15 +2722,7 @@
             <c>WriteTo</c> methods. Instance and static options available. Arrays and lists of types are also
             supported, so long as base type is a native type or supports required serialization methods.
             </summary>
-      <typeparam name="T">
-        <markup>
-          <include item="SMCMissingParamTag">
-            <parameter>typeparam</parameter>
-            <parameter>T</parameter>
-            <parameter>T:Gemstone.IO.Parsing.StreamSerialization`1</parameter>
-          </include>
-        </markup>
-      </typeparam>
+      <typeparam name="T">Target type for stream serialization.</typeparam>
       <remarks>
         <para>
             Deserialization Method Implementation Options:<br /><c>ReadFrom</c> Instance signature: <c>void ReadFrom(Stream)</c><br /><c>ReadFrom</c> Static object-based signature: <c>static object ReadFrom(Stream)</c><br /><c>ReadFrom</c> Static strongly-typed signature: <c>static T ReadFrom(Stream)</c><br />
