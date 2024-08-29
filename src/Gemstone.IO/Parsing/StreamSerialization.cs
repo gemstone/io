@@ -80,7 +80,10 @@ public static class StreamSerialization<T>
     /// <summary>
     /// Gets read deserialization method for type <typeparamref name="T"/>.
     /// </summary>
-    /// <param name="elementType">Provides a type representing the elements when type <typeparamref name="T"/> is a list type and element type can not otherwise be ascertained.</param>
+    /// <param name="elementType">
+    /// Provides a type representing the encompassed elements when type <typeparamref name="T"/> is a list or array type, and element type cannot otherwise
+    /// be ascertained, e.g., when element type is an <see cref="object"/>.
+    /// </param>
     /// <returns>Read deserialization method.</returns>
     public static Func<Stream, T>? GetReadMethod(Type? elementType = null)
     {
@@ -276,7 +279,10 @@ public static class StreamSerialization<T>
     /// <summary>
     /// Gets write serialization method for type <typeparamref name="T"/>.
     /// </summary>
-    /// <param name="elementType">Provides a type representing the elements when type <typeparamref name="T"/> is a list type and element type can not otherwise be ascertained.</param>
+    /// <param name="elementType">
+    /// Provides a type representing the encompassed elements when type <typeparamref name="T"/> is a list or array type, and element type cannot otherwise
+    /// be ascertained, e.g., when element type is an <see cref="object"/>.
+    /// </param>
     /// <returns>Write serialization method.</returns>
     public static Action<Stream, T>? GetWriteMethod(Type? elementType = null)
     {
