@@ -80,10 +80,10 @@ public static class StreamSerialization<T>
     /// <summary>
     /// Gets read deserialization method for type <typeparamref name="T"/>.
     /// </summary>
-    /// <param name="typeHint">Provides a type for element list types if type can not otherwise be ascertained.</param>
+    /// <param name="elementType">Provides a type representing the elements when type <typeparamref name="T"/> is a list type and element type can not otherwise be ascertained.</param>
     /// <typeparam name="T">Type that implements stream serialization.</typeparam>
     /// <returns>Read deserialization method.</returns>
-    public static Func<Stream, T>? GetReadMethod(Type? typeHint = null)
+    public static Func<Stream, T>? GetReadMethod(Type? elementType = null)
     {
         Type type = typeof(T);
 
@@ -98,7 +98,7 @@ public static class StreamSerialization<T>
             };
         }
 
-        Type elementType = typeHint is null || typeHint == typeof(object) ? GetListTypeElement(type) : typeHint;
+        elementType = elementType is null || elementType == typeof(object) ? GetListTypeElement(type) : elementType;
         Func<Stream, object?>? method = GetReadMethodForType(elementType);
 
         if (method is null)
@@ -277,10 +277,10 @@ public static class StreamSerialization<T>
     /// <summary>
     /// Gets write serialization method for type <typeparamref name="T"/>.
     /// </summary>
-    /// <param name="typeHint">Provides a type for element list types if type can not otherwise be ascertained.</param>
-    /// <typeparam name="T"></typeparam>
+    /// <param name="elementType">Provides a type representing the elements when type <typeparamref name="T"/> is a list type and element type can not otherwise be ascertained.</param>
+    /// <typeparam name="T">Type that implements stream serialization.</typeparam>
     /// <returns>Write serialization method.</returns>
-    public static Action<Stream, T>? GetWriteMethod(Type? typeHint = null)
+    public static Action<Stream, T>? GetWriteMethod(Type? elementType = null)
     {
         Type type = typeof(T);
 
@@ -290,7 +290,7 @@ public static class StreamSerialization<T>
             return (stream, obj) => writeMethod?.Invoke(stream, obj!);
         }
 
-        Type elementType = typeHint is null || typeHint == typeof(object) ? GetListTypeElement(type) : typeHint;
+        elementType = elementType is null || elementType == typeof(object) ? GetListTypeElement(type) : elementType;
         Action<Stream, object>? method = GetWriteMethodForType(elementType);
 
         if (method is null)
