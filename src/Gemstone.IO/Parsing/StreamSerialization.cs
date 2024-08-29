@@ -452,15 +452,19 @@ public static class StreamSerialization<T>
         if (type.IsArray)
             return type.GetElementType()!;
 
-        if (type.IsGenericType)
-            return type.GetGenericArguments()[0];
-
         Type[] interfaces = type.GetInterfaces();
 
         // Check if the type implements any generic IList<T> -- just getting first
         Type? enumerableType = interfaces.FirstOrDefault(interfaceType =>
             interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IList<>));
 
-        return enumerableType?.GetGenericArguments().FirstOrDefault() ?? typeof(object);
+        Type? listType = enumerableType?.GetGenericArguments().FirstOrDefault();
+
+        if (listType is not null)
+            return listType;
+
+        // As a fall-back, check if type is generic and return first generic argument. This will
+        // not be 100% reliable but user can always provide the target element type as a parameter.
+        return type.IsGenericType ? type.GetGenericArguments()[0] : typeof(object);
     }
 }
