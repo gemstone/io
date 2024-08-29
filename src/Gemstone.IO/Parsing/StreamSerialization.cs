@@ -84,12 +84,13 @@ public static class StreamSerialization<T>
     /// Provides a type representing the encompassed elements when type <typeparamref name="T"/> is a list or array type, and element type cannot otherwise
     /// be ascertained, e.g., when element type is an <see cref="object"/>.
     /// </param>
+    /// <param name="skipListHandling">Set to <c>true</c> to skip automatic handling of list types.</param>
     /// <returns>Read deserialization method.</returns>
-    public static Func<Stream, T>? GetReadMethod(Type? elementType = null)
+    public static Func<Stream, T>? GetReadMethod(Type? elementType = null, bool skipListHandling = false)
     {
         Type type = typeof(T);
 
-        if (!IsListType(type))
+        if (!IsListType(type) || skipListHandling)
         {
             Func<Stream, object?>? readMethod = GetReadMethodForType(type);
 
@@ -283,12 +284,13 @@ public static class StreamSerialization<T>
     /// Provides a type representing the encompassed elements when type <typeparamref name="T"/> is a list or array type, and element type cannot otherwise
     /// be ascertained, e.g., when element type is an <see cref="object"/>.
     /// </param>
+    /// <param name="skipListHandling">Set to <c>true</c> to skip automatic handling of list types.</param>
     /// <returns>Write serialization method.</returns>
-    public static Action<Stream, T>? GetWriteMethod(Type? elementType = null)
+    public static Action<Stream, T>? GetWriteMethod(Type? elementType = null, bool skipListHandling = false)
     {
         Type type = typeof(T);
 
-        if (!IsListType(type))
+        if (!IsListType(type) || skipListHandling)
         {
             Action<Stream, object?>? writeMethod = GetWriteMethodForType(type);
             return (stream, obj) => writeMethod?.Invoke(stream, obj!);
