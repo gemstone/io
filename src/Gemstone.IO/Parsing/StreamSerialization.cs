@@ -21,7 +21,6 @@
 //
 //******************************************************************************************************
 // ReSharper disable InconsistentNaming
-// ReSharper disable IdentifierTypo
 
 using System;
 using System.Collections;
@@ -32,6 +31,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using static Gemstone.IO.Parsing.ISupportStreamSerialization;
 
 namespace Gemstone.IO.Parsing;
 
@@ -64,19 +64,6 @@ namespace Gemstone.IO.Parsing;
 /// </remarks>
 public static class StreamSerialization<T>
 {
-    private const BindingFlags InstanceFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-    private const BindingFlags StaticFlags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
-
-    private const string NamespacePrefix = $"{nameof(Gemstone)}.{nameof(IO)}.{nameof(Parsing)}.{nameof(ISupportStreamSerialization)}";
-    
-    private const string ReadFromMethod = nameof(ISupportStreamSerialization.ReadFrom);
-    private const string ReadFromMethodEII = $"{NamespacePrefix}.{ReadFromMethod}";             // Explicit ISupportStreamSerialization implementation
-    private const string ReadFromMethodEIOfTI = $"{NamespacePrefix}<{{0}}>.{ReadFromMethod}";   // Explicit ISupportStreamSerialization<T> implementation
-    
-    private const string WriteToMethod = nameof(ISupportStreamSerialization.WriteTo);
-    private const string WriteToMethodEII = $"{NamespacePrefix}.{WriteToMethod}";               // Explicit ISupportStreamSerialization implementation
-    private const string WriteToMethodEIOfTI = $"{NamespacePrefix}<{{0}}>.{WriteToMethod}";     // Explicit ISupportStreamSerialization<T> implementation
-
     /// <summary>
     /// Gets read deserialization method for type <typeparamref name="T"/>.
     /// </summary>
@@ -84,13 +71,13 @@ public static class StreamSerialization<T>
     /// Provides a type representing the encompassed elements when type <typeparamref name="T"/> is a list or array type, and element type cannot otherwise
     /// be ascertained, e.g., when element type is an <see cref="object"/>.
     /// </param>
-    /// <param name="skipListHandling">Set to <c>true</c> to skip automatic handling of list types.</param>
+    /// <param name="skipAutoListHandling">Set to <c>true</c> to skip automatic handling of list types.</param>
     /// <returns>Read deserialization method.</returns>
-    public static Func<Stream, T>? GetReadMethod(Type? elementType = null, bool skipListHandling = false)
+    public static Func<Stream, T>? GetReadMethod(Type? elementType = null, bool? skipAutoListHandling = null)
     {
         Type type = typeof(T);
 
-        if (!IsListType(type) || skipListHandling)
+        if (!IsListType(type, skipAutoListHandling))
         {
             Func<Stream, object?>? readMethod = GetReadMethodForType(type);
 
@@ -180,10 +167,10 @@ public static class StreamSerialization<T>
             }
         }
 
-        // See if a static "ReadFrom" method exists
+        // See if a static "ReadFrom" method exists - prioritize strongly-typed methods
         method = type.GetMethod(ReadFromMethod, StaticFlags, null, [typeof(Stream)], null) ??
-                 type.GetMethod(ReadFromMethodEII, StaticFlags, null, [typeof(Stream)], null) ??
-                 type.GetMethod(string.Format(ReadFromMethodEIOfTI, type.FullName), StaticFlags, null, [typeof(Stream)], null);
+                 type.GetMethod(string.Format(ReadFromMethodEIOfTI, type.FullName), StaticFlags, null, [typeof(Stream)], null) ??
+                 type.GetMethod(ReadFromMethodEII, StaticFlags, null, [typeof(Stream)], null);
 
         if (method is not null)
         {
@@ -284,13 +271,13 @@ public static class StreamSerialization<T>
     /// Provides a type representing the encompassed elements when type <typeparamref name="T"/> is a list or array type, and element type cannot otherwise
     /// be ascertained, e.g., when element type is an <see cref="object"/>.
     /// </param>
-    /// <param name="skipListHandling">Set to <c>true</c> to skip automatic handling of list types.</param>
+    /// <param name="skipAutoListHandling">Set to <c>true</c> to skip automatic handling of list types.</param>
     /// <returns>Write serialization method.</returns>
-    public static Action<Stream, T>? GetWriteMethod(Type? elementType = null, bool skipListHandling = false)
+    public static Action<Stream, T>? GetWriteMethod(Type? elementType = null, bool? skipAutoListHandling = null)
     {
         Type type = typeof(T);
 
-        if (!IsListType(type) || skipListHandling)
+        if (!IsListType(type, skipAutoListHandling))
         {
             Action<Stream, object?>? writeMethod = GetWriteMethodForType(type);
             return (stream, obj) => writeMethod?.Invoke(stream, obj!);
@@ -338,17 +325,6 @@ public static class StreamSerialization<T>
             return lambda.Compile();
         }
 
-        // Create from static-based method with object-typed parameter with following signature:
-        // static void WriteTo(Stream stream, object obj)
-        method = type.GetMethod(WriteToMethod, StaticFlags, null, [typeof(Stream), typeof(object)], null) ??
-                 type.GetMethod(WriteToMethodEII, StaticFlags, null, [typeof(Stream), typeof(object)], null);
-
-        if (method is not null)
-        {
-            Action<Stream, object?> action = (Action<Stream, object?>)Delegate.CreateDelegate(typeof(Action<Stream, object?>), method);
-            return (stream, obj) => action(stream, obj);
-        }
-
         // Create from static-based method with strongly-typed parameter with following signature:
         // static void WriteTo(Stream stream, T instance)
         method = type.GetMethod(WriteToMethod, StaticFlags, null, [typeof(Stream), type], null) ??
@@ -368,6 +344,17 @@ public static class StreamSerialization<T>
             );
 
             return lambda.Compile();
+        }
+
+        // Create from static-based method with object-typed parameter with following signature:
+        // static void WriteTo(Stream stream, object obj)
+        method = type.GetMethod(WriteToMethod, StaticFlags, null, [typeof(Stream), typeof(object)], null) ??
+                 type.GetMethod(WriteToMethodEII, StaticFlags, null, [typeof(Stream), typeof(object)], null);
+
+        if (method is not null)
+        {
+            Action<Stream, object?> action = (Action<Stream, object?>)Delegate.CreateDelegate(typeof(Action<Stream, object?>), method);
+            return (stream, obj) => action(stream, obj);
         }
 
         // Handle native types
@@ -444,9 +431,9 @@ public static class StreamSerialization<T>
         return TypeCode.Object;
     }
 
-    private static bool IsListType(Type type)
+    private static bool IsListType(Type type, bool? skipAutoListHandling)
     {
-        return typeof(IList).IsAssignableFrom(type);
+        return typeof(IList).IsAssignableFrom(type) && !(skipAutoListHandling ?? TypeUsesCustomListSerialization(type));
     }
 
     private static Type GetListTypeElement(Type type)
@@ -468,5 +455,21 @@ public static class StreamSerialization<T>
         // As a fall-back, check if type is generic and return first generic argument. This will
         // not be 100% reliable but user can always provide the target element type as a parameter.
         return type.IsGenericType ? type.GetGenericArguments()[0] : typeof(object);
+    }
+
+    private static bool TypeUsesCustomListSerialization(Type type)
+    {
+        if (!typeof(ISupportStreamSerialization).IsAssignableFrom(type))
+            return false;
+
+        const string UseCustomListSerializationProperty = nameof(UseCustomListSerialization);
+        const string UseCustomListSerializationPropertyEII = $"{NamespacePrefix}.{UseCustomListSerializationProperty}";             // Explicit ISupportStreamSerialization implementation
+
+        PropertyInfo useCustomListSerialization = 
+            type.GetProperty(UseCustomListSerializationProperty, StaticFlags) ??
+            type.GetProperty(UseCustomListSerializationPropertyEII, StaticFlags) ??
+            throw new NullReferenceException($"Failed to find '{UseCustomListSerializationProperty}' implementation");
+
+        return (bool)useCustomListSerialization.GetValue(null)!;
     }
 }

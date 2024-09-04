@@ -677,4 +677,72 @@ public class FileBackedDictionaryTest
         Assert.IsTrue((dictionary[1][2] as InstanceTest)!.Name == "Test2.3");
         Assert.IsTrue((dictionary[1][3] as InstanceTest)!.Status == ConnectionState.Broken);
     }
+
+    [TestMethod]
+    public void StaticTestWithListSerializationTest()
+    {
+        using FileBackedDictionary<int, StaticTestWithList> dictionary = [];
+
+        dictionary.Add(0,
+        [
+            new StaticTest { ID = Guid.NewGuid(), Name = "Test1.1", Status = ConnectionState.Open },
+            new StaticTest { ID = Guid.NewGuid(), Name = "Test1.2", Status = ConnectionState.Closed }
+        ]);
+
+        Assert.IsTrue(dictionary.ContainsKey(0));
+        Assert.AreEqual(dictionary.Count, 1);
+        Assert.IsTrue(dictionary[0][0].Name == "Test1.1");
+        Assert.IsTrue(dictionary[0][1].Status == ConnectionState.Closed);
+
+        dictionary.Add(1,
+        [
+            new StaticTest { ID = Guid.NewGuid(), Name = "Test2.1", Status = ConnectionState.Open },
+            new StaticTest { ID = Guid.NewGuid(), Name = "Test2.2", Status = ConnectionState.Closed },
+            new StaticTest { ID = Guid.NewGuid(), Name = "Test2.3", Status = ConnectionState.Executing },
+            new StaticTest { ID = Guid.NewGuid(), Name = "Test2.4", Status = ConnectionState.Broken }
+        ]);
+
+        Assert.IsTrue(dictionary.ContainsKey(1));
+        Assert.AreEqual(dictionary.Count, 2);
+        Assert.IsTrue(dictionary[0][1].Name == "Test1.2");
+        Assert.IsTrue(dictionary[1][2].Name == "Test2.3");
+        Assert.IsTrue(dictionary[1][3].Status == ConnectionState.Broken);
+    }
+
+    [TestMethod]
+    public void StaticTestSTWithListCustomSerializationTest()
+    {
+        const string CustomData = "{\"name\": \"value\"}";
+
+        using FileBackedDictionary<int, StaticTestSTWithListCustomSerialization> dictionary = [];
+
+        StaticTestSTWithListCustomSerialization item = new() { CustomData = CustomData };
+
+        item.Add(new StaticTestST { ID = Guid.NewGuid(), Name = "Test1.1", Status = ConnectionState.Open });
+        item.Add(new StaticTestST { ID = Guid.NewGuid(), Name = "Test1.2", Status = ConnectionState.Closed });
+
+        dictionary.Add(0, item);
+
+        Assert.IsTrue(dictionary.ContainsKey(0));
+        Assert.AreEqual(dictionary.Count, 1);
+        Assert.IsTrue(dictionary[0].CustomData == CustomData);
+        Assert.IsTrue(dictionary[0][0].Name == "Test1.1");
+        Assert.IsTrue(dictionary[0][1].Status == ConnectionState.Closed);
+
+        dictionary.Add(1,
+        [
+            new StaticTestST { ID = Guid.NewGuid(), Name = "Test2.1", Status = ConnectionState.Open },
+            new StaticTestST { ID = Guid.NewGuid(), Name = "Test2.2", Status = ConnectionState.Closed },
+            new StaticTestST { ID = Guid.NewGuid(), Name = "Test2.3", Status = ConnectionState.Executing },
+            new StaticTestST { ID = Guid.NewGuid(), Name = "Test2.4", Status = ConnectionState.Broken }
+        ]);
+
+        Assert.IsTrue(dictionary.ContainsKey(1));
+        Assert.AreEqual(dictionary.Count, 2);
+        Assert.IsTrue(dictionary[0].CustomData == CustomData);
+        Assert.IsTrue(dictionary[0][1].Name == "Test1.2");
+        Assert.IsTrue(dictionary[1].CustomData is null);
+        Assert.IsTrue(dictionary[1][2].Name == "Test2.3");
+        Assert.IsTrue(dictionary[1][3].Status == ConnectionState.Broken);
+    }
 }

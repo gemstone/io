@@ -20,11 +20,13 @@
 //       Generated original version of source code.
 //
 //******************************************************************************************************
+// ReSharper disable StaticMemberInGenericType
+// ReSharper disable InconsistentNaming
 
-#if !NET
 using System;
-#endif
+using System.Collections;
 using System.IO;
+using System.Reflection;
 
 namespace Gemstone.IO.Parsing;
 
@@ -40,8 +42,39 @@ namespace Gemstone.IO.Parsing;
 /// </remarks>
 public interface ISupportStreamSerialization
 {
+    internal const string NamespacePrefix = $"{nameof(Gemstone)}.{nameof(IO)}.{nameof(Parsing)}.{nameof(ISupportStreamSerialization)}";
+    internal const BindingFlags InstanceFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+    internal const BindingFlags StaticFlags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
+
+    internal const string ReadFromMethod = nameof(ReadFrom);
+    internal const string ReadFromMethodEII = $"{NamespacePrefix}.{ReadFromMethod}";             // Explicit ISupportStreamSerialization implementation
+    internal const string ReadFromMethodEIOfTI = $"{NamespacePrefix}<{{0}}>.{ReadFromMethod}";   // Explicit ISupportStreamSerialization<T> implementation
+
+    internal const string WriteToMethod = nameof(WriteTo);
+    internal const string WriteToMethodEII = $"{NamespacePrefix}.{WriteToMethod}";               // Explicit ISupportStreamSerialization implementation
+    internal const string WriteToMethodEIOfTI = $"{NamespacePrefix}<{{0}}>.{WriteToMethod}";     // Explicit ISupportStreamSerialization<T> implementation
+
     /// <summary>
-    /// Deserializes an instance of type <typeparamref name="T"/> from a <see cref="Stream"/>.
+    /// Gets flag that determines if type implementing <see cref="ISupportStreamSerialization"/> is a list-type and
+    /// supports its own list serialization handling, i.e., if automated list count and items serialization should
+    /// be skipped by <see cref="StreamSerialization{T}"/> operations.
+    /// </summary>
+    /// <remarks>
+    /// More commonly, if a type is assignable from an <see cref="IList"/>, it would be its element type that would
+    /// implement <see cref="ISupportStreamSerialization"/> and the list serialization would be handled automatically by
+    /// <see cref="StreamSerialization{T}"/> operations. However, if a type is assignable from an <see cref="IList"/> and
+    /// implements <see cref="ISupportStreamSerialization"/> directly, then setting this property to <c>true</c> allows
+    /// the list type to override default behavior and handle its own list serialization using the <see cref="ReadFrom"/>
+    /// and <see cref="WriteTo"/> methods.
+    /// </remarks>
+#if NET
+    static virtual bool UseCustomListSerialization => false;
+#else
+    static bool UseCustomListSerialization => false;
+#endif
+
+    /// <summary>
+    /// Deserializes an object from a <see cref="Stream"/>.
     /// </summary>
     /// <param name="stream">Source stream.</param>
     /// <returns>New deserialized instance.</returns>
@@ -52,7 +85,7 @@ public interface ISupportStreamSerialization
 #endif
 
     /// <summary>
-    /// Serializes an <paramref name="instance"/> of type <typeparamref name="T"/> to a <see cref="Stream"/>.
+    /// Serializes an object to a <see cref="Stream"/>.
     /// </summary>
     /// <param name="stream">Target stream.</param>
     /// <param name="instance">Instance to serialize.</param>
@@ -74,7 +107,7 @@ public interface ISupportStreamSerialization
 /// and <see cref="WriteTo"/> methods exist on a class with the proper signature, actual implementation
 /// of this interface is optional.
 /// </remarks>
-public interface ISupportStreamSerialization<T>
+public interface ISupportStreamSerialization<T> : ISupportStreamSerialization
 {
     /// <summary>
     /// Deserializes an instance of type <typeparamref name="T"/> from a <see cref="Stream"/>.
@@ -82,9 +115,9 @@ public interface ISupportStreamSerialization<T>
     /// <param name="stream">Source stream.</param>
     /// <returns>New deserialized instance.</returns>
 #if NET
-    static abstract T ReadFrom(Stream stream);
+    new static abstract T ReadFrom(Stream stream);
 #else
-    static T ReadFrom(Stream stream) => throw new NotImplementedException($"{nameof(ReadFrom)} undefined");
+    new static T ReadFrom(Stream stream) => throw new NotImplementedException($"{nameof(ReadFrom)} undefined");
 #endif
 
     /// <summary>
@@ -96,5 +129,30 @@ public interface ISupportStreamSerialization<T>
     static abstract void WriteTo(Stream stream, T instance);
 #else
     static void WriteTo(Stream stream, T instance) => throw new NotImplementedException($"{nameof(WriteTo)} undefined");
+#endif
+
+#if NET
+    private static MethodInfo? s_readFromMethod;
+    private static MethodInfo? s_writeToMethod;
+
+    static object ISupportStreamSerialization.ReadFrom(Stream stream)
+    {
+        s_readFromMethod ??= 
+            typeof(T).GetMethod(ReadFromMethod, StaticFlags, null, [typeof(Stream)], null) ?? 
+            typeof(T).GetMethod(string.Format(ReadFromMethodEIOfTI, typeof(T).FullName), StaticFlags, null, [typeof(Stream)], null) ?? 
+            throw new NullReferenceException($"Failed to find '{ReadFromMethod}' implementation.");
+
+        return s_readFromMethod.Invoke(null, [stream])!;
+    }
+
+    static void ISupportStreamSerialization.WriteTo(Stream stream, object instance)
+    {
+        s_writeToMethod ??= 
+            typeof(T).GetMethod(WriteToMethod, StaticFlags, null, [typeof(Stream), typeof(T)], null) ??
+            typeof(T).GetMethod(string.Format(WriteToMethodEIOfTI, typeof(T).FullName), StaticFlags, null, [typeof(Stream), typeof(T)], null) ?? 
+            throw new NullReferenceException($"Failed to find '{WriteToMethod}' implementation.");
+
+        s_writeToMethod.Invoke(null, [stream, instance]);
+    }
 #endif
 }
