@@ -44,9 +44,6 @@ public class StaticTestSTWithListCustomSerialization : List<StaticTestST>, ISupp
     public static StaticTestSTWithListCustomSerialization ReadFrom(Stream stream)
     {
         BinaryReader reader = new(stream, Encoding.UTF8, true);
-
-        Func<Stream, StaticTestST> itemReadMethod = StreamSerialization<StaticTestST>.GetReadMethod()!;
-
         StaticTestSTWithListCustomSerialization result = [];
 
         bool customDataIsNull = reader.ReadBoolean();
@@ -58,7 +55,7 @@ public class StaticTestSTWithListCustomSerialization : List<StaticTestST>, ISupp
         int count = reader.ReadInt32();
 
         for (int i = 0; i < count; i++)
-            result.Add(itemReadMethod(stream));
+            result.Add(StaticTestST.ReadFrom(stream));
 
         return result;
     }
@@ -67,14 +64,12 @@ public class StaticTestSTWithListCustomSerialization : List<StaticTestST>, ISupp
     {
         BinaryWriter writer = new(stream, Encoding.UTF8, true);
 
-        Action<Stream, StaticTestST> itemWriteMethod = StreamSerialization<StaticTestST>.GetWriteMethod()!;
-
         writer.Write(instance.CustomData is null);
         writer.Write(instance.CustomData ?? string.Empty);
 
         writer.Write(instance.Count);
 
         foreach (StaticTestST item in instance)
-            itemWriteMethod(stream, item);
+            StaticTestST.WriteTo(stream, item);
     }
 }
