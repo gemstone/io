@@ -439,7 +439,7 @@ public class MultipleDestinationExporter : ISupportLifecycle, IProvideStatus, IP
     /// <summary>
     /// Gets the unique identifier of the <see cref="MultipleDestinationExporter"/> object.
     /// </summary>
-    public string Name { get; private set; }
+    public string Name { get; private init; }
 
     /// <summary>
     /// Gets the descriptive status of the <see cref="MultipleDestinationExporter"/> object.
