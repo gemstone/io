@@ -745,4 +745,16 @@ public class FileBackedDictionaryTest
         Assert.IsTrue(dictionary[1][2].Name == "Test2.3");
         Assert.IsTrue(dictionary[1][3].Status == ConnectionState.Broken);
     }
+
+    [TestMethod]
+    public void MissingSerializationTest()
+    {
+        using FileBackedDictionary<int, MissingSerializationTest> dictionary = [];
+        Assert.ThrowsException<InvalidOperationException>(
+            () => dictionary.Add(0, new MissingSerializationTest { ID = Guid.NewGuid(), Name = "Test", Status = ConnectionState.Closed })
+            );
+        
+
+
+    }
 }
