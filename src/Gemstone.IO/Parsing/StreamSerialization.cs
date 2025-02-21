@@ -280,6 +280,8 @@ public static class StreamSerialization<T>
         if (!IsListType(type, skipAutoListHandling))
         {
             Action<Stream, object?>? writeMethod = GetWriteMethodForType(type);
+            if (writeMethod is null)
+                return null;
             return (stream, obj) => writeMethod?.Invoke(stream, obj!);
         }
 
