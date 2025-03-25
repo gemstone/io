@@ -380,7 +380,7 @@ public class MultipleDestinationExporter : ISupportLifecycle, IProvideStatus, IP
     /// Gets or sets a boolean value that indicates whether the settings of <see cref="MultipleDestinationExporter"/> object are 
     /// to be saved to the config file.
     /// </summary>
-    public bool PersistSettings { get; init; }
+    public bool PersistSettings { get; set; }
 
     /// <summary>
     /// Gets or sets the category under which the settings of <see cref="MultipleDestinationExporter"/> object are to be saved
@@ -390,7 +390,7 @@ public class MultipleDestinationExporter : ISupportLifecycle, IProvideStatus, IP
     public string SettingsCategory
     {
         get => Name;
-        init
+        set
         {
             if (string.IsNullOrEmpty(value))
                 throw new ArgumentNullException(nameof(value));
@@ -439,7 +439,7 @@ public class MultipleDestinationExporter : ISupportLifecycle, IProvideStatus, IP
     /// <summary>
     /// Gets the unique identifier of the <see cref="MultipleDestinationExporter"/> object.
     /// </summary>
-    public string Name { get; private init; }
+    public string Name { get; private set; }
 
     /// <summary>
     /// Gets the descriptive status of the <see cref="MultipleDestinationExporter"/> object.
