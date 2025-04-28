@@ -293,7 +293,7 @@ public class MultipleDestinationExporter : ISupportLifecycle, IProvideStatus, IP
     private volatile byte[]? m_fileData;
     private Encoding m_textEncoding;
     private readonly List<ExportDestination> m_exportDestinations;
-    private readonly object m_exportDestinationsLock;
+    private readonly Lock m_exportDestinationsLock;
     private readonly LongSynchronizedOperation m_exportOperation;
     private int m_maximumRetryAttempts;
     private int m_retryDelayInterval;
@@ -324,7 +324,7 @@ public class MultipleDestinationExporter : ISupportLifecycle, IProvideStatus, IP
         m_retryDelayInterval = DefaultRetryDelayInterval;
         m_textEncoding = Encoding.Default; // We use default ANSI page encoding for text based exports...
         m_exportDestinations = new List<ExportDestination>();
-        m_exportDestinationsLock = new object();
+        m_exportDestinationsLock = new Lock();
         m_exportOperation = new LongSynchronizedOperation(ExecuteExports, OnProcessException)
         {
             IsBackground = true
