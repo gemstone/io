@@ -247,7 +247,7 @@ public abstract class MultiSourceFrameImageParserBase<TSourceIdentifier, TTypeId
         // Add buffer to the queue for parsing. Note that buffer is queued for parsing instead 
         // of handling parse on this thread - this has become necessary to reduce UDP data loss
         // that can happen in-process when system has UDP buffers building up for processing.
-        m_bufferQueue.Enqueue(new[] { identifiableBuffer });
+        m_bufferQueue.Enqueue([identifiableBuffer]);
     }
 
     /// <summary>
@@ -352,7 +352,7 @@ public abstract class MultiSourceFrameImageParserBase<TSourceIdentifier, TTypeId
             return;
 
         // If user has attached to SourceDataParsed event, track parsed data per source
-        List<TOutputType> sourceData = m_parsedSourceData.GetOrAdd(output.Source, _ => new List<TOutputType>());
+        List<TOutputType> sourceData = m_parsedSourceData.GetOrAdd(output.Source, _ => []);
         sourceData.Add(output);
     }
 

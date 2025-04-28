@@ -329,7 +329,7 @@ public class CachedFileStream : Stream
 
         m_blockLookup = new Dictionary<long, Block>();
         m_dirtyBlockLookup = new Dictionary<long, Block>();
-        m_queue = new List<Block>();
+        m_queue = [];
     }
 
     #endregion
@@ -400,15 +400,13 @@ public class CachedFileStream : Stream
     {
         get
         {
-            if (m_disposed)
-                throw new ObjectDisposedException(GetType().FullName);
+            ObjectDisposedException.ThrowIf(m_disposed, this);
 
             return m_position;
         }
         set
         {
-            if (m_disposed)
-                throw new ObjectDisposedException(GetType().FullName);
+            ObjectDisposedException.ThrowIf(m_disposed, this);
 
             if (value < 0)
                 throw new ArgumentOutOfRangeException(nameof(value));
@@ -429,8 +427,7 @@ public class CachedFileStream : Stream
     {
         get
         {
-            if (m_disposed)
-                throw new ObjectDisposedException(GetType().FullName);
+            ObjectDisposedException.ThrowIf(m_disposed, this);
 
             return m_length;
         }
@@ -489,8 +486,7 @@ public class CachedFileStream : Stream
     /// <filterpriority>1</filterpriority>
     public override int Read(byte[] buffer, int offset, int count)
     {
-        if (m_disposed)
-            throw new ObjectDisposedException(GetType().FullName);
+        ObjectDisposedException.ThrowIf(m_disposed, this);
 
         if (!CanRead)
             throw new NotSupportedException("Stream does not support reading.");
@@ -544,8 +540,7 @@ public class CachedFileStream : Stream
     /// <filterpriority>1</filterpriority>
     public override void Write(byte[] buffer, int offset, int count)
     {
-        if (m_disposed)
-            throw new ObjectDisposedException(GetType().FullName);
+        ObjectDisposedException.ThrowIf(m_disposed, this);
 
         if (!CanWrite)
             throw new NotSupportedException("Stream does not support writing.");
@@ -620,8 +615,7 @@ public class CachedFileStream : Stream
     /// <filterpriority>2</filterpriority>
     public override void SetLength(long value)
     {
-        if (m_disposed)
-            throw new ObjectDisposedException(GetType().FullName);
+        ObjectDisposedException.ThrowIf(m_disposed, this);
 
         if (!CanWrite)
             throw new NotSupportedException("The stream does not support writing.");

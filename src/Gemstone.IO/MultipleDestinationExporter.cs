@@ -323,7 +323,7 @@ public class MultipleDestinationExporter : ISupportLifecycle, IProvideStatus, IP
         m_maximumRetryAttempts = DefaultMaximumRetryAttempts;
         m_retryDelayInterval = DefaultRetryDelayInterval;
         m_textEncoding = Encoding.Default; // We use default ANSI page encoding for text based exports...
-        m_exportDestinations = new List<ExportDestination>();
+        m_exportDestinations = [];
         m_exportDestinationsLock = new Lock();
         m_exportOperation = new LongSynchronizedOperation(ExecuteExports, OnProcessException)
         {
@@ -544,7 +544,8 @@ public class MultipleDestinationExporter : ISupportLifecycle, IProvideStatus, IP
     public void Initialize()
     {
         // We provide a simple default set of export destinations since no others are specified.
-        Initialize(new[] { new ExportDestination(Common.IsPosixEnvironment ? "/usr/share/filename.txt" : "C:\\filename.txt", false, "domain", "username", "password") });
+        Initialize([new ExportDestination(Common.IsPosixEnvironment ? "/usr/share/filename.txt" : "C:\\filename.txt", false, "domain", "username", "password")
+        ]);
     }
 
     /// <summary>
@@ -572,7 +573,7 @@ public class MultipleDestinationExporter : ISupportLifecycle, IProvideStatus, IP
         lock (m_exportDestinationsLock)
         {
             m_exportDestinations.Clear();
-            m_exportDestinations.AddRange(state as List<ExportDestination> ?? new List<ExportDestination>());
+            m_exportDestinations.AddRange(state as List<ExportDestination> ?? []);
         }
 
         // Load export destinations from the config file - if nothing is in config file yet,

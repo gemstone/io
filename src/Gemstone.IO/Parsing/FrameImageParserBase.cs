@@ -226,7 +226,7 @@ public abstract class FrameImageParserBase<TTypeIdentifier, TOutputType> : Binar
         // Call base class start method
         base.Start();
 
-        List<TypeInfo> outputTypes = new();  // Temporarily hold output types until their IDs are determined.
+        List<TypeInfo> outputTypes = [];  // Temporarily hold output types until their IDs are determined.
 
         foreach (Type type in implementations)
         {
