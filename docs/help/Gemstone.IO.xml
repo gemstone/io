@@ -2510,14 +2510,29 @@
     </member>
     <member name="M:Gemstone.IO.Parsing.ISupportStreamSerialization.ReadFrom(System.IO.Stream)">
       <summary>
-            Deserializes an instance of type <typeparamref name="T" /> from a <see cref="T:System.IO.Stream" />.
+            Deserializes an object from a <see cref="T:System.IO.Stream" />.
             </summary>
       <param name="stream">Source stream.</param>
       <returns>New deserialized instance.</returns>
     </member>
+    <member name="P:Gemstone.IO.Parsing.ISupportStreamSerialization.UseCustomListSerialization">
+      <summary>
+            Gets flag that determines if type implementing <see cref="T:Gemstone.IO.Parsing.ISupportStreamSerialization" /> is a list-type and
+            supports its own list serialization handling, i.e., if automated list count and items serialization should
+            be skipped by <see cref="T:Gemstone.IO.Parsing.StreamSerialization`1" /> operations.
+            </summary>
+      <remarks>
+            More commonly, if a type is assignable from an <see cref="T:System.Collections.IList" />, it would be its element type that would
+            implement <see cref="T:Gemstone.IO.Parsing.ISupportStreamSerialization" /> and the list serialization would be handled automatically by
+            <see cref="T:Gemstone.IO.Parsing.StreamSerialization`1" /> operations. However, if a type is assignable from an <see cref="T:System.Collections.IList" /> and
+            implements <see cref="T:Gemstone.IO.Parsing.ISupportStreamSerialization" /> directly, then setting this property to <c>true</c> allows
+            the list type to override default behavior and handle its own list serialization using the <see cref="M:Gemstone.IO.Parsing.ISupportStreamSerialization.ReadFrom(System.IO.Stream)" />
+            and <see cref="M:Gemstone.IO.Parsing.ISupportStreamSerialization.WriteTo(System.IO.Stream,System.Object)" /> methods.
+            </remarks>
+    </member>
     <member name="M:Gemstone.IO.Parsing.ISupportStreamSerialization.WriteTo(System.IO.Stream,System.Object)">
       <summary>
-            Serializes an <paramref name="instance" /> of type <typeparamref name="T" /> to a <see cref="T:System.IO.Stream" />.
+            Serializes an object to a <see cref="T:System.IO.Stream" />.
             </summary>
       <param name="stream">Target stream.</param>
       <param name="instance">Instance to serialize.</param>
@@ -2534,6 +2549,61 @@
             and <see cref="M:Gemstone.IO.Parsing.ISupportStreamSerialization`1.WriteTo(System.IO.Stream,`0)" /> methods exist on a class with the proper signature, actual implementation
             of this interface is optional.
             </remarks>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.ISupportStreamSerialization`1.Gemstone.IO.Parsing.ISupportStreamSerialization.ReadFrom(System.IO.Stream)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Gemstone.IO.Parsing.ISupportStreamSerialization`1.Gemstone.IO.Parsing.ISupportStreamSerialization.ReadFrom(System.IO.Stream)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="stream">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>stream</parameter>
+            <parameter>M:Gemstone.IO.Parsing.ISupportStreamSerialization`1.Gemstone.IO.Parsing.ISupportStreamSerialization.ReadFrom(System.IO.Stream)</parameter>
+          </include>
+        </markup>
+      </param>
+      <returns>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>returns</parameter>
+            <parameter>M:Gemstone.IO.Parsing.ISupportStreamSerialization`1.Gemstone.IO.Parsing.ISupportStreamSerialization.ReadFrom(System.IO.Stream)</parameter>
+          </include>
+        </markup>
+      </returns>
+    </member>
+    <member name="M:Gemstone.IO.Parsing.ISupportStreamSerialization`1.Gemstone.IO.Parsing.ISupportStreamSerialization.WriteTo(System.IO.Stream,System.Object)">
+      <summary>
+        <markup>
+          <include item="SMCMissingTag">
+            <parameter>summary</parameter>
+            <parameter>M:Gemstone.IO.Parsing.ISupportStreamSerialization`1.Gemstone.IO.Parsing.ISupportStreamSerialization.WriteTo(System.IO.Stream,System.Object)</parameter>
+          </include>
+        </markup>
+      </summary>
+      <param name="stream">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>stream</parameter>
+            <parameter>M:Gemstone.IO.Parsing.ISupportStreamSerialization`1.Gemstone.IO.Parsing.ISupportStreamSerialization.WriteTo(System.IO.Stream,System.Object)</parameter>
+          </include>
+        </markup>
+      </param>
+      <param name="instance">
+        <markup>
+          <include item="SMCMissingParamTag">
+            <parameter>param</parameter>
+            <parameter>instance</parameter>
+            <parameter>M:Gemstone.IO.Parsing.ISupportStreamSerialization`1.Gemstone.IO.Parsing.ISupportStreamSerialization.WriteTo(System.IO.Stream,System.Object)</parameter>
+          </include>
+        </markup>
+      </param>
     </member>
     <member name="M:Gemstone.IO.Parsing.ISupportStreamSerialization`1.ReadFrom(System.IO.Stream)">
       <summary>
@@ -2738,20 +2808,26 @@
             </para>
       </remarks>
     </member>
-    <member name="M:Gemstone.IO.Parsing.StreamSerialization`1.GetReadMethod(System.Type)">
+    <member name="M:Gemstone.IO.Parsing.StreamSerialization`1.GetReadMethod(System.Type,System.Nullable{System.Boolean})">
       <summary>
             Gets read deserialization method for type <typeparamref name="T" />.
             </summary>
-      <param name="typeHint">Provides a type for element list types if type can not otherwise be ascertained.</param>
-      <typeparam name="T">Type that implements stream serialization.</typeparam>
+      <param name="elementType">
+            Provides a type representing the encompassed elements when type <typeparamref name="T" /> is a list or array type, and element type cannot otherwise
+            be ascertained, e.g., when element type is an <see cref="T:System.Object" />.
+            </param>
+      <param name="skipAutoListHandling">Set to <c>true</c> to skip automatic handling of list types.</param>
       <returns>Read deserialization method.</returns>
     </member>
-    <member name="M:Gemstone.IO.Parsing.StreamSerialization`1.GetWriteMethod(System.Type)">
+    <member name="M:Gemstone.IO.Parsing.StreamSerialization`1.GetWriteMethod(System.Type,System.Nullable{System.Boolean})">
       <summary>
             Gets write serialization method for type <typeparamref name="T" />.
             </summary>
-      <param name="typeHint">Provides a type for element list types if type can not otherwise be ascertained.</param>
-      <typeparam name="T"></typeparam>
+      <param name="elementType">
+            Provides a type representing the encompassed elements when type <typeparamref name="T" /> is a list or array type, and element type cannot otherwise
+            be ascertained, e.g., when element type is an <see cref="T:System.Object" />.
+            </param>
+      <param name="skipAutoListHandling">Set to <c>true</c> to skip automatic handling of list types.</param>
       <returns>Write serialization method.</returns>
     </member>
     <member name="T:Gemstone.IO.Parsing.TemplatedExpressionParser">
@@ -2762,7 +2838,7 @@
         <para>
             As an example, this parser can use a templated expression of the form:
             <code>
-            {CompanyAcronym}_{DeviceAcronym}[?{SignalType.Source}=Phasor[-{SignalType.Suffix}{SignalIndex}]]:{Signal.Acronymn}
+            {CompanyAcronym}_{DeviceAcronym}[?{SignalType.Source}=Phasor[-{SignalType.Suffix}{SignalIndex}]]:{Signal.Acronym}
             </code>
             then replace the tokens with actual values and properly evaluate the expressions.
             Example results could look like: GPA_SHELBY-PA1:IPHA and GPA_SHELBY:FREQ
@@ -2807,7 +2883,7 @@
             <see cref="P:Gemstone.IO.Parsing.TemplatedExpressionParser.TemplatedExpression" /> value and optionally evaluates any expressions.
             </summary>
       <param name="substitutions">Dictionary of substitutions. Dictionary keys are tokens to be replaced by the values.</param>
-      <param name="ignoreCase">Determines if substitutions should be case insensitive. Defaults to <c>true</c>.</param>
+      <param name="ignoreCase">Determines if substitutions should be case-insensitive. Defaults to <c>true</c>.</param>
       <param name="evaluateExpressions">Determines if expressions should be evaluated. Defaults to <c>true</c>.</param>
       <param name="escapeSubstitutionValues">Determines if reserved symbols in substitution values should be automatically escaped. Defaults to <c>true</c>.</param>
       <returns>A string that was based on <see cref="P:Gemstone.IO.Parsing.TemplatedExpressionParser.TemplatedExpression" /> with tokens replaced and expressions evaluated.</returns>
@@ -2834,7 +2910,7 @@
             Advanced expressions can be parsed using the eval function, e.g., eval{1 + 2}. Eval function expression is delimited by the currently
             defined token delimiters, { and } by default. The evaluation engine deals with numbers and strings. The typing of numeric literals
             follow C# standards, suffixes such as d, f and m may be used to explicitly specify the numeric type. If no numeric suffix is provided,
-            the default type of a numeric literal is assumed to be <see cref="T:System.Int32" />. String literals should be specified using single quotes
+            the default type of numeric literal is assumed to be <see cref="T:System.Int32" />. String literals should be specified using single quotes
             instead of double quotes, this includes substitution parameters, e.g., <c>eval{'{DeviceAcronym}'.Length + 1}</c>. Advanced evaluation
             expressions using the eval function are always parsed after common expressions. Eval functions cannot be nested.
             </para>
