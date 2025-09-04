@@ -2217,16 +2217,18 @@
       <remarks>
             Here is an example of a possible derived class constructor that has an integer TypeID as the
             first 4 bytes in the image:
-            <codeSnippetGroup><code language="cs" codeLanguage="CSharp" style="cs">public CommonHeader(object state, byte[] binaryImage, int startIndex, int length)
-{
-    if (length &gt; 3)
-    {
-        TypeID = LittleEndian.ToInt32(binaryImage, startIndex);
-        State = state;
-    }
-    else
-        throw new InvalidOperationException("Malformed image");
-}</code></codeSnippetGroup></remarks>
+            <code>
+            public CommonHeader(object state, byte[] binaryImage, int startIndex, int length)
+            {
+                if (length &gt; 3)
+                {
+                    TypeID = LittleEndian.ToInt32(binaryImage, startIndex);
+                    State = state;
+                }
+                else
+                    throw new InvalidOperationException("Malformed image");
+            }
+            </code></remarks>
     </member>
     <member name="M:Gemstone.IO.Parsing.CommonHeaderBase`1.#ctor">
       <summary>
