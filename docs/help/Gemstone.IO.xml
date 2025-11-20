@@ -2837,17 +2837,13 @@
       <remarks>
         <para>
             As an example, this parser can use a templated expression of the form:
-            <code>
-            {CompanyAcronym}_{DeviceAcronym}[?{SignalType.Source}=Phasor[-{SignalType.Suffix}{SignalIndex}]]:{Signal.Acronym}
-            </code>
+            <codeSnippetGroup><code language="cs" codeLanguage="CSharp" style="cs">{CompanyAcronym}_{DeviceAcronym}[?{SignalType.Source}=Phasor[-{SignalType.Suffix}{SignalIndex}]]:{Signal.Acronym}</code></codeSnippetGroup>
             then replace the tokens with actual values and properly evaluate the expressions.
             Example results could look like: GPA_SHELBY-PA1:IPHA and GPA_SHELBY:FREQ
             </para>
         <para>
             Parser also supports more complex C# style expressions using the "eval{}" function, e.g.:
-            <code>
-            eval{'{CompanyAcronym}'.Substring(0,3)}_{DeviceAcronym}eval{'[?{SignalType.Source}=Phasor[-{SignalType.Suffix}]]'.Length}
-            </code></para>
+            <codeSnippetGroup><code language="cs" codeLanguage="CSharp" style="cs">eval{'{CompanyAcronym}'.Substring(0,3)}_{DeviceAcronym}eval{'[?{SignalType.Source}=Phasor[-{SignalType.Suffix}]]'.Length}</code></codeSnippetGroup></para>
       </remarks>
     </member>
     <member name="M:Gemstone.IO.Parsing.TemplatedExpressionParser.#ctor">
