@@ -2550,61 +2550,6 @@
             of this interface is optional.
             </remarks>
     </member>
-    <member name="M:Gemstone.IO.Parsing.ISupportStreamSerialization`1.Gemstone.IO.Parsing.ISupportStreamSerialization.ReadFrom(System.IO.Stream)">
-      <summary>
-        <markup>
-          <include item="SMCMissingTag">
-            <parameter>summary</parameter>
-            <parameter>M:Gemstone.IO.Parsing.ISupportStreamSerialization`1.Gemstone.IO.Parsing.ISupportStreamSerialization.ReadFrom(System.IO.Stream)</parameter>
-          </include>
-        </markup>
-      </summary>
-      <param name="stream">
-        <markup>
-          <include item="SMCMissingParamTag">
-            <parameter>param</parameter>
-            <parameter>stream</parameter>
-            <parameter>M:Gemstone.IO.Parsing.ISupportStreamSerialization`1.Gemstone.IO.Parsing.ISupportStreamSerialization.ReadFrom(System.IO.Stream)</parameter>
-          </include>
-        </markup>
-      </param>
-      <returns>
-        <markup>
-          <include item="SMCMissingTag">
-            <parameter>returns</parameter>
-            <parameter>M:Gemstone.IO.Parsing.ISupportStreamSerialization`1.Gemstone.IO.Parsing.ISupportStreamSerialization.ReadFrom(System.IO.Stream)</parameter>
-          </include>
-        </markup>
-      </returns>
-    </member>
-    <member name="M:Gemstone.IO.Parsing.ISupportStreamSerialization`1.Gemstone.IO.Parsing.ISupportStreamSerialization.WriteTo(System.IO.Stream,System.Object)">
-      <summary>
-        <markup>
-          <include item="SMCMissingTag">
-            <parameter>summary</parameter>
-            <parameter>M:Gemstone.IO.Parsing.ISupportStreamSerialization`1.Gemstone.IO.Parsing.ISupportStreamSerialization.WriteTo(System.IO.Stream,System.Object)</parameter>
-          </include>
-        </markup>
-      </summary>
-      <param name="stream">
-        <markup>
-          <include item="SMCMissingParamTag">
-            <parameter>param</parameter>
-            <parameter>stream</parameter>
-            <parameter>M:Gemstone.IO.Parsing.ISupportStreamSerialization`1.Gemstone.IO.Parsing.ISupportStreamSerialization.WriteTo(System.IO.Stream,System.Object)</parameter>
-          </include>
-        </markup>
-      </param>
-      <param name="instance">
-        <markup>
-          <include item="SMCMissingParamTag">
-            <parameter>param</parameter>
-            <parameter>instance</parameter>
-            <parameter>M:Gemstone.IO.Parsing.ISupportStreamSerialization`1.Gemstone.IO.Parsing.ISupportStreamSerialization.WriteTo(System.IO.Stream,System.Object)</parameter>
-          </include>
-        </markup>
-      </param>
-    </member>
     <member name="M:Gemstone.IO.Parsing.ISupportStreamSerialization`1.ReadFrom(System.IO.Stream)">
       <summary>
             Deserializes an instance of type <typeparamref name="T" /> from a <see cref="T:System.IO.Stream" />.
