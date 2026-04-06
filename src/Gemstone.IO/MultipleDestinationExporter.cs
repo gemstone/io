@@ -46,7 +46,6 @@ using System.Text;
 using System.Threading;
 using Gemstone.ActionExtensions;
 using Gemstone.Configuration;
-using Gemstone.Data.Model;
 using Gemstone.EventHandlerExtensions;
 using Gemstone.Security.Cryptography;
 using Gemstone.StringExtensions;
