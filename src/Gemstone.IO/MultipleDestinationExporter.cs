@@ -46,6 +46,7 @@ using System.Text;
 using System.Threading;
 using Gemstone.ActionExtensions;
 using Gemstone.Configuration;
+using Gemstone.Data.Model;
 using Gemstone.EventHandlerExtensions;
 using Gemstone.Security.Cryptography;
 using Gemstone.StringExtensions;
@@ -275,7 +276,7 @@ public class MultipleDestinationExporter : ISupportLifecycle, IProvideStatus, IP
     /// <remarks>
     /// <see cref="EventArgs{T}.Argument"/> is the status message being reported by the <see cref="MultipleDestinationExporter"/>.
     /// </remarks>
-    public event EventHandler<EventArgs<string>>? StatusMessage;
+    public event EventHandler<EventArgs<UILogMessage>>? StatusMessage;
 
     /// <summary>
     /// Event is raised when there is an exception encountered while processing.
