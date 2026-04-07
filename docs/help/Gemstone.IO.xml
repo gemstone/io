@@ -607,6 +607,40 @@
             Gets the total number exports performed successfully.
             </summary>
     </member>
+    <member name="T:Gemstone.IO.UILogMessage">
+      <summary>
+            Defines a log message send by the System
+            </summary>
+    </member>
+    <member name="M:Gemstone.IO.UILogMessage.#ctor">
+      <summary>
+        <markup>
+          <include item="SMCAutoDocConstructor">
+            <parameter>Gemstone.IO.UILogMessage</parameter>
+          </include>
+        </markup>
+      </summary>
+    </member>
+    <member name="P:Gemstone.IO.UILogMessage.Level">
+      <summary>
+            The <see cref="T:Gemstone.Diagnostics.MessageLevel" /> associates with this <see cref="T:Gemstone.IO.UILogMessage" />.
+            </summary>
+    </member>
+    <member name="P:Gemstone.IO.UILogMessage.Message">
+      <summary>
+            The message content.
+            </summary>
+    </member>
+    <member name="P:Gemstone.IO.UILogMessage.Source">
+      <summary>
+            The source of the log message. For Adapters this is the Adapter Name. For system messages it is an empty string.
+            </summary>
+    </member>
+    <member name="P:Gemstone.IO.UILogMessage.TimeStamp">
+      <summary>
+            The Timestamp associated with the message.
+            </summary>
+    </member>
     <member name="T:Gemstone.IO.Checksums.Adler32">
       <summary>
             Generates an Adler-32 checksum calculation.
