@@ -52,7 +52,7 @@ public class TemplatedExpressionParserTest
 
     private static string Execute(string template, IDictionary<string, string> substitutions, bool ignoreCase = true, bool evaluateExpressions = true, bool escapeSubstitutionValues = true)
     {
-        TemplatedExpressionParser parser = new TemplatedExpressionParser
+        TemplatedExpressionParser parser = new()
         {
             TemplatedExpression = template
         };
@@ -65,7 +65,7 @@ public class TemplatedExpressionParserTest
     [TestMethod]
     public void Execute_NullOrEmptyTemplate_ReturnsEmpty()
     {
-        TemplatedExpressionParser parser = new TemplatedExpressionParser();
+        TemplatedExpressionParser parser = new();
         Assert.AreEqual("", parser.Execute(new Dictionary<string, string>()));
 
         parser.TemplatedExpression = "";
@@ -81,21 +81,21 @@ public class TemplatedExpressionParserTest
     [TestMethod]
     public void Execute_TokenSubstitution_CaseInsensitiveByDefault()
     {
-        Dictionary<string, string> subs = new Dictionary<string, string> { { "{name}", "Alice" } };
+        Dictionary<string, string> subs = new() { { "{name}", "Alice" } };
         Assert.AreEqual("Hello Alice", Execute("Hello {Name}", subs));
     }
 
     [TestMethod]
     public void Execute_TokenSubstitution_CaseSensitiveWhenRequested()
     {
-        Dictionary<string, string> subs = new Dictionary<string, string> { { "{name}", "Alice" } };
+        Dictionary<string, string> subs = new() { { "{name}", "Alice" } };
         Assert.AreEqual("Hello {Name}", Execute("Hello {Name}", subs, ignoreCase: false));
     }
 
     [TestMethod]
     public void Execute_DefaultDelimitersExposed()
     {
-        TemplatedExpressionParser parser = new TemplatedExpressionParser();
+        TemplatedExpressionParser parser = new();
         Assert.AreEqual('{', parser.StartTokenDelimiter);
         Assert.AreEqual('}', parser.EndTokenDelimiter);
         Assert.AreEqual('[', parser.StartExpressionDelimiter);
@@ -242,7 +242,7 @@ public class TemplatedExpressionParserTest
     public void Reserved_SubstitutionValueWithReservedCharsIsEscaped()
     {
         // '!' in the value is reserved; encoded internally and decoded on the way out
-        Dictionary<string, string> subs = new Dictionary<string, string> { { "{X}", "A!B" } };
+        Dictionary<string, string> subs = new() { { "{X}", "A!B" } };
         Assert.AreEqual("A!B", Execute("{X}", subs));
     }
 
@@ -250,7 +250,7 @@ public class TemplatedExpressionParserTest
     public void Reserved_SubstitutionValueWithBracketsDoesNotConfuseExpressionParser()
     {
         // '[' and ']' in substitution values must not be parsed as expression delimiters
-        Dictionary<string, string> subs = new Dictionary<string, string>
+        Dictionary<string, string> subs = new()
         {
             { "{Sig}", "Phasor" },
             { "{Tag}", "[OK]" }
@@ -270,7 +270,7 @@ public class TemplatedExpressionParserTest
         // because the [7] indexer inside eval{...} got accounted as an expression bracket.
         const string template = """[?{Output}=ModeShapeMagnitude[DAMP.MODE{ModeNum}.eval{"{Input.PointTag}"[7]}.MAG]]""";
 
-        Dictionary<string, string> subs = new Dictionary<string, string>
+        Dictionary<string, string> subs = new()
         {
             { "{Output}", "ModeShapeMagnitude" },
             { "{ModeNum}", "50" },
@@ -286,7 +286,7 @@ public class TemplatedExpressionParserTest
         // Same template, conditional false -> empty result
         const string template = "[?{Output}=ModeShapeMagnitude[DAMP.MODE{ModeNum}.eval{'{Input.PointTag}'[7]}.MAG]]";
 
-        Dictionary<string, string> subs = new Dictionary<string, string>
+        Dictionary<string, string> subs = new()
         {
             { "{Output}", "Other" },
             { "{ModeNum}", "50" },
@@ -309,7 +309,7 @@ public class TemplatedExpressionParserTest
     [TestMethod]
     public void Eval_StringOperationsAfterSubstitution()
     {
-        Dictionary<string, string> subs = new Dictionary<string, string> { { "{Label}", "  va " } };
+        Dictionary<string, string> subs = new() { { "{Label}", "  va " } };
         Assert.AreEqual("VA", Execute("""eval{"{Label}".Trim().ToUpper()}""", subs));
     }
 
@@ -330,7 +330,7 @@ public class TemplatedExpressionParserTest
     [TestMethod]
     public void PointTagTemplate1_PhasorAngle_PositiveSequence()
     {
-        Dictionary<string, string> subs = new Dictionary<string, string>
+        Dictionary<string, string> subs = new()
         {
             { "{CompanyAcronym}",          "GPA"    },
             { "{DeviceAcronym}",           "SHELBY" },
@@ -350,7 +350,7 @@ public class TemplatedExpressionParserTest
     [TestMethod]
     public void PointTagTemplate1_PhasorMagnitude_NegativeSequence_NoBaseKV()
     {
-        Dictionary<string, string> subs = new Dictionary<string, string>
+        Dictionary<string, string> subs = new()
         {
             { "{CompanyAcronym}",          "GPA"     },
             { "{DeviceAcronym}",           "SHELBY"  },
@@ -372,7 +372,7 @@ public class TemplatedExpressionParserTest
     [TestMethod]
     public void PointTagTemplate1_NonPhasor_WithSignalIndex()
     {
-        Dictionary<string, string> subs = new Dictionary<string, string>
+        Dictionary<string, string> subs = new()
         {
             { "{CompanyAcronym}",          "GPA"        },
             { "{DeviceAcronym}",           "SHELBY"     },
@@ -392,7 +392,7 @@ public class TemplatedExpressionParserTest
     [TestMethod]
     public void PointTagTemplate1_NonPhasor_NegativeSignalIndexHidden()
     {
-        Dictionary<string, string> subs = new Dictionary<string, string>
+        Dictionary<string, string> subs = new()
         {
             { "{CompanyAcronym}",          "GPA"        },
             { "{DeviceAcronym}",           "SHELBY"     },
@@ -414,7 +414,7 @@ public class TemplatedExpressionParserTest
     [TestMethod]
     public void PointTagTemplate2_PhasorAngle()
     {
-        Dictionary<string, string> subs = new Dictionary<string, string>
+        Dictionary<string, string> subs = new()
         {
             { "{DeviceAcronym}",      "SHELBY"  },
             { "{SignalType.Source}",  "Phasor"  },
@@ -431,7 +431,7 @@ public class TemplatedExpressionParserTest
     [TestMethod]
     public void PointTagTemplate2_AnalogWithLabel()
     {
-        Dictionary<string, string> subs = new Dictionary<string, string>
+        Dictionary<string, string> subs = new()
         {
             { "{DeviceAcronym}",      "SHELBY"        },
             { "{SignalType.Source}",  "Analog"        },
@@ -448,7 +448,7 @@ public class TemplatedExpressionParserTest
     [TestMethod]
     public void PointTagTemplate2_AnalogWithEmptyLabel_FallsBackToIndex()
     {
-        Dictionary<string, string> subs = new Dictionary<string, string>
+        Dictionary<string, string> subs = new()
         {
             { "{DeviceAcronym}",      "SHELBY" },
             { "{SignalType.Source}",  "Analog" },
@@ -465,7 +465,7 @@ public class TemplatedExpressionParserTest
     [TestMethod]
     public void PointTagTemplate2_NonPhasorNonAnalog_PaddedIndex()
     {
-        Dictionary<string, string> subs = new Dictionary<string, string>
+        Dictionary<string, string> subs = new()
         {
             { "{DeviceAcronym}",      "SHELBY"     },
             { "{SignalType.Source}",  "Calculated" },
@@ -488,7 +488,7 @@ public class TemplatedExpressionParserTest
     [TestMethod]
     public void PointTagTemplate3_PhasorAngle_BaseKVBranchSkipped()
     {
-        Dictionary<string, string> subs = new Dictionary<string, string>
+        Dictionary<string, string> subs = new()
         {
             { "{CompanyAcronym}",          "GPA"    },
             { "{DeviceAcronym}",           "SHELBY" },
@@ -510,7 +510,7 @@ public class TemplatedExpressionParserTest
     [TestMethod]
     public void PointTagTemplate3_AnalogWithLabel()
     {
-        Dictionary<string, string> subs = new Dictionary<string, string>
+        Dictionary<string, string> subs = new()
         {
             { "{CompanyAcronym}",          "GPA"            },
             { "{DeviceAcronym}",           "SHELBY"         },
@@ -531,7 +531,7 @@ public class TemplatedExpressionParserTest
     [TestMethod]
     public void PointTagTemplate3_NonPhasorNonAnalog_PaddedIndex()
     {
-        Dictionary<string, string> subs = new Dictionary<string, string>
+        Dictionary<string, string> subs = new()
         {
             { "{CompanyAcronym}",          "GPA"        },
             { "{DeviceAcronym}",           "SHELBY"     },
@@ -554,7 +554,7 @@ public class TemplatedExpressionParserTest
     [TestMethod]
     public void PointTagTemplate4_NonDegtoal_PhasorAngle()
     {
-        Dictionary<string, string> subs = new Dictionary<string, string>
+        Dictionary<string, string> subs = new()
         {
             { "{DeviceAcronym}",      "SHELBY"  },
             { "{SignalType.Source}",  "Phasor"  },
@@ -573,7 +573,7 @@ public class TemplatedExpressionParserTest
     [TestMethod]
     public void PointTagTemplate4_NonDegtoal_PhasorMagnitude()
     {
-        Dictionary<string, string> subs = new Dictionary<string, string>
+        Dictionary<string, string> subs = new()
         {
             { "{DeviceAcronym}",      "SHELBY"  },
             { "{SignalType.Source}",  "Phasor"  },
@@ -591,7 +591,7 @@ public class TemplatedExpressionParserTest
     [TestMethod]
     public void PointTagTemplate4_FrequencySuffix()
     {
-        Dictionary<string, string> subs = new Dictionary<string, string>
+        Dictionary<string, string> subs = new()
         {
             { "{DeviceAcronym}",      "SHELBY"     },
             { "{SignalType.Source}",  "Frequency"  },
@@ -609,7 +609,7 @@ public class TemplatedExpressionParserTest
     [TestMethod]
     public void PointTagTemplate4_DigitalValueSuffixWithIndex()
     {
-        Dictionary<string, string> subs = new Dictionary<string, string>
+        Dictionary<string, string> subs = new()
         {
             { "{DeviceAcronym}",      "SHELBY"     },
             { "{SignalType.Source}",  "Digital"    },
@@ -630,7 +630,7 @@ public class TemplatedExpressionParserTest
         // DEGTOAL! prefix triggers Substring(8,14) and parity adjustment of trailing 2 chars.
         // DeviceAcronym layout:  "DEGTOAL!" (8 chars) + 14-char body + 2-digit suffix
         // For an even suffix we expect (suffix - 1) padded to 2 chars.
-        Dictionary<string, string> subs = new Dictionary<string, string>
+        Dictionary<string, string> subs = new()
         {
             { "{DeviceAcronym}",      "DEGTOAL!ABCDEFGHIJKLMN04" }, // 8 + 14 + 2 = 24, body=ABCDEFGHIJKLMN, suffix=04
             { "{SignalType.Source}",  "Phasor"                   },
@@ -649,7 +649,7 @@ public class TemplatedExpressionParserTest
     [TestMethod]
     public void PointTagTemplate4_DegtoalPrefix_OddIndex()
     {
-        Dictionary<string, string> subs = new Dictionary<string, string>
+        Dictionary<string, string> subs = new()
         {
             { "{DeviceAcronym}",      "DEGTOAL!ABCDEFGHIJKLMN05" },
             { "{SignalType.Source}",  "Phasor"                   },
