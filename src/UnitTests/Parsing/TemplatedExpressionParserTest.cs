@@ -35,20 +35,20 @@ public class TemplatedExpressionParserTest
     // Real-world point-tag templates pulled from production adapter code; preserved verbatim
     // so the tests fail loudly if grammar handling regresses against in-the-field templates.
     private const string PointTagTemplate1 =
-        "{CompanyAcronym}_{DeviceAcronym}[?{SignalType.Source}=Phasor[-eval{'{PhasorLabel}'.Trim().ToUpper().Replace(' ','_')}_eval{'{SignalType.Abbreviation}'.Substring(0,1)}eval{'{Phase}'=='+' ? '1' : ('{Phase}'=='-' ? '2' : '{Phase}')}[?{BaseKV}>0[_{BaseKV}]][?{SignalType.Suffix}=PA[:ANG]][?{SignalType.Suffix}=PM[:MAG]]]][?{SignalType.Source}!=Phasor[:{SignalType.Acronym}[?{SignalIndex}!=-1[{SignalIndex}]]]]";
+        """{CompanyAcronym}_{DeviceAcronym}[?{SignalType.Source}=Phasor[-eval{"{PhasorLabel}".Trim().ToUpper().Replace(' ','_')}_eval{"{SignalType.Abbreviation}".Substring(0,1)}eval{'{Phase}'=='+' ? '1' : ('{Phase}'=='-' ? '2' : '{Phase}')}[?{BaseKV}>0[_{BaseKV}]][?{SignalType.Suffix}=PA[:ANG]][?{SignalType.Suffix}=PM[:MAG]]]][?{SignalType.Source}!=Phasor[:{SignalType.Acronym}[?{SignalIndex}!=-1[{SignalIndex}]]]]""";
 
     private const string PointTagTemplate2 =
-        "{DeviceAcronym}[?{SignalType.Source}=Phasor[:eval{'{PhasorLabel}'.Trim().ToUpper().Replace(' ','_')}[?{SignalType.Suffix}=PA[.ANG]][?{SignalType.Suffix}=PM[.MAG]]]][?{SignalType.Acronym}=ALOG[:eval{('{Label}'.Trim().Length>0?'{Label}'.Trim().ToUpper().Replace(' ','_'):'ALOG'+((int){SignalIndex}).ToString().PadLeft(2,(char)48))}]][?{SignalType.Source}!=Phasor[?{SignalType.Acronym}!=ALOG[:{SignalType.Acronym}[?{SignalIndex}!=-1[eval{((int){SignalIndex}).ToString().PadLeft(2,(char)48)}]]]]]";
+        """{DeviceAcronym}[?{SignalType.Source}=Phasor[:eval{"{PhasorLabel}".Trim().ToUpper().Replace(' ','_')}[?{SignalType.Suffix}=PA[.ANG]][?{SignalType.Suffix}=PM[.MAG]]]][?{SignalType.Acronym}=ALOG[:eval{("{Label}".Trim().Length>0?"{Label}".Trim().ToUpper().Replace(' ','_'):"ALOG"+((int){SignalIndex}).ToString().PadLeft(2,(char)48))}]][?{SignalType.Source}!=Phasor[?{SignalType.Acronym}!=ALOG[:{SignalType.Acronym}[?{SignalIndex}!=-1[eval{((int){SignalIndex}).ToString().PadLeft(2,(char)48)}]]]]]""";
 
     // Same as Template 1 but with XML-escaped > and slightly different separator/output formatting
     // and an added ALOG branch. The &gt; will not work as a comparison operator without prior
     // XML decoding -- this template models how the value appears when read directly from XML.
     private const string PointTagTemplate3 =
-        "{CompanyAcronym}_{DeviceAcronym}[?{SignalType.Source}=Phasor[:eval{'{PhasorLabel}'.Trim().ToUpper().Replace(' ','_')}_eval{'{SignalType.Abbreviation}'.Substring(0,1)}eval{'{Phase}'=='+' ? '1' : ('{Phase}'=='-' ? '2' : '{Phase}')}[?{BaseKV}&gt;0[_{BaseKV}]][?{SignalType.Suffix}=PA[.ANG]][?{SignalType.Suffix}=PM[.MAG]]]][?{SignalType.Acronym}=ALOG[:eval{('{Label}'.Trim().Length > 0 ? '{Label}'.Trim().ToUpper().Replace(' ','_') : 'ALOG'+((int){SignalIndex}).ToString().PadLeft(2,(char)48))}]][?{SignalType.Source}!=Phasor[?{SignalType.Acronym}!=ALOG[:{SignalType.Acronym}[?{SignalIndex}!=-1[eval{((int){SignalIndex}).ToString().PadLeft(2,(char)48)}]]]]]";
+        """{CompanyAcronym}_{DeviceAcronym}[?{SignalType.Source}=Phasor[:eval{"{PhasorLabel}".Trim().ToUpper().Replace(' ','_')}_eval{"{SignalType.Abbreviation}".Substring(0,1)}eval{'{Phase}'=='+' ? '1' : ('{Phase}'=='-' ? '2' : '{Phase}')}[?{BaseKV}&gt;0[_{BaseKV}]][?{SignalType.Suffix}=PA[.ANG]][?{SignalType.Suffix}=PM[.MAG]]]][?{SignalType.Acronym}=ALOG[:eval{("{Label}".Trim().Length > 0 ? "{Label}".Trim().ToUpper().Replace(' ','_') : "ALOG"+((int){SignalIndex}).ToString().PadLeft(2,(char)48))}]][?{SignalType.Source}!=Phasor[?{SignalType.Acronym}!=ALOG[:{SignalType.Acronym}[?{SignalIndex}!=-1[eval{((int){SignalIndex}).ToString().PadLeft(2,(char)48)}]]]]]""";
 
     // Heavy-eval template with a leading eval that dispatches on a DEGTOAL! prefix substring
     private const string PointTagTemplate4 =
-        "eval{'{DeviceAcronym}'.StartsWith('DEGTOAL!') ? '{DeviceAcronym}'.Substring(8, 14) + (int.Parse('{DeviceAcronym}'.Substring('{DeviceAcronym}'.Length - 2)) % 2 == 0 ? (int.Parse('{DeviceAcronym}'.Substring('{DeviceAcronym}'.Length - 2)) - 1).ToString().PadLeft(2, (char)48) : '{DeviceAcronym}'.Substring('{DeviceAcronym}'.Length - 2)) : '{DeviceAcronym}'}[?{SignalType.Source}=Phasor[eval{'.{PhasorLabel}'.Trim().ToUpper().Replace(' ','')}[?{SignalType.Suffix}=PA[.Aeval{'{DeviceAcronym}'.StartsWith('DEGTOAL!') ? 'R' : ''}]][?{SignalType.Suffix}=PM[.M]]]][?{SignalType.Suffix}=AV[.eval{'{Label}'.Trim().Equals('ToA Latency') ? 'A{BaseKV}TOAL' : '{Label}'.Trim().ToUpper().Replace(' ','')}]][?{SignalType.Suffix}=FQ[.A{BaseKV}FREQ_____1F]][?{SignalType.Suffix}=DF[.A{BaseKV}FREQ_____1R_]][?{SignalType.Suffix}=QF[-QF]][?{SignalType.Suffix}=DV[-{SignalType.Acronym}[?{SignalIndex}!=-1[{SignalIndex}]]]]eval{'{DeviceAcronym}'.StartsWith('DEGTOAL!') ? (int.Parse('{DeviceAcronym}'.Substring('{DeviceAcronym}'.Length - 2)) % 2 == 0 ? '.B' : '.A') : ''}";
+        """eval{"{DeviceAcronym}".StartsWith("DEGTOAL!") ? "{DeviceAcronym}".Substring(8, 14) + (int.Parse("{DeviceAcronym}".Substring("{DeviceAcronym}".Length - 2)) % 2 == 0 ? (int.Parse("{DeviceAcronym}".Substring("{DeviceAcronym}".Length - 2)) - 1).ToString().PadLeft(2, (char)48) : "{DeviceAcronym}".Substring("{DeviceAcronym}".Length - 2)) : "{DeviceAcronym}"}[?{SignalType.Source}=Phasor[eval{".{PhasorLabel}".Trim().ToUpper().Replace(" ","")}[?{SignalType.Suffix}=PA[.Aeval{"{DeviceAcronym}".StartsWith("DEGTOAL!") ? "R" : ""}]][?{SignalType.Suffix}=PM[.M]]]][?{SignalType.Suffix}=AV[.eval{"{Label}".Trim().Equals("ToA Latency") ? "A{BaseKV}TOAL" : "{Label}".Trim().ToUpper().Replace(" ","")}]][?{SignalType.Suffix}=FQ[.A{BaseKV}FREQ_____1F]][?{SignalType.Suffix}=DF[.A{BaseKV}FREQ_____1R_]][?{SignalType.Suffix}=QF[-QF]][?{SignalType.Suffix}=DV[-{SignalType.Acronym}[?{SignalIndex}!=-1[{SignalIndex}]]]]eval{"{DeviceAcronym}".StartsWith("DEGTOAL!") ? (int.Parse("{DeviceAcronym}".Substring("{DeviceAcronym}".Length - 2)) % 2 == 0 ? ".B" : ".A") : ""}""";
 
     private static string Execute(string template, IDictionary<string, string> substitutions, bool ignoreCase = true, bool evaluateExpressions = true, bool escapeSubstitutionValues = true)
     {
@@ -268,7 +268,7 @@ public class TemplatedExpressionParserTest
         // Verbatim repro from the PR description; the old algorithm threw:
         //   ExpressionEvaluator.Parser.ExpressionParseException: 'Error parsing token '7' at line 1 char 26'
         // because the [7] indexer inside eval{...} got accounted as an expression bracket.
-        const string template = "[?{Output}=ModeShapeMagnitude[DAMP.MODE{ModeNum}.eval{'{Input.PointTag}'[7]}.MAG]]";
+        const string template = """[?{Output}=ModeShapeMagnitude[DAMP.MODE{ModeNum}.eval{"{Input.PointTag}"[7]}.MAG]]""";
 
         Dictionary<string, string> subs = new Dictionary<string, string>
         {
@@ -310,7 +310,7 @@ public class TemplatedExpressionParserTest
     public void Eval_StringOperationsAfterSubstitution()
     {
         Dictionary<string, string> subs = new Dictionary<string, string> { { "{Label}", "  va " } };
-        Assert.AreEqual("VA", Execute("eval{'{Label}'.Trim().ToUpper()}", subs));
+        Assert.AreEqual("VA", Execute("""eval{"{Label}".Trim().ToUpper()}""", subs));
     }
 
     [TestMethod]
