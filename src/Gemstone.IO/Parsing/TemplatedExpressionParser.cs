@@ -27,13 +27,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Text.RegularExpressions;
 using Gemstone.CharExtensions;
 using Gemstone.Expressions.Evaluator;
 using Gemstone.StringExtensions;
 using ParsedEvaluation = System.Tuple<string, string>;
-using ParsedExpression = System.Tuple<string, bool, string>;
 
 namespace Gemstone.IO.Parsing;
 
@@ -77,8 +75,10 @@ public class TemplatedExpressionParser
     }
 
     // Constants
-    private const string ExpressionParser = @"^[^\{0}\{1}]*(((?<Expressions>(?'Open'\{0})[^\{0}\{1}]*))+((?'Close-Open'\{1})[^\{0}\{1}]*)+)*(?(Open)(?!))$";
-    private const string EvaluationParser = @"eval\{0}([^\{0}]+)\{1}";
+    private const string ExpressionParser =
+        /* lang=regex */ @"(?'Open'\{0}\?)(?<Conditional>[^\{0}\{1}]+)(?:(?'Open'\{0})|(?'Close-Open'\{1})|[^\{0}\{1}])+?(?(Open)(?!))";
+
+    private const string EvaluationParser = /* lang=regex */ @"eval\{0}([^\{0}]+)\{1}";
 
     // Fields
     private readonly Regex m_expressionParser;
@@ -250,11 +250,7 @@ public class TemplatedExpressionParser
         if (evaluateExpressions)
         {
             // Parse common expressions, i.e., [?expression[result]]
-            List<ParsedExpression> parsedExpressions = ParseExpressions(result, ignoreCase);
-
-            // Execute common expression replacements
-            foreach (ParsedExpression parsedExpression in parsedExpressions)
-                result = result.Replace(parsedExpression.Item1, parsedExpression.Item2 ? parsedExpression.Item3 : "");
+            result = ParseExpressions(result, ignoreCase);
 
             // Parse evaluation expressions, i.e., eval{expression}
             List<ParsedEvaluation> parsedEvaluations = ParseEvaluations(result);
@@ -311,113 +307,68 @@ public class TemplatedExpressionParser
         return value;
     }
 
-    // Parses expressions of the form "[?expression[result]]". Expressions can be nested, e.g., "[?expression1[?expression2[result]]]".
-    // Returns list of complete expressions (used as base replacement text), cumulative boolean expression evaluations and expression results
-    private List<ParsedExpression> ParseExpressions(string fieldReplacedTemplatedExpression, bool ignoreCase)
+    // Parses expressions of the form "[?conditional[result]]". Expressions can be nested, e.g., "[?conditional1[?conditional2[result]]]".
+    // Returns the result of parsing the expressions and applying the replacements to the original templated expression string
+    private string ParseExpressions(string fieldReplacedTemplatedExpression, bool ignoreCase)
     {
         // Find all expressions using regular expression
-        Match match = m_expressionParser.Match(fieldReplacedTemplatedExpression);
-
-        if (!match.Success)
-            return [];
-
-        List<ParsedExpression> parsedExpressions = [];
-        Group capturedExpressions = match.Groups["Expressions"];
-        StringBuilder completeExpression = new();
-        List<bool> evaluations = [];
-        int depth = 0, lastDepth = 0;
-
-        foreach (Capture capture in capturedExpressions.Captures)
+        return m_expressionParser.Replace(fieldReplacedTemplatedExpression, match =>
         {
-            if (capture.Value.StartsWith($"{StartExpressionDelimiter}?", StringComparison.Ordinal))
+            string fullExpression = match.Value;
+            CaptureCollection nests = match.Groups["Close"].Captures;
+
+            if (nests.Count < 2)
+                throw new InvalidOperationException($"Syntax error: No result found in expression {fullExpression}");
+
+            string conditional = match.Groups["Conditional"].Value;
+            string result = nests[^2].Value;
+            string validation = $"[?{conditional}[{result}]]";
+
+            if (fullExpression != validation)
+                throw new InvalidOperationException($"Syntax error: Expression syntax invalid - check balance of square brackets in {fullExpression}");
+
+            // Parse binary expression
+            CodeBinaryOperatorExpression? conditionalExpression = ParseBinaryOperatorExpression(conditional, out TypeCode expressionType);
+
+            // Evaluate binary expression
+            if (conditionalExpression is null)
+                return string.Empty;
+
+            IComparer comparer = expressionType switch
             {
-                // Found binary operation expression
-                depth++;
-                completeExpression.Append(capture.Value);
+                TypeCode.Int32 => Comparer<int>.Default,
+                TypeCode.Double => Comparer<double>.Default,
+                TypeCode.String => ignoreCase ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal,
+                _ => throw new ArgumentOutOfRangeException(),
+            };
 
-                // Only apply cumulative AND logic for items at continued depth
-                if (depth == lastDepth && evaluations.Count > 0)
-                    evaluations.RemoveAt(evaluations.Count - 1);
+            // Compare operands
+            CodePrimitiveExpression left = (CodePrimitiveExpression)conditionalExpression.Left;
+            CodePrimitiveExpression right = (CodePrimitiveExpression)conditionalExpression.Right;
+            int conditionalResult = comparer.Compare(left.Value, right.Value);
 
-                lastDepth = depth;
-
-                // Parse binary expression
-                CodeBinaryOperatorExpression? expression = ParseBinaryOperatorExpression(capture.Value.Substring(2), out TypeCode expressionType);
-
-                // Evaluate binary expression
-                if (expression is not null)
-                {
-                    IComparer comparer = expressionType switch
-                    {
-                        TypeCode.Int32 => Comparer<int>.Default,
-                        TypeCode.Double => Comparer<double>.Default,
-                        TypeCode.String => ignoreCase ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal,
-                        _ => throw new ArgumentOutOfRangeException(),
-                    };
-
-                    // Compare operands
-                    int result = comparer.Compare(((CodePrimitiveExpression)expression.Left).Value, ((CodePrimitiveExpression)expression.Right).Value);
-
-                    // Evaluate comparison result
-                    bool evaluation = expression.Operator switch
-                    {
-                        CodeBinaryOperatorType.IdentityEquality => result == 0,
-                        CodeBinaryOperatorType.IdentityInequality => result != 0,
-                        CodeBinaryOperatorType.LessThan => result < 0,
-                        CodeBinaryOperatorType.LessThanOrEqual => result <= 0,
-                        CodeBinaryOperatorType.GreaterThan => result > 0,
-                        CodeBinaryOperatorType.GreaterThanOrEqual => result >= 0,
-                        _ => false
-                    };
-
-                    evaluations.Add(evaluation);
-                }
-                else
-                {
-                    // Expression evaluation fails if there is not an expression
-                    evaluations.Add(false);
-                }
-            }
-            else if (capture.Value.StartsWith(StartExpressionDelimiter.ToString(), StringComparison.Ordinal))
+            // Evaluate comparison result
+            var condition = conditionalExpression.Operator switch
             {
-                if (depth > 0)
-                {
-                    depth++;
+                CodeBinaryOperatorType.IdentityEquality => conditionalResult == 0,
+                CodeBinaryOperatorType.IdentityInequality => conditionalResult != 0,
+                CodeBinaryOperatorType.LessThan => conditionalResult < 0,
+                CodeBinaryOperatorType.LessThanOrEqual => conditionalResult <= 0,
+                CodeBinaryOperatorType.GreaterThan => conditionalResult > 0,
+                CodeBinaryOperatorType.GreaterThanOrEqual => conditionalResult >= 0,
+                _ => false,
+            };
 
-                    // Found expression result
-                    completeExpression.Append(capture.Value);
+            if (!condition)
+                return string.Empty;
 
-                    // Complete closed expression
-                    int index = capture.Index + capture.Length;
+            // If the result is itself an expression, restore the delimiters
+            string innerExpression = result.StartsWith('?')
+                ? $"{StartExpressionDelimiter}{result}{EndExpressionDelimiter}"
+                : result;
 
-                    while (index < fieldReplacedTemplatedExpression.Length && fieldReplacedTemplatedExpression[index] == EndExpressionDelimiter)
-                    {
-                        completeExpression.Append(EndExpressionDelimiter);
-                        index++;
-                        depth--;
-                    }
-
-                    // Add complete expression, cumulative boolean expression evaluation and expression result to parsed expression list
-                    parsedExpressions.Add(new ParsedExpression(completeExpression.ToString(), evaluations.All(item => item), capture.Value.Substring(1)));
-
-                    // Reset for next expression
-                    completeExpression.Clear();
-
-                    if (depth > 0)
-                        continue;
-
-                    evaluations.Clear();
-                    depth = 0;
-                }
-                else
-                {
-                    // Unbalanced expression - exception not expected since regex should already catch this
-                    throw new InvalidOperationException($"Unbalanced delimiters detected in field replaced templated expression \"{fieldReplacedTemplatedExpression}\"");
-                }
-            }
-        }
-
-        return parsedExpressions;
+            return ParseExpressions(innerExpression, ignoreCase);
+        });
     }
 
     private CodeBinaryOperatorExpression? ParseBinaryOperatorExpression(string expression, out TypeCode expressionType)
